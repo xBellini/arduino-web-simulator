@@ -112,7 +112,7 @@ export function Toolbar() {
   return (
     <header className="toolbar">
       <div className="toolbar-brand">
-        <span className="brand-icon" aria-hidden />
+        <img className="brand-icon" src="/favicon.svg" alt="" aria-hidden/>
         <span>Arduino Simulator</span>
         <span className="phase-badge phase-badge-sim">Phase 1 · AVR</span>
       </div>
