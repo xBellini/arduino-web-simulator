@@ -1,0 +1,29 @@
+---
+description: Never reinvent IC/controller behavior — vendor existing models like SPICE libs
+alwaysApply: true
+---
+
+# IC / controller models — do not reinvent
+
+**WE WILL NOT REINVENT IC OR CONTROLLER BEHAVIOURS.** Fetch an already vendor-provided (or other known reliable) model — same instinct as SPICE `.lib` parts under `public/spice/models/`.
+
+## Do
+
+- Prefer an **existing IC-level** behavioral model from open/MIT engines or license-clear simulator IC sources; document provenance
+- Vendor under e.g. `src/avr/vendor/<name>/` + thin facade in `src/avr/<ic>.ts`
+- Own **module packaging** ourselves: SVG, pins, bus glue, overlay
+
+## Do not
+
+- Hand-roll controller firmware as the primary path when a working model exists
+- Adopt whole-product simulator UI — take the **IC**, not the gadget chrome
+- Copy proprietary Proteus/TinkerCAD code (observe only)
+- Put bare shared controller ICs in the palette unless you explicitly want that
+
+## When adding a smart module
+
+1. Vendor IC model first
+2. Wrap `src/avr/<ic>.ts`
+3. Then PartModule (artwork + pins + evaluate/overlay)
+
+See also `no-invent-simulation.mdc` (V/I from AVR/SPICE) and `new-components.mdc` (registry / SVG checklist).

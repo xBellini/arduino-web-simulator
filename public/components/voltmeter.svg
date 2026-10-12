@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 65.5 45.75"
+   width="65.5"
+   height="45.75"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="voltmeter.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="15.922529"
+     inkscape:cx="24.524998"
+     inkscape:cy="15.292796"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <line
+     x1="23.75"
+     y1="32.75"
+     x2="23.75"
+     y2="44.75"
+     stroke="#9e9e9e"
+     stroke-width="2"
+     stroke-linecap="round"
+     id="line1" />
+  <line
+     x1="41.75"
+     y1="32.75"
+     x2="41.75"
+     y2="44.75"
+     stroke="#9e9e9e"
+     stroke-width="2"
+     stroke-linecap="round"
+     id="line2" />
+  <rect
+     x="0.75"
+     y="0.75"
+     width="64"
+     height="36"
+     rx="3"
+     fill="#263238"
+     stroke="#111111"
+     stroke-width="1.5"
+     id="rect2" />
+  <rect
+     x="6.75"
+     y="6.75"
+     width="52"
+     height="24"
+     rx="2"
+     fill="#1b5e20"
+     id="rect3"
+     style="stroke-width:1.1547" />
+</svg>

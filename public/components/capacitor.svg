@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1000 -1000 19.24 27.530001"
+   version="1.1"
+   id="svg10"
+   sodipodi:docname="capacitor.svg"
+   width="19.24"
+   height="27.530001"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     id="namedview10"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="10.088"
+     inkscape:cx="21.708961"
+     inkscape:cy="24.137589"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10" />
+  <g
+     class="cgfx__wireview"
+     display="inline"
+     id="g4"
+     transform="translate(-990.38,-973.59)">
+    <line
+       style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+       x1="-5"
+       y1="0.12"
+       x2="-5"
+       y2="-12.9"
+       id="line1" />
+    <line
+       style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+       x1="5"
+       y1="0"
+       x2="5"
+       y2="-12.9"
+       id="line2" />
+    <path
+       style="fill:#165696"
+       d="m 9.62,-16.79 c 0,-5.32 -4.31,-9.62 -9.62,-9.62 -5.31,0 -9.62,4.31 -9.62,9.62 0,3.36 2.47,7.99 2.87,9.94 0.26,1.27 -0.1,1.71 0.34,2.36 0.12,0.18 0.26,0.3 0.41,0.36 0.77,-0.92 1.74,-0.71 1.99,-0.47 0.68,-0.33 1.78,-1.07 4.01,-1.11 2.23,-0.04 3.67,0.94 4.01,0.96 0.35,-0.36 1.92,-0.81 1.99,-0.28 0.45,-0.33 0.92,-1.01 0.99,-2.22 0.16,-3.34 2.63,-5.17 2.63,-9.54 z"
+       id="path2" />
+    <path
+       class="cgfx__highlight"
+       style="opacity:0.4;fill:#ffffff"
+       d="m -3.44,-24.46 c 0,0 -5.46,2.11 -4.77,8.23 0.71,-3.71 2.13,-4.84 3.34,-5.84 1.2,-1 1.43,-2.39 1.43,-2.39 z"
+       id="path3" />
+    <line
+       class="cgfx__hitarea cgfx__wireview"
+       style="fill:none;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+       opacity="0"
+       display="none"
+       x1="-5"
+       y1="0.12"
+       x2="-5"
+       y2="-12.9"
+       id="line3" />
+    <line
+       class="cgfx__hitarea cgfx__wireview"
+       style="fill:none;stroke:#ff0000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+       opacity="0"
+       display="none"
+       x1="5"
+       y1="0"
+       x2="5"
+       y2="-12.9"
+       id="line4" />
+    <path
+       class="cgfx__hitarea cgfx__wireview"
+       style="fill:#ff0000"
+       opacity="0"
+       display="none"
+       d="m 9.62,-16.79 c 0,-5.32 -4.31,-9.62 -9.62,-9.62 -5.31,0 -9.62,4.31 -9.62,9.62 0,3.36 2.47,7.99 2.87,9.94 0.26,1.27 -0.1,1.71 0.34,2.36 0.12,0.18 0.26,0.3 0.41,0.36 0.77,-0.92 1.74,-0.71 1.99,-0.47 0.68,-0.33 1.78,-1.07 4.01,-1.11 2.23,-0.04 3.67,0.94 4.01,0.96 0.35,-0.36 1.92,-0.81 1.99,-0.28 0.45,-0.33 0.92,-1.01 0.99,-2.22 0.16,-3.34 2.63,-5.17 2.63,-9.54 z"
+       id="path4" />
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g8"
+     transform="translate(-990.38,-973.59)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc7">Terminal 1</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc8">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g10"
+     transform="translate(-990.38,-973.59)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc9">Terminal 2</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc10">breadboard</desc>
+  </g>
+</svg>

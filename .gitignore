@@ -1,0 +1,9 @@
+node_modules
+dist
+*.local
+.DS_Store
+user_projects/*.json
+!user_projects/.gitkeep
+.tmp-spice-fetch
+public/spice/models/
+public/spice/catalog.json

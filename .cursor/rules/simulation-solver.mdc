@@ -1,0 +1,30 @@
+---
+description: ngspice vs legacy vs failure model — when editing circuit simulation
+globs: src/circuit/**,src/avr/**,src/store/simulationController.ts,src/store/simLiveStore.ts
+alwaysApply: false
+---
+
+# Circuit simulation architecture
+
+**DO NOT INVENT RESULTS** — voltages, currents, and charge come from **AVR** or **SPICE** (see always-applied `no-invent-simulation.mdc`). UI may only mirror or lerp between those values.
+
+Three layers — do not conflate them:
+
+| Layer | Role | Key paths |
+|-------|------|-----------|
+| **Math engine** | DC voltages/currents | `circuit/dcSolver.ts`, `circuit/spice/client.ts`, `circuit/spice/worker.ts` (eecircuit-engine), `circuit/spice/pspiceCompat.ts`, `circuit/mnaLegacy.ts`, `circuit/spice/netlistExport.ts` |
+| **Failure rules** | Blow detection, smoke, red X | `circuit/visuals.ts`, `CircuitSimState` / `ComponentSimFlags` in `circuit/solver.ts` |
+| **Visuals** | Glow, wire dashes, heat | `ui/canvas/ComponentShape.tsx`, `circuit/currents.ts`, `index.css`, `simLiveStore` |
+
+## Rules
+
+- **No invented V/I/charge** — prefer ngspice node voltages and V-source branch currents; AVR for GPIO; never fake RC or rated-If overlays as if they were solved.
+- **Blown parts are app logic**, not native ngspice. Export open circuits (~1 GΩ) in `netlistExport.ts` for both ngspice and legacy.
+- Pass `resistorBlown` and `ledBlown` through cache keys, `refreshDcOperatingPoint`, and `solveDcCircuit`.
+- On new blow: invalidate ngspice cache; sync re-solve via legacy for same-frame wire/heat update.
+- Prefer ngspice branch currents for animations; legacy MNA is fallback when cache miss or worker unavailable.
+- Do not change overload **animation timing or visuals** unless the user asks — fix circuit behavior separately.
+
+## Verify
+
+After sim changes: `npm run build`. For parser/worker changes, test with sim running and check solver badge + ngspice DC overlay.

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1000 -1000 14.71 29.469999"
+   version="1.1"
+   id="svg11"
+   sodipodi:docname="led.svg"
+   width="14.71"
+   height="29.469999"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="14.266586"
+     inkscape:cx="9.5327639"
+     inkscape:cy="26.320242"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg11" />
+  <path
+     style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+     d="m -986.95,-971.53 c 0,0 0,-1.13 0,-2.06 0,-0.93 -2.5,-2.42 -2.5,-3.66 0,-1.24 0,-4.54 0,-4.54"
+     id="path1" />
+  <line
+     style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+     x1="-996.95001"
+     y1="-981.53003"
+     x2="-996.95001"
+     y2="-971.53003"
+     id="line1" />
+  <path
+     class="cgfx__basecolor"
+     fill="#ff4040"
+     d="m -986.4,-984.94 v -8.26 c 0,-3.76 -3.04,-6.8 -6.8,-6.8 -3.76,0 -6.8,3.04 -6.8,6.8 v 8.26 2.03 3.37 c 1.38,1.14 3.9,1.91 6.8,1.91 4.37,0 7.91,-1.74 7.91,-3.88 0,-0.23 0,-1.15 0,-1.4 0,-0.74 -0.41,-1.43 -1.11,-2.03 z"
+     id="path2" />
+  <path
+     style="opacity:0.3;fill:#ffffff"
+     d="m -993.2,-985.87 c 3.76,0 6.8,1.33 6.8,2.96 v -2.03 c -1.38,-1.17 -3.9,-1.96 -6.8,-1.96 -2.9,0 -5.42,0.79 -6.8,1.96 v 2.03 c 0,-1.64 3.04,-2.96 6.8,-2.96 z"
+     id="path3" />
+  <path
+     style="opacity:0.5"
+     d="m -986.4,-984.94 v -1.97 c 0,1.64 -3.04,2.96 -6.8,2.96 -3.76,0 -6.8,-1.33 -6.8,-2.96 v 0 7.37 c 1.38,1.14 3.9,1.91 6.8,1.91 4.37,0 7.91,-1.74 7.91,-3.88 0,-0.23 0,-1.15 0,-1.4 0,-0.74 -0.41,-1.43 -1.11,-2.03 z"
+     id="path4" />
+  <path
+     style="opacity:0.2;fill:#ffffff"
+     d="m -986.4,-984.94 v 2.03 c 0,1.64 -3.04,2.96 -6.8,2.96 -3.76,0 -6.8,-1.33 -6.8,-2.96 v 2.03 c 1.38,1.17 3.9,1.96 6.8,1.96 4.37,0 7.91,-1.79 7.91,-3.99 0,-0.74 -0.41,-1.43 -1.11,-2.03 z"
+     id="path5" />
+  <path
+     style="opacity:0.7;fill:#ffffff"
+     d="m -998.21,-984.91 c 1.24,0.59 3.02,0.96 5.01,0.96 1.99,0 3.77,-0.37 5.01,-0.96 -1.24,-0.59 -3.02,-0.96 -5.01,-0.96 -1.99,0 -3.77,0.37 -5.01,0.96 z"
+     id="path6" />
+  <path
+     class="cgfx__mask"
+     fill-opacity="1"
+     fill="#802020"
+     d="m -993.2,-979.94 c 3.76,0 6.8,-1.33 6.8,-2.96 v -10.29 c 0,-3.76 -3.04,-6.8 -6.8,-6.8 -3.76,0 -6.8,3.04 -6.8,6.8 v 10.29 c 0,1.63 3.04,2.96 6.8,2.96 z"
+     id="path7" />
+  <g
+     class="cgfx__terminal"
+     id="g9"
+     transform="translate(-991.95,-971.53)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc8">Cathode</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc9">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g11"
+     transform="translate(-991.95,-971.53)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc10">Anode</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc11">breadboard</desc>
+  </g>
+</svg>

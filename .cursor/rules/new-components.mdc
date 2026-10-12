@@ -1,0 +1,42 @@
+---
+description: Adding or changing canvas parts — registry, SVG art, hitboxes, sim hooks
+globs: src/registry/**,src/components/**,src/ui/canvas/ComponentShape.tsx,src/types/**,public/components/**
+alwaysApply: false
+---
+
+# New or changed components
+
+## Checklist
+
+1. **Registry** — `src/registry/components.ts` (pins, `scale`, artwork / `package`, markings)
+2. **Types** — `src/types` if new properties or component type
+3. **Art** — `public/components/<type>.svg`, **or** set `package: 'dip8'` (etc.) to reuse a footprint SVG + size
+4. **Hitbox** — defaults to package/SVG viewBox; only add `COMPONENT_HITBOX_OVERRIDES` when needed
+5. **Simulation** — if conductive: part module hooks / SPICE as needed. If the part has a **controller IC**, do **not** invent IC behavior — vendor an existing model (see always-applied `ic-controller-models.mdc`)
+6. **README** — palette list, usage, Phase status (see `readme-updates.mdc`)
+
+## IC on a DIP package
+
+```ts
+lm358: {
+  type: 'lm358',
+  label: 'LM358',
+  package: 'dip8',      // → /components/dip8.svg + that viewBox size
+  scale: 1,
+  color: '#333333',
+  marking: 'chip',      // overlay text; placed with partLabel = label
+  pins: [ /* your pin ids/labels at DIP pad x/y */ ],
+},
+```
+
+Add the type id to `PALETTE_CATEGORIES` (usually **ICs**).
+
+## Conventions
+
+- Match existing pin IDs and naming in the registry.
+- Pin snap / wire portals use geometry helpers — do not block pins with wire hit targets.
+- SPICE: use `src/circuit/spice/models.ts` for catalog parts (our own vendor models go in `public/spice/bundled/` + `bundled/catalog.json`); inline `.model` for simple synthetics (e.g. LED from Vf/If).
+
+## Scope
+
+Minimal diff — one part at a time. Do not refactor unrelated components.

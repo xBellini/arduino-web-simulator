@@ -1,0 +1,92 @@
+{
+  "footprintId": null,
+  "footprintName": "DIP14",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_DIP14_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-dip14.svg",
+  "terminals": [
+    {
+      "name": "Clock 1",
+      "x": -30,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Reset 1",
+      "x": -20,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "K 1",
+      "x": -10,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Power",
+      "x": 0,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Clock 2",
+      "x": 10,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Reset 2",
+      "x": 20,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "J 2",
+      "x": 30,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Inverted Output 2",
+      "x": 30,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Output 2",
+      "x": 20,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "K 2",
+      "x": 10,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Ground",
+      "x": 0,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Output 1",
+      "x": -10,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Inverted Output 1",
+      "x": -20,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "J 1",
+      "x": -30,
+      "y": -15,
+      "dir": -90
+    }
+  ]
+}

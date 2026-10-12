@@ -1,0 +1,20 @@
+{
+  "footprintId": null,
+  "footprintName": "C1206K",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_Capacitor_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-capacitor.svg",
+  "terminals": [
+    {
+      "name": "Terminal 1",
+      "x": -5,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Terminal 2",
+      "x": 5,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

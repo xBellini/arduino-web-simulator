@@ -1,0 +1,34 @@
+---
+description: Debug mode — analyze root cause and gather logs before any code fix
+alwaysApply: true
+---
+
+# Debug: analyze first, change after
+
+When investigating a bug, performance issue, or unexpected sim/UI behavior: **do not ship a code fix as the first step.** Understand the root cause with evidence first.
+
+## Required order
+
+1. **Hypotheses** — Write 3–5 concrete theories about *why* it fails (not “try X”).
+2. **Instrument** — Add minimal runtime logs (or use existing overlays/metrics) that can confirm or reject each hypothesis.
+3. **Reproduce** — Ask the user to re-run; gather logs. Repeat or add logs if the first pass is inconclusive.
+4. **Analyze** — Cite log/runtime evidence; mark each hypothesis confirmed / rejected / inconclusive.
+5. **Fix** — Only then change product code, and only for causes proven by evidence.
+6. **Verify** — Re-run with logs still in place; compare before/after. Remove instrumentation only after success is confirmed (or the user asks to strip it).
+
+## Forbidden
+
+- Blind “maybe this helps” patches before a written root-cause analysis
+- Stacking speculative guards from rejected theories
+- Declaring fixed without runtime evidence or user confirmation
+- Skipping a second log gather when the first run is ambiguous
+
+## Allowed early (not “fixes”)
+
+- Read-only exploration of code and prior logs
+- Adding/adjusting **instrumentation** and reproduction steps
+- Reverting a bad speculative change once logs show it was wrong
+
+## If the user says “just fix it”
+
+Still state the leading hypothesis and what evidence would confirm it; prefer one instrumented repro over an immediate multi-file rewrite. If they explicitly insist on a speculative change, label it as unverified and keep instrumentation to validate.

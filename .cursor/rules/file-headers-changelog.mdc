@@ -1,0 +1,142 @@
+---
+description: File header commentary + per-file changelog; README stays general-purpose only
+alwaysApply: true
+---
+
+# File headers and changelogs
+
+Every project source file must start with a **What** + **Changelog** block at the top (before imports).
+
+## Scope
+
+**Do:** `src/**`, `scripts/**`, root tooling (`*.ps1`, `*.bat`, `*.mjs`, hand-maintained config).
+
+**Skip:** `node_modules/`, `dist/`, lockfiles, binaries, `README.md` (overview only — see below).
+
+When you create or meaningfully edit a file that lacks a header, add one. Append a changelog bullet on each non-trivial change.
+
+## Template
+
+```ts
+/**
+ * What: <who uses this file, what it owns, key exports, important conventions>
+ *
+ * Changelog:
+ * - DD-MM-YYYY — <what changed and why>   ← newest first
+ */
+```
+
+PowerShell / batch: same fields with `#` or `REM` line comments.
+
+Date format: **`DD-MM-YYYY`** (e.g. `17-09-2026`).
+
+---
+
+## How to write the `What` section
+
+Answer these in prose (several sentences OK):
+
+1. **Role** — What problem does this file solve in the app?
+2. **Owns** — What data, UI, or algorithms live here?
+3. **Exports / entry points** — Main functions, components, or constants others import.
+4. **Conventions** — Coordinates, units, flags, or “call X not Y” rules a editor must know.
+5. **Not here** — Optional one line if people often look in the wrong file (e.g. “overlays live in ComponentOverlays, not ComponentShape”).
+
+**Good (registry):**
+
+```ts
+/**
+ * What: Central catalog of every placeable part. Each entry has label, scale,
+ * pin x/y in SVG design space, optional `package` (shared DIP SVG), and
+ * `marking: 'chip'|'value'`. Exports COMPONENT_REGISTRY, PALETTE_CATEGORIES,
+ * getDesignDefinition / getDefinition. Size comes from partFootprints viewBox;
+ * do not put width/height in registry entries. To add an IC: set package +
+ * custom pins + marking, then list the type under palette `ics`.
+ *
+ * Changelog:
+ * - 17-09-2026 — Changelog creation
+ */
+```
+
+**Bad:** `What: Component registry.` (too vague — no how-to, no exports, no conventions.)
+
+**Good (overlay UI):**
+
+```ts
+/**
+ * What: Sim/property chrome drawn on top of PartArtwork inside ComponentShape —
+ * LED glow/blown, RGB tint, resistor bands, pot wiper, chip marking, meter
+ * readouts. Reads simFlags + PlacedComponent; does not draw the package SVG.
+ * Add a new overlay here as a helper and gate it on component.type (or
+ * design.marking) inside ComponentOverlays.
+ *
+ * Changelog:
+ * - 17-09-2026 — Changelog creation
+ */
+```
+
+---
+
+## How to update the Changelog (every meaningful edit)
+
+1. Keep existing bullets — **never rewrite or delete** old history.
+2. Insert a **new bullet at the top** of the list (newest first).
+3. One bullet per change set; say **what** and **why**, not a dump of every line.
+
+**Before edit:**
+
+```ts
+ * Changelog:
+ * - 17-09-2026 — Changelog creation
+```
+
+**After adding package-based ICs to `components.ts`:**
+
+```ts
+ * Changelog:
+ * - 17-09-2026 — Added package IC pattern (package + pins + marking); NE555 example
+ * - 17-09-2026 — Changelog creation
+```
+
+**After extracting overlays from ComponentShape:**
+
+```ts
+ * Changelog:
+ * - 17-09-2026 — Moved LED/resistor/meter overlays out of ComponentShape into this file
+ * - 17-09-2026 — Changelog creation
+```
+
+If the file’s **role** changed (not just a small fix), also refresh the `What` text so it still matches reality. Example: after the extract, ComponentShape’s What should say it composes PartArtwork + ComponentOverlays, not “contains all sim overlays.”
+
+### What counts as a changelog bullet?
+
+| Do add a bullet | Skip (no bullet) |
+|-----------------|------------------|
+| New export, feature, or overlay | Typo / formatting-only |
+| Behavior or API change callers must know | Reordering imports |
+| New convention (e.g. drop unused `color` field) | Pure rename with no behavior change — optional one-liner OK |
+
+---
+
+## Practical recipes
+
+**New part type** → edit `components.ts`: update What if the pattern is new; changelog e.g. `Added lm358 (package dip8, custom pins)`.
+
+**New visual overlay** → edit `ComponentOverlays.tsx`: add helper + wire in `ComponentOverlays`; changelog e.g. `Added capacitor charge pulse overlay`.
+
+**New sim flag / solver path** → edit the owning `src/avr/*.ts` or `src/circuit/*.ts` file’s What (name the flag) + changelog.
+
+**New script** → create the file with a full What (how to run: `npm run …` / `node scripts/…`) and first changelog `Changelog creation`.
+
+---
+
+## README.md
+
+General-purpose only (what the project is, how to run, high-level usage/layout). **No** per-file changelogs. Brief user-facing notes still go in README when needed (`readme-updates.mdc`); implementation history stays in file headers.
+
+## Do not
+
+- Invent fake past dates for work you did not do.
+- Duplicate long changelogs into the README.
+- Skip the header on new source files.
+- Put secrets, local paths, or huge code dumps in the header.

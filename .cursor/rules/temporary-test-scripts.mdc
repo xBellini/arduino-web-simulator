@@ -1,0 +1,34 @@
+---
+description: Remove ad-hoc test/scratch scripts after feature work is done
+alwaysApply: true
+---
+
+# Temporary test scripts
+
+When validating a feature during development, ad-hoc scripts are fine — but **do not leave them in the repo**.
+
+## Allowed long-lived scripts (`scripts/`)
+
+Keep scripts that are part of the project workflow:
+
+- Fetch/setup: `fetch-spice-libraries.mjs`, `fetch-bundled-blink-hex.mjs`, `fetch-tinkercad-svg.mjs`, `export-components-svg.mjs`
+- Geometry authoring (optional): `svg-to-geometry.mjs`, `generate-*-geometry.mjs` — runtime art is `public/components/*.svg`; hitboxes live in `src/registry/componentHitbox.ts`
+- Dev tooling: `stop-dev-server.mjs`, root `Localhost_starter.bat`
+- Reference assets under `scripts/reference/`
+
+## Delete before finishing the task
+
+Remove one-off files created only to test or debug a feature, for example:
+
+- `scripts/test-*.mjs`, `scripts/scratch-*`, `scripts/debug-*`, `scripts/probe-*`, `scripts/inspect-*`, `scripts/trace-*`, `scripts/find-*`, `scripts/analyze-*`
+- Root-level throwaway `.mjs` / `.ps1` / `.html` test harnesses (keep `Localhost_starter.bat` and `backup-local.ps1`)
+- Duplicate parser/solver copies used to compare output
+- Regenerated path dumps / `_LAYERS` / `_STYLES` anywhere under `src/` (artwork belongs in SVG; hitboxes belong in `componentHitbox.ts`)
+
+Do **not** add npm `package.json` scripts for throwaway tests unless the user asks to keep them.
+
+## When wrapping up feature work
+
+1. Delete any temporary test scripts you created.
+2. Remove references from README / comments if you added any.
+3. If a check is worth keeping permanently, fold it into an existing maintained script or ask the user before adding a formal test target.

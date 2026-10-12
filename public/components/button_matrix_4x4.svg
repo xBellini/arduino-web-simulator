@@ -1,0 +1,457 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="177" height="172" viewBox="25 0 177 172" role="img" aria-labelledby="title desc">
+<title id="title">4×4 tactile switch keypad module</title>
+<desc id="desc">Black PCB with sixteen editable tactile buttons and eight recessed yellow female sockets. Top-to-bottom order C4, C3, C2, C1, R1, R2, R3, R4. Transparent background.</desc>
+<g id="pcb" inkscape:groupmode="layer" inkscape:label="Black PCB">
+<rect x="27" y="3" width="173" height="166" rx="3" fill="#333333" />
+<rect x="28" y="3" width="171" height="164.5" rx="2.5" fill="#191919" />
+<path d="M31 4H196" stroke="#424442" stroke-width="0.6" />
+</g>
+<g id="silkscreen" inkscape:groupmode="layer" inkscape:label="Yellow board markings" fill="#dedc57" font-family="Consolas,monospace">
+<text transform="translate(45 18) rotate(-90)" text-anchor="middle" font-weight="bold" font-size="5">4×4 Key</text>
+<g id="keyestudio-logo" inkscape:label="Keyestudio logo — vector recreation" transform="translate(43 130)" fill="#dedc57">
+<title>Keyestudio logo, simplified from the reference photograph</title>
+<polygon points="4.600,0.000 5.962,0.677 5.606,2.138 4.085,2.114 3.721,2.704 4.425,4.052 3.278,5.025 2.063,4.112 1.421,4.375 1.198,5.879 -0.301,5.992 -0.748,4.539 -1.421,4.375 -2.486,5.461 -3.766,4.671 -3.273,3.232 -3.721,2.704 -5.221,2.956 -5.792,1.565 -4.548,0.691 -4.600,0.000 -5.962,-0.677 -5.606,-2.138 -4.085,-2.114 -3.721,-2.704 -4.425,-4.052 -3.278,-5.025 -2.063,-4.112 -1.421,-4.375 -1.198,-5.879 0.301,-5.992 0.748,-4.539 1.421,-4.375 2.486,-5.461 3.766,-4.671 3.273,-3.232 3.721,-2.704 5.221,-2.956 5.792,-1.565 4.548,-0.691" />
+<path d="M-2.8-3.1Q0-4.1 2.8-3.1L3.2 2.3Q0 4.4-3.2 2.3Z" fill="#191919" />
+<ellipse cx="-1.6" cy="-0.7" rx="1.1" ry="1.35" />
+<ellipse cx="1.6" cy="-0.7" rx="1.1" ry="1.35" />
+<path d="M-1.3 2H1.3" fill="none" stroke="#dedc57" stroke-width="0.65" stroke-linecap="round" />
+<path d="M-2.2-3.8-3.8-6.8M2.2-3.8 3.8-6.8" fill="none" stroke="#dedc57" stroke-width="0.8" />
+<circle cx="-3.8" cy="-6.8" r="0.9" /><circle cx="3.8" cy="-6.8" r="0.9" />
+</g>
+<text transform="translate(46 152) rotate(-90)" text-anchor="middle" font-weight="bold" font-size="4.5">keyestudio</text>
+</g>
+<g id="input-header" inkscape:groupmode="layer" inkscape:label="Yellow female header"><rect x="27" y="31" width="11" height="91" rx="0.7" fill="#b6a33a" /><rect x="27.5" y="31" width="10" height="90.5" rx="0.6" fill="#e5d34d" /><g id="pin-C4" data-pin="C4" data-terminal-x="32.5" data-terminal-y="36.0"><title>C4</title><g transform="translate(32.5 36.0)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-C4" cx="32.5" cy="36.0" r="1.25" fill="none" /><text x="40" y="37.6" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">C4</text>
+</g><g id="pin-C3" data-pin="C3" data-terminal-x="32.5" data-terminal-y="47.5"><title>C3</title><g transform="translate(32.5 47.5)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-C3" cx="32.5" cy="47.5" r="1.25" fill="none" /><text x="40" y="49.1" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">C3</text>
+</g><g id="pin-C2" data-pin="C2" data-terminal-x="32.5" data-terminal-y="59.0"><title>C2</title><g transform="translate(32.5 59.0)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-C2" cx="32.5" cy="59.0" r="1.25" fill="none" /><text x="40" y="60.6" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">C2</text>
+</g><g id="pin-C1" data-pin="C1" data-terminal-x="32.5" data-terminal-y="70.5"><title>C1</title><g transform="translate(32.5 70.5)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-C1" cx="32.5" cy="70.5" r="1.25" fill="none" /><text x="40" y="72.1" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">C1</text>
+</g><g id="pin-R1" data-pin="R1" data-terminal-x="32.5" data-terminal-y="82.0"><title>R1</title><g transform="translate(32.5 82.0)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-R1" cx="32.5" cy="82.0" r="1.25" fill="none" /><text x="40" y="83.6" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">R1</text>
+</g><g id="pin-R2" data-pin="R2" data-terminal-x="32.5" data-terminal-y="93.5"><title>R2</title><g transform="translate(32.5 93.5)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-R2" cx="32.5" cy="93.5" r="1.25" fill="none" /><text x="40" y="95.1" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">R2</text>
+</g><g id="pin-R3" data-pin="R3" data-terminal-x="32.5" data-terminal-y="105.0"><title>R3</title><g transform="translate(32.5 105.0)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-R3" cx="32.5" cy="105.0" r="1.25" fill="none" /><text x="40" y="106.6" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">R3</text>
+</g><g id="pin-R4" data-pin="R4" data-terminal-x="32.5" data-terminal-y="116.5"><title>R4</title><g transform="translate(32.5 116.5)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-R4" cx="32.5" cy="116.5" r="1.25" fill="none" /><text x="40" y="118.1" fill="#dedc57" font-family="Consolas,monospace" font-size="4.5" font-weight="bold">R4</text>
+</g></g><g id="switches" inkscape:groupmode="layer" inkscape:label="Sixteen tactile switches">
+<g id="button-S1" data-row="1" data-col="1" data-switch="S1" transform="translate(59 5)">
+<title>S1 — row 1, column 1</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S1-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S1</text>
+</g>
+<g id="button-S2" data-row="1" data-col="2" data-switch="S2" transform="translate(95 5)">
+<title>S2 — row 1, column 2</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S2-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S2</text>
+</g>
+<g id="button-S3" data-row="1" data-col="3" data-switch="S3" transform="translate(131 5)">
+<title>S3 — row 1, column 3</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S3-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S3</text>
+</g>
+<g id="button-S4" data-row="1" data-col="4" data-switch="S4" transform="translate(167 5)">
+<title>S4 — row 1, column 4</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S4-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S4</text>
+</g>
+<g id="button-S5" data-row="2" data-col="1" data-switch="S5" transform="translate(59 46)">
+<title>S5 — row 2, column 1</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S5-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S5</text>
+</g>
+<g id="button-S6" data-row="2" data-col="2" data-switch="S6" transform="translate(95 46)">
+<title>S6 — row 2, column 2</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S6-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S6</text>
+</g>
+<g id="button-S7" data-row="2" data-col="3" data-switch="S7" transform="translate(131 46)">
+<title>S7 — row 2, column 3</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S7-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S7</text>
+</g>
+<g id="button-S8" data-row="2" data-col="4" data-switch="S8" transform="translate(167 46)">
+<title>S8 — row 2, column 4</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S8-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S8</text>
+</g>
+<g id="button-S9" data-row="3" data-col="1" data-switch="S9" transform="translate(59 87)">
+<title>S9 — row 3, column 1</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S9-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S9</text>
+</g>
+<g id="button-S10" data-row="3" data-col="2" data-switch="S10" transform="translate(95 87)">
+<title>S10 — row 3, column 2</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S10-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S10</text>
+</g>
+<g id="button-S11" data-row="3" data-col="3" data-switch="S11" transform="translate(131 87)">
+<title>S11 — row 3, column 3</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S11-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S11</text>
+</g>
+<g id="button-S12" data-row="3" data-col="4" data-switch="S12" transform="translate(167 87)">
+<title>S12 — row 3, column 4</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S12-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S12</text>
+</g>
+<g id="button-S13" data-row="4" data-col="1" data-switch="S13" transform="translate(59 128)">
+<title>S13 — row 4, column 1</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S13-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S13</text>
+</g>
+<g id="button-S14" data-row="4" data-col="2" data-switch="S14" transform="translate(95 128)">
+<title>S14 — row 4, column 2</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S14-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S14</text>
+</g>
+<g id="button-S15" data-row="4" data-col="3" data-switch="S15" transform="translate(131 128)">
+<title>S15 — row 4, column 3</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S15-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S15</text>
+</g>
+<g id="button-S16" data-row="4" data-col="4" data-switch="S16" transform="translate(167 128)">
+<title>S16 — row 4, column 4</title>
+<rect x="-2" y="-1" width="33" height="29" rx="1.2" fill="none" stroke="#d0cf85" stroke-width="0.7" />
+<g fill="#8c8c8c">
+<rect x="-2.5" y="3" width="5" height="5" rx="1" />
+<rect x="26.5" y="3" width="5" height="5" rx="1" />
+<rect x="-2.5" y="20" width="5" height="5" rx="1" />
+<rect x="26.5" y="20" width="5" height="5" rx="1" />
+</g>
+<rect x="0" y="0" width="29" height="27" rx="1.5" fill="#333333" />
+<path d="M3 0H26L29 3V24L26 27H3L0 24V3Z" fill="#b9b4b8" />
+<path d="M3 1H26L28 3V23L25 26H3L1 24V3Z" fill="#d7d4db" />
+<path d="M2 24V3L4 1H25" fill="none" stroke="#f0efea" stroke-width="0.9" />
+<path d="M28 4V24L26 26H4" fill="none" stroke="#8c8c8c" stroke-width="0.8" />
+<g fill="#333333" stroke="#a5a6a0" stroke-width="0.6">
+<circle cx="4.3" cy="4.1" r="2.8" /><circle cx="24.7" cy="4.1" r="2.8" />
+<circle cx="4.3" cy="22.9" r="2.8" /><circle cx="24.7" cy="22.9" r="2.8" />
+</g>
+<circle cx="14.5" cy="13.5" r="9" fill="#eeeae2" />
+<circle id="button-S16-cap" cx="14.5" cy="13.5" r="7.7" fill="#262626" />
+<path d="M7.1 13.5A7.4 7.4 0 0 1 20 8.55" fill="none" stroke="#414141" stroke-width="0.6" />
+<text x="14.5" y="36" fill="#dedc57" font-family="Consolas,monospace" font-size="7.2" text-anchor="middle">S16</text>
+</g>
+</g></svg>

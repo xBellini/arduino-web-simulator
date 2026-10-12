@@ -1,0 +1,20 @@
+{
+  "footprintId": 58320,
+  "footprintName": "P6-15",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/58320.json",
+  "svgOut": "scripts\\reference\\tinkercad-58320-diode.svg",
+  "terminals": [
+    {
+      "name": "Cathode",
+      "x": 0,
+      "y": 20,
+      "dir": 90
+    },
+    {
+      "name": "Anode",
+      "x": 0,
+      "y": -20,
+      "dir": -90
+    }
+  ]
+}

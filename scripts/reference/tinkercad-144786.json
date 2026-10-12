@@ -1,0 +1,32 @@
+{
+  "footprintId": 144786,
+  "footprintName": "TACTILE-PTH",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/144786.json",
+  "svgOut": "scripts\\reference\\tinkercad-144786.svg",
+  "terminals": [
+    {
+      "name": "Terminal 1a",
+      "x": -10,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Terminal 1b",
+      "x": -10,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Terminal 2a",
+      "x": 10,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Terminal 2b",
+      "x": 10,
+      "y": -15,
+      "dir": -90
+    }
+  ]
+}

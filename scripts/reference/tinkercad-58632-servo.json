@@ -1,0 +1,26 @@
+{
+  "footprintId": 58632,
+  "footprintName": "servo header",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/58632.json",
+  "svgOut": "scripts\\reference\\tinkercad-58632-servo.svg",
+  "terminals": [
+    {
+      "name": "Ground",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Power",
+      "x": 0,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Signal",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

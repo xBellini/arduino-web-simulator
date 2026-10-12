@@ -1,0 +1,56 @@
+{
+  "footprintId": null,
+  "footprintName": "DIP8",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_DIP8_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-dip8.svg",
+  "terminals": [
+    {
+      "name": "Ground",
+      "x": -15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Trigger",
+      "x": -5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Out",
+      "x": 5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Reset",
+      "x": 15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Control Voltage",
+      "x": 15,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Threshold",
+      "x": 5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Discharge",
+      "x": -5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Power",
+      "x": -15,
+      "y": -15,
+      "dir": -90
+    }
+  ]
+}

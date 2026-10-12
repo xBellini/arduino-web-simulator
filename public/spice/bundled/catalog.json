@@ -1,0 +1,86 @@
+{
+  "parts": {
+    "SN74HC08": {
+      "id": "SN74HC08",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC08.cir"
+    },
+    "SN74HC10": {
+      "id": "SN74HC10",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC10.cir"
+    },
+    "SN74HC11": {
+      "id": "SN74HC11",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC11.cir"
+    },
+    "SN74HC27": {
+      "id": "SN74HC27",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC27.cir"
+    },
+    "SN74HC32": {
+      "id": "SN74HC32",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC32.cir"
+    },
+    "SN74HC86": {
+      "id": "SN74HC86",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC86.cir"
+    },
+    "SN74HC00": {
+      "id": "SN74HC00",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC00.cir"
+    },
+    "SN74HC02": {
+      "id": "SN74HC02",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC02.cir"
+    },
+    "SN74HC03": {
+      "id": "SN74HC03",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC03.cir"
+    },
+    "SN74HC04": {
+      "id": "SN74HC04",
+      "category": "digital",
+      "kind": "subckt",
+      "deviceClass": "X",
+      "lib": "bundled/Texas Instruments/SN74HC04.cir"
+    }
+  },
+  "componentDefaults": {
+    "74hc00": "SN74HC00",
+    "74hc02": "SN74HC02",
+    "74hc03": "SN74HC03",
+    "74hc04": "SN74HC04",
+    "74hc08": "SN74HC08",
+    "74hc10": "SN74HC10",
+    "74hc11": "SN74HC11",
+    "74hc27": "SN74HC27",
+    "74hc32": "SN74HC32",
+    "74hc86": "SN74HC86"
+  }
+}

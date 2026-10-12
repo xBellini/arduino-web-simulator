@@ -1,0 +1,490 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="199" height="134" viewBox="25 0 199 134" role="img" aria-labelledby="title desc">
+  <title id="title">MAX7219 8×8 LED matrix module</title>
+  <desc id="desc">MAX7219 8x8 LED matrix with five recessed black female sockets. Top-to-bottom order VCC, GND, DIN, CS, CLK. Transparent background.</desc>
+  <g id="pcb" inkscape:groupmode="layer" inkscape:label="PCB">
+    <path fill="#4ea36a" fill-rule="evenodd" d="M32 6H217Q221 6 221 10V124Q221 128 217 128H32Q27 128 27 123V11Q27 6 32 6Z M42 14A6 6 0 1 0 42 26A6 6 0 1 0 42 14Z M42 108A6 6 0 1 0 42 120A6 6 0 1 0 42 108Z" />
+    <path fill="#27814d" fill-rule="evenodd" d="M33 8H216Q219 8 219 11V123Q219 126 216 126H33Q29 126 29 122V12Q29 8 33 8Z M42 14A6 6 0 1 0 42 26A6 6 0 1 0 42 14Z M42 108A6 6 0 1 0 42 120A6 6 0 1 0 42 108Z" />
+    <g fill="none" stroke="#73ac79" stroke-width="1.1" stroke-linejoin="round">
+      <path d="M31 52V13L34 10H61 M33 62V15L36 12H61 M35 72V34L51 28V16H61 M31 82V121L34 124H61 M33 92V119L36 122H61" />
+      <path d="M39 92V97L55 106H61 M34 52H40 M35 62H40 M38 72H40 M32 82H40 M35 92H40" />
+    </g>
+    <g fill="none" stroke="#a5be8a" stroke-width="1.2">
+      <circle cx="42" cy="20" r="7.1" /><circle cx="42" cy="114" r="7.1" />
+    </g>
+  </g>
+<g id="driver-traces" fill="none" stroke="#77ac78" stroke-width="0.9">
+<path d="M85 13.0H91L96 16.0H103" />
+<path d="M85 22.8H91L96 25.8H103" />
+<path d="M85 32.6H91L96 35.6H103" />
+<path d="M85 42.400000000000006H91L96 45.400000000000006H103" />
+<path d="M85 52.2H91L96 55.2H103" />
+<path d="M85 62.0H91L96 65.0H103" />
+<path d="M85 71.80000000000001H91L96 74.80000000000001H103" />
+<path d="M85 81.60000000000001H91L96 84.60000000000001H103" />
+<path d="M85 91.4H91L96 94.4H103" />
+<path d="M85 101.2H91L96 104.2H103" />
+<path d="M85 111.0H91L96 114.0H103" />
+<path d="M85 120.80000000000001H91L96 123.80000000000001H103" />
+</g><g id="max7219" inkscape:groupmode="layer" inkscape:label="MAX7219 driver">
+<g id="ic-lead-left-1"><rect x="55" y="10.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="10.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="10.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-1"><rect x="83" y="10.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="10.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="10.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-2"><rect x="55" y="19.8" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="20.5" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="20.5" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-2"><rect x="83" y="19.8" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="20.5" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="20.5" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-3"><rect x="55" y="29.6" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="30.3" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="30.3" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-3"><rect x="83" y="29.6" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="30.3" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="30.3" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-4"><rect x="55" y="39.400000000000006" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="40.10000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="40.10000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-4"><rect x="83" y="39.400000000000006" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="40.10000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="40.10000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-5"><rect x="55" y="49.2" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="49.900000000000006" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="49.900000000000006" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-5"><rect x="83" y="49.2" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="49.900000000000006" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="49.900000000000006" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-6"><rect x="55" y="59.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="59.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="59.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-6"><rect x="83" y="59.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="59.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="59.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-7"><rect x="55" y="68.80000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="69.50000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="69.50000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-7"><rect x="83" y="68.80000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="69.50000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="69.50000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-8"><rect x="55" y="78.60000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="79.30000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="79.30000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-8"><rect x="83" y="78.60000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="79.30000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="79.30000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-9"><rect x="55" y="88.4" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="89.10000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="89.10000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-9"><rect x="83" y="88.4" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="89.10000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="89.10000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-10"><rect x="55" y="98.2" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="98.9" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="98.9" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-10"><rect x="83" y="98.2" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="98.9" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="98.9" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-11"><rect x="55" y="108.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="108.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="108.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-11"><rect x="83" y="108.0" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="108.7" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="108.7" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-left-12"><rect x="55" y="117.80000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="56" y="118.50000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="56" y="118.50000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<g id="ic-lead-right-12"><rect x="83" y="117.80000000000001" width="7" height="6" rx="2.6" fill="#97b283" /><rect x="84" y="118.50000000000001" width="6" height="4.6" rx="1" fill="#b9b4ac" /><rect x="84" y="118.50000000000001" width="6" height="1.1" rx="0.4" fill="#e6e6e6" /></g>
+<rect x="60" y="6" width="26" height="122" rx="1.2" fill="#191919" />
+<path d="M61 7H69A4 4 0 0 0 77 7H85V126H61Z" fill="#333333" />
+<path d="M61 7V126H85" fill="none" stroke="#505355" stroke-width="0.7" />
+<path d="M69 7A4 4 0 0 0 77 7" fill="none" stroke="#111111" stroke-width="1" />
+<circle cx="73" cy="23" r="3.5" fill="#2b2b2b" stroke="#414141" stroke-width="0.5" />
+<circle cx="73" cy="111" r="3.5" fill="#2b2b2b" stroke="#414141" stroke-width="0.5" />
+<circle cx="64" cy="12" r="1" fill="#8c8c8c" />
+<text x="0" y="0" transform="translate(72 67) rotate(90)" fill="#a8aaa3" font-family="Consolas,monospace" font-size="4.5" text-anchor="middle">MAX7219</text>
+<text x="0" y="0" transform="translate(66 67) rotate(90)" fill="#777c76" font-family="Consolas,monospace" font-size="2.7" text-anchor="middle">CNG</text>
+</g>
+<g id="input-header" inkscape:groupmode="layer" inkscape:label="Black female header"><rect x="27" y="47" width="10" height="50" rx="0.7" fill="#333333" /><g id="pin-VCC" data-pin="VCC" data-terminal-x="32" data-terminal-y="52"><title>VCC</title><g transform="translate(32 52)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-VCC" cx="32" cy="52" r="1.25" fill="none" /><text x="45" y="53.6" fill="#f5f9fc" font-family="Consolas,monospace" font-weight="bold" font-size="4.6" text-anchor="middle">VCC</text></g><g id="pin-GND" data-pin="GND" data-terminal-x="32" data-terminal-y="62"><title>GND</title><g transform="translate(32 62)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-GND" cx="32" cy="62" r="1.25" fill="none" /><text x="45" y="63.6" fill="#f5f9fc" font-family="Consolas,monospace" font-weight="bold" font-size="4.6" text-anchor="middle">GND</text></g><g id="pin-DIN" data-pin="DIN" data-terminal-x="32" data-terminal-y="72"><title>DIN</title><g transform="translate(32 72)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-DIN" cx="32" cy="72" r="1.25" fill="none" /><text x="45" y="73.6" fill="#f5f9fc" font-family="Consolas,monospace" font-weight="bold" font-size="4.6" text-anchor="middle">DIN</text></g><g id="pin-CS" data-pin="CS" data-terminal-x="32" data-terminal-y="82"><title>CS</title><g transform="translate(32 82)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-CS" cx="32" cy="82" r="1.25" fill="none" /><text x="45" y="83.6" fill="#f5f9fc" font-family="Consolas,monospace" font-weight="bold" font-size="4.6" text-anchor="middle">CS</text></g><g id="pin-CLK" data-pin="CLK" data-terminal-x="32" data-terminal-y="92"><title>CLK</title><g transform="translate(32 92)">
+      <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </g>
+    <circle id="terminal-CLK" cx="32" cy="92" r="1.25" fill="none" /><text x="45" y="93.6" fill="#f5f9fc" font-family="Consolas,monospace" font-weight="bold" font-size="4.6" text-anchor="middle">CLK</text></g></g><g id="matrix-housing" inkscape:groupmode="layer" inkscape:label="Display housing">
+<rect x="95" y="2" width="127" height="130" rx="0.7" fill="#d8dcd4" />
+<rect x="97" y="3" width="125" height="128" fill="#b2b8af" />
+<rect x="97" y="2" width="125" height="125" rx="0.5" fill="#191919" />
+<path d="M97.5 126.5V2.5H221.5" fill="none" stroke="#3c4042" stroke-width="0.8" />
+</g>
+<g id="led-matrix" inkscape:groupmode="layer" inkscape:label="64 LED lenses">
+<g id="led-r1-c1" data-row="0" data-col="0">
+<circle cx="104.90" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c1-lens" cx="104.90" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 9.90A4.25 4.25 0 0 1 106.40 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 12.90V10.70H102.40V8.70H107.40V10.70H106.10V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c2" data-row="0" data-col="1">
+<circle cx="120.50" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c2-lens" cx="120.50" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 9.90A4.25 4.25 0 0 1 122.00 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 12.90V10.70H118.00V8.70H123.00V10.70H121.70V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c3" data-row="0" data-col="2">
+<circle cx="136.10" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c3-lens" cx="136.10" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 9.90A4.25 4.25 0 0 1 137.60 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 12.90V10.70H133.60V8.70H138.60V10.70H137.30V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c4" data-row="0" data-col="3">
+<circle cx="151.70" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c4-lens" cx="151.70" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 9.90A4.25 4.25 0 0 1 153.20 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 12.90V10.70H149.20V8.70H154.20V10.70H152.90V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c5" data-row="0" data-col="4">
+<circle cx="167.30" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c5-lens" cx="167.30" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 9.90A4.25 4.25 0 0 1 168.80 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 12.90V10.70H164.80V8.70H169.80V10.70H168.50V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c6" data-row="0" data-col="5">
+<circle cx="182.90" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c6-lens" cx="182.90" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 9.90A4.25 4.25 0 0 1 184.40 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 12.90V10.70H180.40V8.70H185.40V10.70H184.10V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c7" data-row="0" data-col="6">
+<circle cx="198.50" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c7-lens" cx="198.50" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 9.90A4.25 4.25 0 0 1 200.00 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 12.90V10.70H196.00V8.70H201.00V10.70H199.70V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r1-c8" data-row="0" data-col="7">
+<circle cx="214.10" cy="9.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r1-c8-lens" cx="214.10" cy="9.90" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 9.90A4.25 4.25 0 0 1 215.60 5.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 12.90V10.70H211.60V8.70H216.60V10.70H215.30V12.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c1" data-row="1" data-col="0">
+<circle cx="104.90" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c1-lens" cx="104.90" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 25.50A4.25 4.25 0 0 1 106.40 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 28.50V26.30H102.40V24.30H107.40V26.30H106.10V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c2" data-row="1" data-col="1">
+<circle cx="120.50" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c2-lens" cx="120.50" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 25.50A4.25 4.25 0 0 1 122.00 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 28.50V26.30H118.00V24.30H123.00V26.30H121.70V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c3" data-row="1" data-col="2">
+<circle cx="136.10" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c3-lens" cx="136.10" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 25.50A4.25 4.25 0 0 1 137.60 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 28.50V26.30H133.60V24.30H138.60V26.30H137.30V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c4" data-row="1" data-col="3">
+<circle cx="151.70" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c4-lens" cx="151.70" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 25.50A4.25 4.25 0 0 1 153.20 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 28.50V26.30H149.20V24.30H154.20V26.30H152.90V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c5" data-row="1" data-col="4">
+<circle cx="167.30" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c5-lens" cx="167.30" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 25.50A4.25 4.25 0 0 1 168.80 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 28.50V26.30H164.80V24.30H169.80V26.30H168.50V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c6" data-row="1" data-col="5">
+<circle cx="182.90" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c6-lens" cx="182.90" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 25.50A4.25 4.25 0 0 1 184.40 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 28.50V26.30H180.40V24.30H185.40V26.30H184.10V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c7" data-row="1" data-col="6">
+<circle cx="198.50" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c7-lens" cx="198.50" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 25.50A4.25 4.25 0 0 1 200.00 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 28.50V26.30H196.00V24.30H201.00V26.30H199.70V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r2-c8" data-row="1" data-col="7">
+<circle cx="214.10" cy="25.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r2-c8-lens" cx="214.10" cy="25.50" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 25.50A4.25 4.25 0 0 1 215.60 21.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 28.50V26.30H211.60V24.30H216.60V26.30H215.30V28.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c1" data-row="2" data-col="0">
+<circle cx="104.90" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c1-lens" cx="104.90" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 41.10A4.25 4.25 0 0 1 106.40 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 44.10V41.90H102.40V39.90H107.40V41.90H106.10V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c2" data-row="2" data-col="1">
+<circle cx="120.50" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c2-lens" cx="120.50" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 41.10A4.25 4.25 0 0 1 122.00 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 44.10V41.90H118.00V39.90H123.00V41.90H121.70V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c3" data-row="2" data-col="2">
+<circle cx="136.10" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c3-lens" cx="136.10" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 41.10A4.25 4.25 0 0 1 137.60 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 44.10V41.90H133.60V39.90H138.60V41.90H137.30V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c4" data-row="2" data-col="3">
+<circle cx="151.70" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c4-lens" cx="151.70" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 41.10A4.25 4.25 0 0 1 153.20 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 44.10V41.90H149.20V39.90H154.20V41.90H152.90V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c5" data-row="2" data-col="4">
+<circle cx="167.30" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c5-lens" cx="167.30" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 41.10A4.25 4.25 0 0 1 168.80 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 44.10V41.90H164.80V39.90H169.80V41.90H168.50V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c6" data-row="2" data-col="5">
+<circle cx="182.90" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c6-lens" cx="182.90" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 41.10A4.25 4.25 0 0 1 184.40 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 44.10V41.90H180.40V39.90H185.40V41.90H184.10V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c7" data-row="2" data-col="6">
+<circle cx="198.50" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c7-lens" cx="198.50" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 41.10A4.25 4.25 0 0 1 200.00 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 44.10V41.90H196.00V39.90H201.00V41.90H199.70V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r3-c8" data-row="2" data-col="7">
+<circle cx="214.10" cy="41.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r3-c8-lens" cx="214.10" cy="41.10" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 41.10A4.25 4.25 0 0 1 215.60 37.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 44.10V41.90H211.60V39.90H216.60V41.90H215.30V44.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c1" data-row="3" data-col="0">
+<circle cx="104.90" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c1-lens" cx="104.90" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 56.70A4.25 4.25 0 0 1 106.40 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 59.70V57.50H102.40V55.50H107.40V57.50H106.10V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c2" data-row="3" data-col="1">
+<circle cx="120.50" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c2-lens" cx="120.50" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 56.70A4.25 4.25 0 0 1 122.00 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 59.70V57.50H118.00V55.50H123.00V57.50H121.70V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c3" data-row="3" data-col="2">
+<circle cx="136.10" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c3-lens" cx="136.10" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 56.70A4.25 4.25 0 0 1 137.60 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 59.70V57.50H133.60V55.50H138.60V57.50H137.30V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c4" data-row="3" data-col="3">
+<circle cx="151.70" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c4-lens" cx="151.70" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 56.70A4.25 4.25 0 0 1 153.20 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 59.70V57.50H149.20V55.50H154.20V57.50H152.90V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c5" data-row="3" data-col="4">
+<circle cx="167.30" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c5-lens" cx="167.30" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 56.70A4.25 4.25 0 0 1 168.80 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 59.70V57.50H164.80V55.50H169.80V57.50H168.50V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c6" data-row="3" data-col="5">
+<circle cx="182.90" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c6-lens" cx="182.90" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 56.70A4.25 4.25 0 0 1 184.40 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 59.70V57.50H180.40V55.50H185.40V57.50H184.10V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c7" data-row="3" data-col="6">
+<circle cx="198.50" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c7-lens" cx="198.50" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 56.70A4.25 4.25 0 0 1 200.00 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 59.70V57.50H196.00V55.50H201.00V57.50H199.70V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r4-c8" data-row="3" data-col="7">
+<circle cx="214.10" cy="56.70" r="6.05" fill="#a7aa96" />
+<circle id="led-r4-c8-lens" cx="214.10" cy="56.70" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 56.70A4.25 4.25 0 0 1 215.60 52.73" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 59.70V57.50H211.60V55.50H216.60V57.50H215.30V59.70Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c1" data-row="4" data-col="0">
+<circle cx="104.90" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c1-lens" cx="104.90" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 72.30A4.25 4.25 0 0 1 106.40 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 75.30V73.10H102.40V71.10H107.40V73.10H106.10V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c2" data-row="4" data-col="1">
+<circle cx="120.50" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c2-lens" cx="120.50" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 72.30A4.25 4.25 0 0 1 122.00 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 75.30V73.10H118.00V71.10H123.00V73.10H121.70V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c3" data-row="4" data-col="2">
+<circle cx="136.10" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c3-lens" cx="136.10" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 72.30A4.25 4.25 0 0 1 137.60 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 75.30V73.10H133.60V71.10H138.60V73.10H137.30V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c4" data-row="4" data-col="3">
+<circle cx="151.70" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c4-lens" cx="151.70" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 72.30A4.25 4.25 0 0 1 153.20 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 75.30V73.10H149.20V71.10H154.20V73.10H152.90V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c5" data-row="4" data-col="4">
+<circle cx="167.30" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c5-lens" cx="167.30" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 72.30A4.25 4.25 0 0 1 168.80 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 75.30V73.10H164.80V71.10H169.80V73.10H168.50V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c6" data-row="4" data-col="5">
+<circle cx="182.90" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c6-lens" cx="182.90" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 72.30A4.25 4.25 0 0 1 184.40 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 75.30V73.10H180.40V71.10H185.40V73.10H184.10V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c7" data-row="4" data-col="6">
+<circle cx="198.50" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c7-lens" cx="198.50" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 72.30A4.25 4.25 0 0 1 200.00 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 75.30V73.10H196.00V71.10H201.00V73.10H199.70V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r5-c8" data-row="4" data-col="7">
+<circle cx="214.10" cy="72.30" r="6.05" fill="#a7aa96" />
+<circle id="led-r5-c8-lens" cx="214.10" cy="72.30" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 72.30A4.25 4.25 0 0 1 215.60 68.33" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 75.30V73.10H211.60V71.10H216.60V73.10H215.30V75.30Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c1" data-row="5" data-col="0">
+<circle cx="104.90" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c1-lens" cx="104.90" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 87.90A4.25 4.25 0 0 1 106.40 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 90.90V88.70H102.40V86.70H107.40V88.70H106.10V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c2" data-row="5" data-col="1">
+<circle cx="120.50" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c2-lens" cx="120.50" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 87.90A4.25 4.25 0 0 1 122.00 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 90.90V88.70H118.00V86.70H123.00V88.70H121.70V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c3" data-row="5" data-col="2">
+<circle cx="136.10" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c3-lens" cx="136.10" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 87.90A4.25 4.25 0 0 1 137.60 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 90.90V88.70H133.60V86.70H138.60V88.70H137.30V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c4" data-row="5" data-col="3">
+<circle cx="151.70" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c4-lens" cx="151.70" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 87.90A4.25 4.25 0 0 1 153.20 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 90.90V88.70H149.20V86.70H154.20V88.70H152.90V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c5" data-row="5" data-col="4">
+<circle cx="167.30" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c5-lens" cx="167.30" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 87.90A4.25 4.25 0 0 1 168.80 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 90.90V88.70H164.80V86.70H169.80V88.70H168.50V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c6" data-row="5" data-col="5">
+<circle cx="182.90" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c6-lens" cx="182.90" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 87.90A4.25 4.25 0 0 1 184.40 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 90.90V88.70H180.40V86.70H185.40V88.70H184.10V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c7" data-row="5" data-col="6">
+<circle cx="198.50" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c7-lens" cx="198.50" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 87.90A4.25 4.25 0 0 1 200.00 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 90.90V88.70H196.00V86.70H201.00V88.70H199.70V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r6-c8" data-row="5" data-col="7">
+<circle cx="214.10" cy="87.90" r="6.05" fill="#a7aa96" />
+<circle id="led-r6-c8-lens" cx="214.10" cy="87.90" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 87.90A4.25 4.25 0 0 1 215.60 83.93" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 90.90V88.70H211.60V86.70H216.60V88.70H215.30V90.90Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c1" data-row="6" data-col="0">
+<circle cx="104.90" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c1-lens" cx="104.90" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 103.50A4.25 4.25 0 0 1 106.40 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 106.50V104.30H102.40V102.30H107.40V104.30H106.10V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c2" data-row="6" data-col="1">
+<circle cx="120.50" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c2-lens" cx="120.50" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 103.50A4.25 4.25 0 0 1 122.00 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 106.50V104.30H118.00V102.30H123.00V104.30H121.70V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c3" data-row="6" data-col="2">
+<circle cx="136.10" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c3-lens" cx="136.10" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 103.50A4.25 4.25 0 0 1 137.60 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 106.50V104.30H133.60V102.30H138.60V104.30H137.30V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c4" data-row="6" data-col="3">
+<circle cx="151.70" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c4-lens" cx="151.70" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 103.50A4.25 4.25 0 0 1 153.20 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 106.50V104.30H149.20V102.30H154.20V104.30H152.90V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c5" data-row="6" data-col="4">
+<circle cx="167.30" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c5-lens" cx="167.30" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 103.50A4.25 4.25 0 0 1 168.80 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 106.50V104.30H164.80V102.30H169.80V104.30H168.50V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c6" data-row="6" data-col="5">
+<circle cx="182.90" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c6-lens" cx="182.90" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 103.50A4.25 4.25 0 0 1 184.40 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 106.50V104.30H180.40V102.30H185.40V104.30H184.10V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c7" data-row="6" data-col="6">
+<circle cx="198.50" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c7-lens" cx="198.50" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 103.50A4.25 4.25 0 0 1 200.00 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 106.50V104.30H196.00V102.30H201.00V104.30H199.70V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r7-c8" data-row="6" data-col="7">
+<circle cx="214.10" cy="103.50" r="6.05" fill="#a7aa96" />
+<circle id="led-r7-c8-lens" cx="214.10" cy="103.50" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 103.50A4.25 4.25 0 0 1 215.60 99.53" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 106.50V104.30H211.60V102.30H216.60V104.30H215.30V106.50Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c1" data-row="7" data-col="0">
+<circle cx="104.90" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c1-lens" cx="104.90" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M100.65 119.10A4.25 4.25 0 0 1 106.40 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M103.70 122.10V119.90H102.40V117.90H107.40V119.90H106.10V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c2" data-row="7" data-col="1">
+<circle cx="120.50" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c2-lens" cx="120.50" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M116.25 119.10A4.25 4.25 0 0 1 122.00 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M119.30 122.10V119.90H118.00V117.90H123.00V119.90H121.70V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c3" data-row="7" data-col="2">
+<circle cx="136.10" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c3-lens" cx="136.10" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M131.85 119.10A4.25 4.25 0 0 1 137.60 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M134.90 122.10V119.90H133.60V117.90H138.60V119.90H137.30V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c4" data-row="7" data-col="3">
+<circle cx="151.70" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c4-lens" cx="151.70" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M147.45 119.10A4.25 4.25 0 0 1 153.20 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M150.50 122.10V119.90H149.20V117.90H154.20V119.90H152.90V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c5" data-row="7" data-col="4">
+<circle cx="167.30" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c5-lens" cx="167.30" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M163.05 119.10A4.25 4.25 0 0 1 168.80 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M166.10 122.10V119.90H164.80V117.90H169.80V119.90H168.50V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c6" data-row="7" data-col="5">
+<circle cx="182.90" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c6-lens" cx="182.90" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M178.65 119.10A4.25 4.25 0 0 1 184.40 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M181.70 122.10V119.90H180.40V117.90H185.40V119.90H184.10V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c7" data-row="7" data-col="6">
+<circle cx="198.50" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c7-lens" cx="198.50" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M194.25 119.10A4.25 4.25 0 0 1 200.00 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M197.30 122.10V119.90H196.00V117.90H201.00V119.90H199.70V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+<g id="led-r8-c8" data-row="7" data-col="7">
+<circle cx="214.10" cy="119.10" r="6.05" fill="#a7aa96" />
+<circle id="led-r8-c8-lens" cx="214.10" cy="119.10" r="5.55" fill="#d9dbcb" />
+<path d="M209.85 119.10A4.25 4.25 0 0 1 215.60 115.13" fill="none" stroke="#f3f1e4" stroke-width="0.85" stroke-linecap="round" opacity="0.65" />
+<path d="M212.90 122.10V119.90H211.60V117.90H216.60V119.90H215.30V122.10Z" fill="#bcc3b1" opacity="0.38" />
+</g>
+</g></svg>

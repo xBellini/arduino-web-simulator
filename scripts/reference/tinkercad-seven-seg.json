@@ -1,0 +1,68 @@
+{
+  "footprintId": null,
+  "footprintName": "5011",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_7SegmentDisplay_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-seven-seg.svg",
+  "terminals": [
+    {
+      "name": "G",
+      "x": -20,
+      "y": -30,
+      "dir": -90
+    },
+    {
+      "name": "F",
+      "x": -10,
+      "y": -30,
+      "dir": -90
+    },
+    {
+      "name": "Common",
+      "x": 0,
+      "y": -30,
+      "dir": -90
+    },
+    {
+      "name": "A",
+      "x": 10,
+      "y": -30,
+      "dir": -90
+    },
+    {
+      "name": "B",
+      "x": 20,
+      "y": -30,
+      "dir": -90
+    },
+    {
+      "name": "E",
+      "x": -20,
+      "y": 30,
+      "dir": 90
+    },
+    {
+      "name": "D",
+      "x": -10,
+      "y": 30,
+      "dir": 90
+    },
+    {
+      "name": "Common",
+      "x": 0,
+      "y": 30,
+      "dir": 90
+    },
+    {
+      "name": "C",
+      "x": 10,
+      "y": 30,
+      "dir": 90
+    },
+    {
+      "name": "DP",
+      "x": 20,
+      "y": 30,
+      "dir": 90
+    }
+  ]
+}

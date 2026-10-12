@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" viewBox="-1000 -1000.1547 380 204.8" version="1.1" id="svg113" sodipodi:docname="lcd_20x4.svg" width="380" height="204.8" inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)">
+  <defs id="defs113" />
+  <path fill="#4ea36a" d="M-998 -1000.1547H-622Q-620 -1000.1547-620 -998.1547V-797.3547Q-620 -795.3547-622 -795.3547H-998Q-1000 -795.3547-1000 -797.3547V-998.1547Q-1000 -1000.1547-998 -1000.1547ZM-996 -991.25468a5 5 0 1 0 10 0a5 5 0 1 0 -10 0ZM-996 -804.25468a5 5 0 1 0 10 0a5 5 0 1 0 -10 0ZM-634 -991.25468a5 5 0 1 0 10 0a5 5 0 1 0 -10 0ZM-634 -804.25468a5 5 0 1 0 10 0a5 5 0 1 0 -10 0ZM-974.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-964.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-954.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-944.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-934.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-924.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-914.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-904.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-894.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-884.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-874.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-864.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-854.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-844.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-834.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0ZM-824.5 -994.6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" id="path1" fill-rule="evenodd" />
+  <g class="throughholeplate" transform="translate(-972.5,-994.6)" id="g1">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle1" />
+  </g>
+  <g class="throughholeplate" transform="translate(-962.5,-994.6)" id="g2">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle2" />
+  </g>
+  <g class="throughholeplate" transform="translate(-952.5,-994.6)" id="g3">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle3" />
+  </g>
+  <g class="throughholeplate" transform="translate(-942.5,-994.6)" id="g4">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle4" />
+  </g>
+  <g class="throughholeplate" transform="translate(-932.5,-994.6)" id="g5">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle5" />
+  </g>
+  <g class="throughholeplate" transform="translate(-922.5,-994.6)" id="g6">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle6" />
+  </g>
+  <g class="throughholeplate" transform="translate(-912.5,-994.6)" id="g7">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle7" />
+  </g>
+  <g class="throughholeplate" transform="translate(-902.5,-994.6)" id="g8">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle8" />
+  </g>
+  <g class="throughholeplate" transform="translate(-892.5,-994.6)" id="g9">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle9" />
+  </g>
+  <g class="throughholeplate" transform="translate(-882.5,-994.6)" id="g10">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle10" />
+  </g>
+  <g class="throughholeplate" transform="translate(-872.5,-994.6)" id="g11">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle11" />
+  </g>
+  <g class="throughholeplate" transform="translate(-862.5,-994.6)" id="g12">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle12" />
+  </g>
+  <g class="throughholeplate" transform="translate(-852.5,-994.6)" id="g13">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle13" />
+  </g>
+  <g class="throughholeplate" transform="translate(-842.5,-994.6)" id="g14">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle14" />
+  </g>
+  <g class="throughholeplate" transform="translate(-832.5,-994.6)" id="g15">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle15" />
+  </g>
+  <g class="throughholeplate" transform="translate(-822.5,-994.6)" id="g16">
+    <circle class="highlight" fill="none" style="stroke:#d1c690" stroke-width="1.5" cx="0" cy="0" r="2.25" id="circle16" />
+  </g>
+  <g class="cgfx__matrixLCD cgfx__eg-matrix-lcd" id="g23" transform="translate(-810,-897.6)" data-columns="20" data-rows="4">
+    <rect class="cgfx__orientation-north" display="inline" width="345.31" height="162.20999899999998" x="-172.655" y="-78.10499999999999" style="fill:#000000;fill-opacity:0.3" rx="2" ry="2" id="rect16" />
+    <rect class="cgfx__orientation-east" width="345.31" height="162.20999899999998" x="-169.655" y="-81.10499999999999" style="fill:#000000;fill-opacity:0.3" rx="2" ry="2" id="rect17" />
+    <rect class="cgfx__orientation-south" width="345.31" height="162.20999899999998" x="-172.655" y="-84.10499999999999" style="fill:#000000;fill-opacity:0.3" rx="2" ry="2" id="rect18" />
+    <rect class="cgfx__orientation-west" width="345.31" height="162.20999899999998" x="-175.655" y="-81.10499999999999" style="fill:#000000;fill-opacity:0.3" rx="2" ry="2" id="rect19" />
+    <rect width="345.31" height="162.20999899999998" x="-172.655" y="-81.10499999999999" style="fill:#333333" rx="2" ry="2" id="rect20" />
+    <rect width="325.0" height="126.0" x="-162.5" y="-63.0" fill="#1a2640" rx="2" ry="2" id="rect21" />
+    <rect class="cgfx__backlight" width="325.0" height="126.0" x="-162.5" y="-63.0" fill="#426abd" fill-opacity="0.8" rx="2" ry="2" id="rect22" />
+    <g class="cgfx__dots" id="g22" />
+  </g>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.49394px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#b3b3b3;stroke-width:0.374495" x="988.13098" y="-813.14154" id="text116" transform="rotate(-90.464747)"><tspan sodipodi:role="line" id="tspan116" x="988.13098" y="-813.14154" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.49394px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;stroke-width:0.374495">LED-</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.51914px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.376595" x="983.00879" y="-829.53711" id="text117" transform="rotate(-90.108582)"><tspan sodipodi:role="line" id="tspan117" x="983.00879" y="-829.53711" style="stroke-width:0.376595">LED+</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.17698px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.431415" x="985.89008" y="-837.04071" id="text118" transform="rotate(-90.214678)"><tspan sodipodi:role="line" id="tspan118" x="985.89008" y="-837.04071" style="stroke-width:0.431415">DB7</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.3036px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.441966" x="988.79816" y="-843.47418" id="text119" transform="rotate(-90.421794)"><tspan sodipodi:role="line" id="tspan119" x="988.79816" y="-843.47418" style="stroke-width:0.441966">DB6</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.34383px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.44532" x="982.2381" y="-861.26776" id="text120" transform="rotate(-89.981568)"><tspan sodipodi:role="line" id="tspan120" x="982.2381" y="-861.26776" style="stroke-width:0.44532">DB5</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.27433px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.43953" x="1006.4656" y="-851.11505" id="text121" transform="matrix(0.00369565,-0.97330878,1.0274099,0.00350104,0,0)"><tspan sodipodi:role="line" id="tspan121" x="1006.4656" y="-851.11505" style="stroke-width:0.43953">DB4</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.41115px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.45093" x="984.11713" y="-878.78528" id="text122" transform="rotate(-90.106891)"><tspan sodipodi:role="line" id="tspan122" x="984.11713" y="-878.78528" style="stroke-width:0.45093">DB3</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.20364px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.433636" x="989.14001" y="-883.42407" id="text123" transform="rotate(-90.421794)"><tspan sodipodi:role="line" id="tspan123" x="989.14001" y="-883.42407" style="stroke-width:0.433636">DB2</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.52935px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.460779" x="989.15997" y="-893.26508" id="text124" transform="rotate(-90.421794)"><tspan sodipodi:role="line" id="tspan124" x="989.15997" y="-893.26508" style="stroke-width:0.460779">DB1</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.30512px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.442094" x="977.49573" y="-916.28613" id="text125" transform="rotate(-89.685567)"><tspan sodipodi:role="line" id="tspan125" x="977.49573" y="-916.28613" style="stroke-width:0.442094">DB0</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.88499px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.490416" x="984.3739" y="-924.25061" id="text126" transform="rotate(-89.786426)"><tspan sodipodi:role="line" id="tspan126" x="984.3739" y="-924.25061" style="stroke-width:0.490416">E</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.0863px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.507192" x="978.07312" y="-936.86786" id="text127" transform="rotate(-89.634147)"><tspan sodipodi:role="line" id="tspan127" x="978.07312" y="-936.86786" style="stroke-width:0.507192">RW</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.07926px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.506605" x="986.87067" y="-937.90472" id="text128" transform="rotate(-90.164206)"><tspan sodipodi:role="line" id="tspan128" x="986.87067" y="-937.90472" style="stroke-width:0.506605">RS</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.07945px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.423287" x="986.98895" y="-946.62885" id="text129" transform="rotate(-90.247636)"><tspan sodipodi:role="line" id="tspan129" x="986.98895" y="-946.62885" style="stroke-width:0.423287">VEE</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.23268px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.436057" x="980.26721" y="-963.49573" id="text130" transform="rotate(-89.850891)"><tspan sodipodi:role="line" id="tspan130" x="980.26721" y="-963.49573" style="stroke-width:0.436057">VCC</tspan></text>
+  <text xml:space="preserve" style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:5.28246px;font-family:Consolas;-inkscape-font-specification:'Consolas, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;fill:#ffffff;stroke-width:0.440205" x="980.12018" y="-973.54742" id="text131" transform="rotate(-89.850891)"><tspan sodipodi:role="line" id="tspan131" x="980.12018" y="-973.54742" style="stroke-width:0.440205">VSS</tspan></text>
+<title>20×4 LCD module</title><desc>Based on the supplied 16×2 artwork. Viewing area expanded from 260×63 to 325×126, retaining the original bezel thickness, pin spacing, colours and mounting-hole sizes.</desc></svg>

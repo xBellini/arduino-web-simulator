@@ -1,0 +1,26 @@
+---
+description: Never assert facts without measured evidence; no “probably” claims
+alwaysApply: true
+---
+
+# Evidence-backed claims only
+
+Treat **any** claim as unproven until evidence shows **x + y = z** — not because that is “probably” what happened.
+
+## Required
+
+- State facts only with **100% certainty** from measurement: logs, hashes, file contents, spawn URLs, diffs, user-confirmed runtime behavior
+- If evidence is missing: say **unknown** / **not verified** — do not fill the gap with confidence
+- Engine / binary / worker path: prove with runtime spawn logs (`engine` + URL) or equivalent; file layout alone is not proof of what ran
+- After a restore or “we’re on Concord”: re-prove on the next run; do not reuse an earlier assumption
+
+## Forbidden
+
+- “Probably / likely / should be using X”
+- Claiming a working/old binary is active without spawn-level (or equal) proof
+- Postmortems that invent causal chains without cited log/diff lines
+- Treating intent (“we meant Concord”) as runtime fact
+
+## When unsure
+
+Say what would constitute proof, instrument or measure, then claim — never the reverse.

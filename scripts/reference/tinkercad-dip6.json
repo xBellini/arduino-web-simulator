@@ -1,0 +1,44 @@
+{
+  "footprintId": null,
+  "footprintName": "dip6 4N35",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_DIP6_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-dip6.svg",
+  "terminals": [
+    {
+      "name": "Base",
+      "x": -10,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Collector",
+      "x": 0,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Emitter",
+      "x": 10,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Not Connected",
+      "x": 10,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Cathode",
+      "x": 0,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Anode",
+      "x": -10,
+      "y": 15,
+      "dir": 90
+    }
+  ]
+}

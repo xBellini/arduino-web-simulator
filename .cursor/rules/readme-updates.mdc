@@ -1,0 +1,42 @@
+---
+description: Keep README.md in sync when features or behavior change
+alwaysApply: true
+---
+
+# README maintenance
+
+Whenever you **add**, **change**, or **remove** user-facing behavior in this project, update `README.md` in the same task before finishing.
+
+The README is **general-purpose only** (project overview, run/usage, high-level layout). Per-file history and module “what this does” commentary live in each source file’s header — see `file-headers-changelog.mdc`. Do not dump session digests or file-level changelogs into the README.
+
+## Update when changing
+
+- Features, tools, shortcuts, or workflow (canvas, palette, wires, save/load, etc.)
+- Component palette, breadboard layout, snap/grid rules, or project file format
+- Phase 0 / Phase 1 scope — move items between **Done** and **Still to tackle**
+- Project layout (`src/` structure), run instructions, or dev tooling
+
+## What to update
+
+| Section | When |
+|---------|------|
+| **Usage** | New/changed shortcuts, toolbar actions, interaction model |
+| **Palette / components** | Registry or visible part list changes |
+| **Project file** | JSON schema, pin IDs, migration notes |
+| **Phase 0 status** | Mark items done; add new polish tasks if discovered |
+| **Phase 1** | Only when simulation work begins or plans shift |
+| **Project layout** | New top-level modules or renamed paths |
+
+## Do not
+
+- Rewrite the whole README for tiny fixes — minimal, accurate diffs only
+- Document pure refactors with no user-visible change
+- Remove the Phase 0 checklist without replacing it with current status
+- Put per-file changelogs or deep module commentary in the README (use file headers instead)
+- Session digests / dated “what we fixed this week” essays
+- Pin catalogs, footprint coordinates, TinkerCAD IDs, SVG path dumps
+- Snapshot folder inventories (point to `backup-local.ps1` / `local-snapshots.mdc` only)
+
+## If unsure
+
+If the change might affect how a user runs or uses the app, update the README at overview level; put implementation history in the file Changelog.

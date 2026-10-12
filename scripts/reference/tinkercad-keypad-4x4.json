@@ -1,0 +1,19 @@
+{
+  "footprintId": 203761,
+  "footprintName": "1x8 header",
+  "deviceName": "Keypad 4x4",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/203761.json",
+  "svgOut": "scripts/reference/tinkercad-keypad-4x4.svg",
+  "publicSvg": "public/components/keypad_4x4.svg",
+  "crop": { "width": 280, "height": 390, "originX": 0, "originY": -186, "script": "scripts/crop-tinkercad-components.mjs" },
+  "terminals": [
+    { "name": "Row 1", "pinId": "row1", "x": -35, "y": 0, "dir": 90 },
+    { "name": "Row 2", "pinId": "row2", "x": -25, "y": 0, "dir": 90 },
+    { "name": "Row 3", "pinId": "row3", "x": -15, "y": 0, "dir": 90 },
+    { "name": "Row 4", "pinId": "row4", "x": -5, "y": 0, "dir": 90 },
+    { "name": "Column 1", "pinId": "col1", "x": 5, "y": 0, "dir": 90 },
+    { "name": "Column 2", "pinId": "col2", "x": 15, "y": 0, "dir": 90 },
+    { "name": "Column 3", "pinId": "col3", "x": 25, "y": 0, "dir": 90 },
+    { "name": "Column 4", "pinId": "col4", "x": 35, "y": 0, "dir": 90 }
+  ]
+}

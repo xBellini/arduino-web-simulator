@@ -1,0 +1,26 @@
+{
+  "footprintId": 58468,
+  "footprintName": "TO5",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/58468.json",
+  "svgOut": "scripts\\reference\\tinkercad-58468-npn.svg",
+  "terminals": [
+    {
+      "name": "Emitter",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Base",
+      "x": 0,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Collector",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

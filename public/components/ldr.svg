@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1000 -1000 26 30" width="26" height="30">
+  <g transform="translate(-987,-972)">
+<g class="cgfx__view-wires"><path style='fill:none;stroke:#8C8C8C;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;' d="M-5,0c0,0,0-2.38,0-4.96s-2.86-6.23-2.86-10.2c0-3.98,3.52-7.86,7.86-7.86s7.86,3.42,7.86,7.85S5-7.92,5-4.96S5,0,5,0"/><ellipse style="fill:#B4622B;" cx="0" cy="-16.85" rx="11.5" ry="10"/><ellipse style="fill:#DBDDAF;" cx="0" cy="-16.85" rx="10" ry="8.5"/><circle style="fill:#CECBA7;" cx="-7.75" cy="-16.88" r="1"/><circle style="fill:#CECBA7;" cx="7.75" cy="-16.82" r="1"/><path style="fill:none;stroke:#B4622B;stroke-width:1.5;stroke-miterlimit:10;" d="M5.59-9.35c0-0.69-0.56-1.25-1.25-1.25h-8.23c-0.69,0-1.25-0.56-1.25-1.25c0-0.69,0.56-1.25,1.25-1.25h8.23c0.69,0,1.25-0.56,1.25-1.25c0-0.69-0.56-1.25-1.25-1.25h-8.23c-0.69,0-1.25-0.56-1.25-1.25s0.56-1.25,1.25-1.25h8.23c0.69,0,1.25-0.56,1.25-1.25S5.03-20.6,4.34-20.6h-8.23c-0.69,0-1.25-0.56-1.25-1.25s0.56-1.25,1.25-1.25h8.23c0.69,0,1.25-0.56,1.25-1.25"/></g>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+{
+  "footprintId": 122164,
+  "footprintName": "DIL16",
+  "deviceName": "Relay DPDT",
+  "simulationModel": "relay_dpdt",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/122164.json",
+  "svgOut": "scripts/reference/tinkercad-relay-dpdt.svg",
+  "publicSvg": "public/components/relay_dpdt.svg",
+  "crop": { "width": 80, "height": 40, "script": "scripts/crop-tinkercad-components.mjs" },
+  "terminals": [
+    { "name": "Terminal 1", "pinId": "coil2", "role": "COIL2", "x": 35, "y": -15, "dir": -90 },
+    { "name": "Terminal 4", "pinId": "comb", "role": "COMB", "x": 5, "y": -15, "dir": -90 },
+    { "name": "Terminal 6", "pinId": "b1", "role": "B1", "x": -15, "y": -15, "dir": -90 },
+    { "name": "Terminal 8", "pinId": "b2", "role": "B2", "x": -35, "y": -15, "dir": -90 },
+    { "name": "Terminal 9", "pinId": "a2", "role": "A2", "x": -35, "y": 15, "dir": 90 },
+    { "name": "Terminal 11", "pinId": "a1", "role": "A1", "x": -15, "y": 15, "dir": 90 },
+    { "name": "Terminal 13", "pinId": "coma", "role": "COMA", "x": 5, "y": 15, "dir": 90 },
+    { "name": "Terminal 16", "pinId": "coil1", "role": "COIL1", "x": 35, "y": 15, "dir": 90 }
+  ]
+}

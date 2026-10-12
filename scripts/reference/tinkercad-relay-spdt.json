@@ -1,0 +1,18 @@
+{
+  "footprintId": 122167,
+  "footprintName": "DIL12",
+  "deviceName": "Relay SPDT",
+  "simulationModel": "relay_spdt",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/122167.json",
+  "svgOut": "scripts/reference/tinkercad-relay-spdt.svg",
+  "publicSvg": "public/components/relay_spdt.svg",
+  "crop": { "width": 62, "height": 42, "script": "scripts/crop-tinkercad-components.mjs" },
+  "terminals": [
+    { "name": "Terminal 1", "pinId": "com2", "role": "COM2", "x": 25, "y": -15, "dir": -90 },
+    { "name": "Terminal 5", "pinId": "coil2", "role": "COIL2", "x": -15, "y": -15, "dir": -90 },
+    { "name": "Terminal 6", "pinId": "r1", "role": "R1", "x": -25, "y": -15, "dir": -90 },
+    { "name": "Terminal 7", "pinId": "r2", "role": "R2", "x": -25, "y": 15, "dir": 90 },
+    { "name": "Terminal 8", "pinId": "coil1", "role": "COIL1", "x": -15, "y": 15, "dir": 90 },
+    { "name": "Terminal 12", "pinId": "com1", "role": "COM1", "x": 25, "y": 15, "dir": 90 }
+  ]
+}

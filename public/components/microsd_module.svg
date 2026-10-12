@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="220" height="124" viewBox="0 0 220 124" role="img" aria-labelledby="title desc">
+<title id="title">MicroSD card module</title><desc id="desc">Editable vector module with blue PCB, silver microSD socket, partially inserted card, level shifter, regulator, and six black female sockets. Top to bottom: CS, SCK, MOSI, MISO, VCC, GND.</desc>
+<g id="pcb" inkscape:groupmode="layer" inkscape:label="Blue PCB"><path d="M12 2H212L217 7V117L212 122H12L7 117V7Z M11.5 12a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M201.5 12a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M11.5 112a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M201.5 112a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z" fill="#2586a3" fill-rule="evenodd"/><path d="M13 3H211L216 8V116L211 121H13L8 116V8Z M11.5 12a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M201.5 12a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M11.5 112a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z M201.5 112a5.5 5.5 0 1 0 11 0a5.5 5.5 0 1 0-11 0Z" fill="#08658b" fill-rule="evenodd"/>
+<circle cx="17" cy="12" r="6.4" fill="none" stroke="#9dada9" stroke-width="1.3"/><circle cx="17" cy="12" r="7.4" fill="none" stroke="#034761" stroke-width="0.8"/>
+<circle cx="207" cy="12" r="6.4" fill="none" stroke="#9dada9" stroke-width="1.3"/><circle cx="207" cy="12" r="7.4" fill="none" stroke="#034761" stroke-width="0.8"/>
+<circle cx="17" cy="112" r="6.4" fill="none" stroke="#9dada9" stroke-width="1.3"/><circle cx="17" cy="112" r="7.4" fill="none" stroke="#034761" stroke-width="0.8"/>
+<circle cx="207" cy="112" r="6.4" fill="none" stroke="#9dada9" stroke-width="1.3"/><circle cx="207" cy="112" r="7.4" fill="none" stroke="#034761" stroke-width="0.8"/>
+</g><g id="traces" inkscape:groupmode="layer" inkscape:label="PCB traces" fill="none" stroke-linejoin="round">
+<path id="trace-CS" d="M198 29H159V24H154" stroke="#003b60" stroke-width="2.1"/><path d="M198 29H159V24H154" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-SCK" d="M198 42H117L110 35V26" stroke="#003b60" stroke-width="2.1"/><path d="M198 42H117L110 35V26" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-MOSI" d="M198 55H112L103 46V21L109 15" stroke="#003b60" stroke-width="2.1"/><path d="M198 55H112L103 46V21L109 15" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-MISO" d="M156 62H180L186 68H198" stroke="#003b60" stroke-width="2.1"/><path d="M156 62H180L186 68H198" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-power" d="M198 81H193L183 91V108L178 113H168L159.9 104.9V103" stroke="#003b60" stroke-width="2.1"/><path d="M198 81H193L183 91V108L178 113H168L159.9 104.9V103" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-ground" d="M198 94H195L189 100V106" stroke="#003b60" stroke-width="2.1"/><path d="M198 94H195L189 100V106" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-slot-a" d="M95 49H101L117 65H179L182 68H198" stroke="#003b60" stroke-width="2.1"/><path d="M95 49H101L117 65H179L182 68H198" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-slot-b" d="M95 54H99L119 74V102" stroke="#003b60" stroke-width="2.1"/><path d="M95 54H99L119 74V102" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-slot-c" d="M95 60H98L117 79V89" stroke="#003b60" stroke-width="2.1"/><path d="M95 60H98L117 79V89" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-reg-tab" d="M148.5 73V68H131L124 75V88L119 93" stroke="#003b60" stroke-width="2.1"/><path d="M148.5 73V68H131L124 75V88L119 93" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-reg-left-pad" d="M137.9 105H129" stroke="#003b60" stroke-width="2.1"/><path d="M137.9 105H129" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-reg-centre-pad" d="M148.9 105V106L142.9 112H124L118 106" stroke="#003b60" stroke-width="2.1"/><path d="M148.9 105V106L142.9 112H124L118 106" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-cap-ground" d="M186 113H189L192 110V109" stroke="#003b60" stroke-width="2.1"/><path d="M186 113H189L192 110V109" stroke="#2383a1" stroke-width="0.8"/>
+<path id="trace-chip" d="M126 24H121V18H110" stroke="#003b60" stroke-width="2.1"/><path d="M126 24H121V18H110" stroke="#2383a1" stroke-width="0.8"/>
+</g><g id="vias" fill="#02364b" stroke="#2383a1" stroke-width="0.6">
+<circle id="via-1" cx="35" cy="12" r="1.05"/>
+<circle id="via-2" cx="71" cy="13" r="1.05"/>
+<circle id="via-3" cx="70" cy="112" r="1.05"/>
+<circle id="via-4" cx="30" cy="112" r="1.05"/>
+<circle id="via-5" cx="186" cy="18" r="1.05"/>
+<circle id="via-6" cx="182" cy="7" r="1.05"/>
+<circle id="via-7" cx="164" cy="24" r="1.05"/>
+<circle id="via-8" cx="156" cy="62" r="1.05"/>
+<circle id="via-9" cx="129" cy="105" r="1.05"/>
+<circle id="via-10" cx="189" cy="106" r="1.05"/>
+<circle id="via-11" cx="192" cy="109" r="1.05"/>
+</g><g id="smd-components" inkscape:groupmode="layer" inkscape:label="Board components">
+<g id="R2"><rect x="104" y="12.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="105.3" y="13.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="107.9" y="13.6" width="6.2" height="4.8" fill="#333333"/><path d="M106 14.3H107.2M114.8 14.3H116" stroke="#f1f0e5" stroke-width="0.6"/>
+<text x="111" y="17" fill="#eeeeea" font-size="2.4" text-anchor="middle" font-family="Consolas,monospace">332</text>
+</g>
+<g id="R3"><rect x="104" y="22.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="105.3" y="23.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="107.9" y="23.6" width="6.2" height="4.8" fill="#333333"/><path d="M106 24.3H107.2M114.8 24.3H116" stroke="#f1f0e5" stroke-width="0.6"/>
+<text x="111" y="27" fill="#eeeeea" font-size="2.4" text-anchor="middle" font-family="Consolas,monospace">332</text>
+</g>
+<g id="C1"><rect x="167" y="8.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="168.3" y="9.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="170.9" y="9.6" width="6.2" height="4.8" fill="#b9ad97"/><path d="M169 10.3H170.2M177.8 10.3H179" stroke="#f1f0e5" stroke-width="0.6"/>
+</g>
+<g id="R4"><rect x="167" y="16.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="168.3" y="17.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="170.9" y="17.6" width="6.2" height="4.8" fill="#333333"/><path d="M169 18.3H170.2M177.8 18.3H179" stroke="#f1f0e5" stroke-width="0.6"/>
+<text x="174" y="21" fill="#eeeeea" font-size="2.4" text-anchor="middle" font-family="Consolas,monospace">332</text>
+</g>
+<g id="R1"><rect x="167" y="23.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="168.3" y="24.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="170.9" y="24.6" width="6.2" height="4.8" fill="#333333"/><path d="M169 25.3H170.2M177.8 25.3H179" stroke="#f1f0e5" stroke-width="0.6"/>
+<text x="174" y="28" fill="#eeeeea" font-size="2.4" text-anchor="middle" font-family="Consolas,monospace">332</text>
+</g>
+<g id="C4"><rect x="107" y="89.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="108.3" y="90.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="110.9" y="90.6" width="6.2" height="4.8" fill="#b9ad97"/><path d="M109 91.3H110.2M117.8 91.3H119" stroke="#f1f0e5" stroke-width="0.6"/>
+</g>
+<g id="C3"><rect x="106" y="102.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="107.3" y="103.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="109.9" y="103.6" width="6.2" height="4.8" fill="#b9ad97"/><path d="M108 104.3H109.2M116.8 104.3H118" stroke="#f1f0e5" stroke-width="0.6"/>
+</g>
+<g id="C2"><rect x="174" y="109.6" width="14" height="6.8" rx="0.5" fill="none" stroke="#e3e9df" stroke-width="0.7"/><rect x="175.3" y="110.5" width="11.4" height="5" rx="0.5" fill="#b9b4b8"/><rect x="177.9" y="110.6" width="6.2" height="4.8" fill="#b9ad97"/><path d="M176 111.3H177.2M184.8 111.3H186" stroke="#f1f0e5" stroke-width="0.6"/>
+</g>
+<g id="ic-pad-121-0"><rect x="120.35" y="13.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="13.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="14" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="14" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-0"><rect x="151.35" y="13.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="13.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="14" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="14" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-1"><rect x="120.35" y="16.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="16.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="17" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="17" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-1"><rect x="151.35" y="16.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="16.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="17" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="17" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-2"><rect x="120.35" y="19.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="19.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="20" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="20" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-2"><rect x="151.35" y="19.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="19.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="20" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="20" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-3"><rect x="120.35" y="22.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="22.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="23" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="23" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-3"><rect x="151.35" y="22.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="22.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="23" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="23" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-4"><rect x="120.35" y="25.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="25.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="26" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="26" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-4"><rect x="151.35" y="25.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="25.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="26" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="26" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-5"><rect x="120.35" y="28.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="28.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="29" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="29" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-5"><rect x="151.35" y="28.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="28.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="29" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="29" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-121-6"><rect x="120.35" y="31.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="120.8" y="31.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="121" y="32" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="121" y="32" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="ic-pad-152-6"><rect x="151.35" y="31.6" width="7.3" height="2.5" rx="0.45" fill="#87999b" stroke="#003b60" stroke-width="0.35"/><rect x="151.8" y="31.9" width="6.4" height="1.9" rx="0.35" fill="#d0d2c9"/><rect x="152" y="32" width="6" height="1.7" rx="0.3" fill="#b9b4b8"/><rect x="152" y="32" width="6" height="0.5" fill="#e6e6e6"/></g>
+<g id="level-shifter"><rect x="126" y="10" width="26" height="26" rx="0.7" fill="#191919"/><rect x="127" y="11" width="24" height="24" fill="#333333"/><circle cx="129" cy="13" r="1.1" fill="#262626"/></g>
+<g id="voltage-regulator"><rect id="regulator-tab-pad" x="138.9" y="70" width="19.2" height="19" rx="0.9" fill="#87999b" stroke="#003b60" stroke-width="0.45"/><rect x="139.4" y="70.5" width="18.2" height="18" rx="0.7" fill="#d0d2c9"/><rect x="140" y="71" width="17" height="17" rx="0.6" fill="#b9b4b8"/><rect x="141" y="72" width="15" height="8" fill="#d7d4db"/>
+<g id="regulator-pad-136"><rect x="135.15" y="101" width="5.5" height="8" rx="0.65" fill="#87999b" stroke="#003b60" stroke-width="0.4"/><rect x="135.6" y="101.4" width="4.6" height="7.1" rx="0.45" fill="#d0d2c9"/><rect x="136" y="96" width="3.8" height="12" fill="#b9b4b8"/><rect x="136.8" y="96" width="2" height="11" fill="#e6e6e6"/><path d="M135.8 107.8Q137.9 108.5 140 107.8" fill="none" stroke="#f1f0e5" stroke-width="0.4"/></g>
+<g id="regulator-pad-147"><rect x="146.15" y="101" width="5.5" height="8" rx="0.65" fill="#87999b" stroke="#003b60" stroke-width="0.4"/><rect x="146.6" y="101.4" width="4.6" height="7.1" rx="0.45" fill="#d0d2c9"/><rect x="147" y="96" width="3.8" height="12" fill="#b9b4b8"/><rect x="147.8" y="96" width="2" height="11" fill="#e6e6e6"/><path d="M146.8 107.8Q148.9 108.5 151 107.8" fill="none" stroke="#f1f0e5" stroke-width="0.4"/></g>
+<g id="regulator-pad-158"><rect x="157.15" y="101" width="5.5" height="8" rx="0.65" fill="#87999b" stroke="#003b60" stroke-width="0.4"/><rect x="157.6" y="101.4" width="4.6" height="7.1" rx="0.45" fill="#d0d2c9"/><rect x="158" y="96" width="3.8" height="12" fill="#b9b4b8"/><rect x="158.8" y="96" width="2" height="11" fill="#e6e6e6"/><path d="M157.8 107.8Q159.9 108.5 162 107.8" fill="none" stroke="#f1f0e5" stroke-width="0.4"/></g>
+<rect x="134" y="81" width="29" height="19" rx="0.7" fill="#191919"/><rect x="135" y="82" width="27" height="17" fill="#333333"/><text x="148.5" y="89" fill="#8b9087" font-family="Consolas,monospace" font-size="4" text-anchor="middle">AMS1117</text><text x="148.5" y="95" fill="#777e76" font-family="Consolas,monospace" font-size="3.7" text-anchor="middle">3.3</text></g></g>
+<g id="microsd-card" inkscape:groupmode="layer" inkscape:label="Inserted microSD card"><path d="M3 33H29V95H5L2 92V69L4 66V46L2 43V36Z" fill="#191919"/><path d="M3 36V43L5 46V67L3 70V91" fill="none" stroke="#444444" stroke-width="0.7"/><text transform="translate(10 65) rotate(-90)" fill="#b2b2b2" font-family="Consolas,monospace" font-size="4" text-anchor="middle">microSD</text></g>
+<g id="card-slot" inkscape:groupmode="layer" inkscape:label="Metal card socket">
+<rect x="21" y="24" width="73" height="76" rx="1" fill="#333333"/>
+<rect id="slot-contact-1" x="92" y="28.0" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="28.0" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-2" x="92" y="33.4" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="33.4" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-3" x="92" y="38.8" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="38.8" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-4" x="92" y="44.2" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="44.2" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-5" x="92" y="49.6" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="49.6" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-6" x="92" y="55.0" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="55.0" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-7" x="92" y="60.400000000000006" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="60.400000000000006" width="2.8" height="1" fill="#e6e6e6"/>
+<rect id="slot-contact-8" x="92" y="65.80000000000001" width="5.3" height="3" rx="0.5" fill="#b9b4b8"/><rect x="94" y="65.80000000000001" width="2.8" height="1" fill="#e6e6e6"/>
+<rect x="36" y="19" width="11" height="7" rx="0.7" fill="#8c8c8c"/><rect x="37" y="19.8" width="9" height="5.4" fill="#d7d4db"/>
+<rect x="86" y="20" width="11" height="7" rx="0.7" fill="#8c8c8c"/><rect x="87" y="20.8" width="9" height="5.4" fill="#d7d4db"/>
+<rect x="37" y="98" width="11" height="7" rx="0.7" fill="#8c8c8c"/><rect x="38" y="98.8" width="9" height="5.4" fill="#d7d4db"/>
+<rect x="85" y="96" width="11" height="7" rx="0.7" fill="#8c8c8c"/><rect x="86" y="96.8" width="9" height="5.4" fill="#d7d4db"/>
+<path d="M21 25H92V98H19V90L23 75V40Z" fill="#8c8c8c"/>
+<path d="M22 25H91V97H20V90L24 75V40Z M64 25H85L83 29H64Z M27 88H36L39 85H47V93H40V91H27Z" fill="#b9babc" fill-rule="evenodd"/>
+<path d="M22 25V40L24 44V75L20 90V97H35M48 97H83M91 30V83" fill="none" stroke="#e6e6e6" stroke-width="0.9"/>
+<path d="M64 26H83L81 28H66Z" fill="#282828"/><path d="M65 26.5 79 28H82" fill="none" stroke="#ddcc99" stroke-width="0.55"/>
+<path d="M28 89H37L40 86H45V91H40L38 93H29" fill="#d7d4db" stroke="#333333" stroke-width="0.5"/>
+<path d="M85 96V92L86 91V95H91V98H85" fill="#555555"/>
+</g>
+<g id="silkscreen" inkscape:groupmode="layer" inkscape:label="Board markings" fill="#eef0e6" font-family="Consolas,monospace" font-size="5" font-weight="bold">
+<text x="111" y="11" text-anchor="middle">R2</text>
+<text x="111" y="35" text-anchor="middle">R3</text>
+<text x="181" y="7" text-anchor="middle">C1</text>
+<text x="168" y="36" text-anchor="middle">R4</text>
+<text x="169" y="42" text-anchor="middle">R1</text>
+<text x="114" y="88" text-anchor="middle">C4</text>
+<text x="113" y="116" text-anchor="middle">C3</text>
+<text x="182" y="106" text-anchor="middle">C2</text>
+<path d="M11 25H18M15 22 18 25 15 28" fill="none" stroke="#eef0e6" stroke-width="0.8"/></g>
+<g id="header" inkscape:groupmode="layer" inkscape:label="Six female header sockets"><rect x="193" y="23.5" width="10" height="76" rx="1" fill="#333333"/>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 29)" id="pin-CS" data-pin="CS" data-terminal-x="198" data-terminal-y="29">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="30.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">CS</text>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 42)" id="pin-SCK" data-pin="SCK" data-terminal-x="198" data-terminal-y="42">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="43.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">SCK</text>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 55)" id="pin-MOSI" data-pin="MOSI" data-terminal-x="198" data-terminal-y="55">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="56.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">MOSI</text>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 68)" id="pin-MISO" data-pin="MISO" data-terminal-x="198" data-terminal-y="68">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="69.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">MISO</text>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 81)" id="pin-VCC" data-pin="VCC" data-terminal-x="198" data-terminal-y="81">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="82.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">VCC</text>
+<ns0:g xmlns:ns0="http://www.w3.org/2000/svg" transform="translate(198 94)" id="pin-GND" data-pin="GND" data-terminal-x="198" data-terminal-y="94">
+      <ns0:path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+      <ns0:path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+      <ns0:path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+      <ns0:path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+      <ns0:rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+    </ns0:g>
+    
+<text x="191" y="95.8" fill="#eef0e6" font-family="Consolas,monospace" font-size="5.5" text-anchor="end">GND</text>
+</g></svg>

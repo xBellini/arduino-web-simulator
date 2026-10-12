@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1000 -1000 2000 2000">
+<line style='fill:none;stroke:#8C8C8C;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;' x1="0" y1="-20" x2="0" y2="20"/><rect x="-4.75" y="-12.5" fill="#333333" width="9.5" height="25" rx="1" ry="1"/><rect x="-4.75" y="5.5" style="fill:#67757F;" width="9.5" height="2.3" /><rect class="cgfx__hitarea" style='fill:#ff0000;' opacity='0' display='none' x="-4.75" y="-12.5" width="9.5" height="25" rx="1" ry="1"/><g class="cgfx__terminal"><desc class="cgfx__terminalname">Cathode</desc><desc class="cgfx__terminaltype">breadboard</desc></g><g class="cgfx__terminal"><desc class="cgfx__terminalname">Anode</desc><desc class="cgfx__terminaltype">breadboard</desc></g>
+</svg>

@@ -1,0 +1,36 @@
+---
+description: Never invent voltages/currents/charge — fetch every sim result from AVR or SPICE
+alwaysApply: true
+---
+
+# No invented simulation results
+
+**DO NOT INVENT RESULTS.** Every electrical quantity shown or used while simulation is running must be **fetched from AVR (avr8js) or SPICE (ngspice)** — not hand-rolled formulas, fake RC ramps, guessed mA, or “looks about right” overlays.
+
+## Sources of truth
+
+| Domain | Source | Examples |
+|--------|--------|----------|
+| MCU pin drive / read | **avr8js** via GPIO bridge | `digitalWrite` / `digitalRead`, port levels |
+| Analog net V / I | **ngspice** (preferred) | Node voltages, `#branch` currents, `.tran` samples |
+| Fallback DC only | Legacy MNA when ngspice unavailable | Same nets; still a real solve — not UI fiction |
+
+## Allowed
+
+- Export the canvas to SPICE / map AVR pins into sources, then **display what the solver returned**
+- Interpolate **between consecutive SPICE samples** for smooth UI (endpoints must be SPICE)
+- Failure / blow **policy** (thresholds, timers, open netlist) — then **re-solve**; visuals follow the new solve
+- Size analysis windows from real part values (e.g. `.tran` ≈ 5×RC) so SPICE can finish — do not invent the voltages
+
+## Forbidden
+
+- Inventing capacitor charge/discharge curves, LED current, or wire mA in the UI layer
+- Short-circuiting “digital high → assume 5 V / 20 mA” without a solve
+- Caching or painting stale V/I across a GPIO/topology change as if it were live
+- “Companion” or Thévenin models that replace SPICE C / device stamps unless the user explicitly asks for a non-SPICE path
+
+## When editing sim code
+
+Before changing `src/circuit/**`, `src/avr/**`, `src/components/**` stamps/visuals, or `src/store/simulationController.ts`: ask whether every new number on screen traces to **AVR state** or a **SPICE/legacy solve output**. If not, do not ship it.
+
+See also `simulation-solver.mdc` (math vs failure vs visuals layers) and `ic-controller-models.mdc` (vendor IC behavior — do not reinvent controllers).

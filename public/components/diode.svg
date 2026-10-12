@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1000 -1000 9.5 42"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="diode.svg"
+   width="9.5"
+   height="42"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="20.176"
+     inkscape:cx="11.151864"
+     inkscape:cy="21.931998"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <line
+     style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+     x1="-995.25"
+     y1="-999"
+     x2="-995.25"
+     y2="-959"
+     id="line1" />
+  <rect
+     x="-1000"
+     y="-991.5"
+     fill="#333333"
+     width="9.5"
+     height="25"
+     rx="1"
+     ry="1"
+     id="rect1" />
+  <rect
+     x="-1000"
+     y="-973.5"
+     style="fill:#67757f"
+     width="9.5"
+     height="2.3"
+     id="rect2" />
+  <rect
+     class="cgfx__hitarea"
+     style="fill:#ff0000"
+     opacity="0"
+     display="none"
+     x="-1000"
+     y="-991.5"
+     width="9.5"
+     height="25"
+     rx="1"
+     ry="1"
+     id="rect3" />
+  <g
+     class="cgfx__terminal"
+     id="g4"
+     transform="translate(-995.25,-979)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc3">Cathode</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc4">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g6"
+     transform="translate(-995.25,-979)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc5">Anode</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc6">breadboard</desc>
+  </g>
+</svg>

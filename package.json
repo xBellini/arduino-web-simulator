@@ -1,0 +1,30 @@
+{
+  "name": "arduino-simulator",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:stop": "node scripts/stop-dev-server.mjs",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "fetch-spice-models": "node scripts/fetch-spice-libraries.mjs",
+    "fetch-bundled-blink": "node scripts/fetch-bundled-blink-hex.mjs",
+    "export-components-svg": "node scripts/export-components-svg.mjs",
+    "build:avr-wasm": "node scripts/build-avr-wasm.mjs"
+  },
+  "dependencies": {
+    "avr8js": "^0.21.0",
+    "eecircuit-engine": "1.7.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "assemblyscript": "^0.27.31",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "footprintId": 58422,
+  "footprintName": "LED5MM",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/58422.json",
+  "svgOut": "scripts\\reference\\tinkercad-58422.svg",
+  "terminals": [
+    {
+      "name": "Cathode",
+      "x": -5,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Anode",
+      "x": 5,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

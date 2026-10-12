@@ -1,0 +1,273 @@
+/**
+ * What: AVR emulation Web Worker — owns avr8js AvrRunner + LCD EN probe + TWI bus + WASM pacer.
+ * Role: Run the 16 MHz timebase off the UI thread; post GPIO/USART/LCD/perf to main.
+ *
+ * Changelog:
+ * - 09-10-2026 — Register DS3231 + AT24C32 TWI slaves; tick RTC from AVR cycles
+ * - 09-10-2026 ? Moved from `src/sim/avr.worker.ts` (tree reorganization)
+ * - 05-10-2026 — Ideal TWI bus + I2C LCD backpack (datasheet PCF8574 slave)
+ * - 05-10-2026 — Worker + WASM AVR path (session 520145)
+ */
+
+/// <reference lib="webworker" />
+
+import { PinState } from 'avr8js';
+import { AvrRunner, CPU_FREQ_HZ } from './runner';
+import {
+  AVR_WORKER_PROTOCOL,
+  type AvrPortSnapshot,
+  type AvrWorkerInMessage,
+  type AvrWorkerOutMessage,
+  type AvrWorkerTwiSlave,
+} from './workerProtocol';
+import type { AvrPortName } from './pinMap';
+import { TwiSlaveBus } from './twiBus';
+import { createPcfBackpackTwiSlave } from '../components/modules/pcf8574LcdBackpack';
+import { createDs3231ModuleSlaves } from '../components/modules/ds3231Rtc';
+import type { Ds3231 } from './ds3231';
+
+type PacerExports = {
+  cycleQuantumForSlice(sliceMs: number, minHostMhz: number): number;
+};
+
+let runner: AvrRunner | null = null;
+let twiBus: TwiSlaveBus | null = null;
+let tabHidden = false;
+let maxWorkMs = 12;
+let maxSliceMs = 8;
+let cycleQuantum = 4096;
+let backend: 'js' | 'wasm' = 'js';
+let pacer: PacerExports | null = null;
+let lcdTargets: Extract<
+  AvrWorkerInMessage,
+  { type: 'start' }
+>['lcdTargets'] = [];
+let twiSlaves: AvrWorkerTwiSlave[] = [];
+let rtcCores: Ds3231[] = [];
+
+function post(msg: AvrWorkerOutMessage): void {
+  self.postMessage(msg);
+}
+
+async function loadPacer(): Promise<void> {
+  try {
+    const res = await fetch(new URL('/avr/avr-pacer.wasm', self.location.href));
+    if (!res.ok) throw new Error(`wasm fetch ${res.status}`);
+    const bytes = await res.arrayBuffer();
+    const { instance } = await WebAssembly.instantiate(bytes, {});
+    const ex = instance.exports as Record<string, unknown>;
+    const fn = ex.cycleQuantumForSlice;
+    if (typeof fn !== 'function') throw new Error('missing export');
+    pacer = {
+      cycleQuantumForSlice: (sliceMs, minHostMhz) =>
+        (fn as (a: number, b: number) => number)(sliceMs, minHostMhz),
+    };
+    backend = 'wasm';
+  } catch {
+    pacer = null;
+    backend = 'js';
+  }
+}
+
+function refreshQuantum(): void {
+  if (pacer) {
+    cycleQuantum = pacer.cycleQuantumForSlice(maxSliceMs, 8);
+  } else {
+    cycleQuantum = Math.max(4096, Math.floor(maxSliceMs * 8 * 1000));
+  }
+}
+
+function portSnapshot(name: AvrPortName): AvrPortSnapshot {
+  const port =
+    name === 'B' ? runner!.portB : name === 'C' ? runner!.portC : runner!.portD;
+  const pinStates: number[] = [];
+  for (let bit = 0; bit < 8; bit++) {
+    pinStates.push(port.pinState(bit));
+  }
+  return { port: name, pinStates };
+}
+
+function sampleLcdBus(
+  bus: Extract<AvrWorkerInMessage, { type: 'start' }>['lcdTargets'][0]['bus'],
+): { rs: boolean; rw: boolean; en: boolean; db: boolean[] } {
+  const read = (ref: { port: AvrPortName; bit: number } | undefined) => {
+    if (!ref || !runner) return false;
+    const port =
+      ref.port === 'B'
+        ? runner.portB
+        : ref.port === 'C'
+          ? runner.portC
+          : runner.portD;
+    const st = port.pinState(ref.bit);
+    return st === PinState.High || st === PinState.InputPullUp;
+  };
+  return {
+    rs: read(bus.rs),
+    rw: read(bus.rw),
+    en: read(bus.en),
+    db: bus.db.map((ref) => (ref ? read(ref) : false)),
+  };
+}
+
+function attachLcdProbe(): () => void {
+  if (!runner || lcdTargets.length === 0) return () => {};
+
+  const detachers: Array<() => void> = [];
+  for (const t of lcdTargets) {
+    for (const portName of ['B', 'C', 'D'] as AvrPortName[]) {
+      const enMask = t.enMasks[portName] ?? 0;
+      if (enMask === 0) continue;
+      const port =
+        portName === 'B'
+          ? runner.portB
+          : portName === 'C'
+            ? runner.portC
+            : runner.portD;
+      const listener = (value: number, oldValue: number) => {
+        if (((value ^ oldValue) & enMask) === 0) return;
+        post({
+          v: AVR_WORKER_PROTOCOL,
+          type: 'lcd-bus',
+          id: t.id,
+          cols: t.cols,
+          rows: t.rows,
+          pins: sampleLcdBus(t.bus),
+        });
+      };
+      port.addListener(listener);
+      detachers.push(() => port.removeListener(listener));
+    }
+  }
+  return () => {
+    for (const d of detachers) d();
+  };
+}
+
+function attachTwiBus(): void {
+  if (!runner) return;
+  twiBus = new TwiSlaveBus(runner.twi);
+  runner.twi.eventHandler = twiBus;
+  rtcCores = [];
+  for (const s of twiSlaves) {
+    if (s.type === 'pcf8574_lcd_backpack') {
+      twiBus.register(
+        s.addr,
+        createPcfBackpackTwiSlave(s.linkedLcds, (lcd, pins) => {
+          post({
+            v: AVR_WORKER_PROTOCOL,
+            type: 'lcd-bus',
+            id: lcd.id,
+            cols: lcd.cols,
+            rows: lcd.rows,
+            pins,
+          });
+        }),
+      );
+    } else if (s.type === 'ds3231_rtc') {
+      const created = createDs3231ModuleSlaves(new Date());
+      twiBus.register(s.rtcAddr, created.rtc);
+      twiBus.register(s.eepromAddr, created.eeprom);
+      rtcCores.push(created.core);
+    }
+  }
+}
+
+let detachLcd: (() => void) | null = null;
+
+function stopRunner(): void {
+  detachLcd?.();
+  detachLcd = null;
+  rtcCores = [];
+  twiBus = null;
+  if (runner) {
+    runner.stop();
+    runner = null;
+  }
+}
+
+function startRunner(hex: string): void {
+  stopRunner();
+  runner = new AvrRunner(hex);
+  runner.usart.onByteTransmit = (value) => {
+    post({ v: AVR_WORKER_PROTOCOL, type: 'usart', byte: value });
+  };
+  attachTwiBus();
+  detachLcd = attachLcdProbe();
+  refreshQuantum();
+
+  const optionsProvider = () => ({
+    maxWorkMs,
+    maxSliceMs,
+    cycleQuantum,
+    tabHidden,
+  });
+
+  runner.execute(() => {
+    if (!runner) return;
+    const cycles = runner.cpu.cycles;
+    for (const rtc of rtcCores) rtc.advanceToCycle(cycles);
+    const meta = runner.lastBatchMeta;
+    post({
+      v: AVR_WORKER_PROTOCOL,
+      type: 'tick',
+      cycles: runner.cpu.cycles,
+      cyclesBehind: runner.cyclesBehind(tabHidden),
+      ports: [portSnapshot('B'), portSnapshot('C'), portSnapshot('D')],
+      perf: meta
+        ? {
+            batchWallMs: meta.batchWallMs,
+            avrLoopWallMs: meta.avrLoopWallMs,
+            batchExitReason: meta.batchExitReason,
+            maxWorkMsUsed: meta.maxWorkMsUsed,
+            instructionsLastBatch: meta.instructionsDelta,
+            backend,
+          }
+        : undefined,
+    });
+  }, optionsProvider);
+}
+
+self.onmessage = (ev: MessageEvent<AvrWorkerInMessage>) => {
+  const msg = ev.data;
+  if (!msg || msg.v !== AVR_WORKER_PROTOCOL) return;
+
+  switch (msg.type) {
+    case 'start':
+      lcdTargets = msg.lcdTargets;
+      twiSlaves = msg.twiSlaves ?? [];
+      startRunner(msg.hex);
+      break;
+    case 'stop':
+      stopRunner();
+      break;
+    case 'set-inputs':
+      if (!runner) break;
+      for (const p of msg.pins) {
+        const port =
+          p.port === 'B'
+            ? runner.portB
+            : p.port === 'C'
+              ? runner.portC
+              : runner.portD;
+        port.setPin(p.bit, p.high);
+      }
+      break;
+    case 'set-options':
+      maxWorkMs = msg.maxWorkMs;
+      maxSliceMs = msg.maxSliceMs;
+      tabHidden = msg.tabHidden;
+      refreshQuantum();
+      break;
+    case 'sync-wall':
+      runner?.syncWallClock();
+      break;
+    default:
+      break;
+  }
+};
+
+void loadPacer().then(() => {
+  post({ v: AVR_WORKER_PROTOCOL, type: 'ready', backend });
+});
+
+void CPU_FREQ_HZ;

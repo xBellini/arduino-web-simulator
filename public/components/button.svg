@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1000 -1000 24 32"
+   version="1.1"
+   id="svg16"
+   sodipodi:docname="button.svg"
+   width="24"
+   height="32"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs16" />
+  <sodipodi:namedview
+     id="namedview16"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="14.266586"
+     inkscape:cx="22.780502"
+     inkscape:cy="19.38095"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg16" />
+  <line
+     style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+     x1="-998"
+     y1="-999"
+     x2="-998"
+     y2="-969"
+     id="line1" />
+  <line
+     style="fill:none;stroke:#8c8c8c;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10"
+     x1="-978"
+     y1="-999"
+     x2="-978"
+     y2="-969"
+     id="line2" />
+  <rect
+     style="fill:#bfbfbf"
+     x="-1000"
+     y="-996"
+     width="24"
+     height="24"
+     rx="1"
+     id="rect2" />
+  <path
+     style="fill:#a3a3a3"
+     d="m -977,-995.5 c 0.28,0 0.5,0.22 0.5,0.5 v 22 c 0,0.28 -0.22,0.5 -0.5,0.5 h -22 c -0.28,0 -0.5,-0.22 -0.5,-0.5 v -22 c 0,-0.28 0.22,-0.5 0.5,-0.5 h 22 m 0,-0.5 h -22 c -0.55,0 -1,0.45 -1,1 v 22 c 0,0.55 0.45,1 1,1 h 22 c 0.55,0 1,-0.45 1,-1 v -22 c 0,-0.55 -0.45,-1 -1,-1 z"
+     id="path2" />
+  <rect
+     class="cgfx__hitarea"
+     style="fill:#ff0000"
+     opacity="0"
+     display="none"
+     x="-1000"
+     y="-996"
+     width="24"
+     height="24"
+     rx="1"
+     id="rect3" />
+  <circle
+     style="fill:#4c4c4c"
+     cx="-996.58002"
+     cy="-992.58002"
+     r="2.5"
+     id="circle3" />
+  <circle
+     style="fill:#4c4c4c"
+     cx="-979.41998"
+     cy="-992.58002"
+     r="2.5"
+     id="circle4" />
+  <circle
+     style="fill:#4c4c4c"
+     cx="-996.58002"
+     cy="-975.42999"
+     r="2.5"
+     id="circle5" />
+  <circle
+     style="fill:#4c4c4c"
+     cx="-979.41998"
+     cy="-975.42999"
+     r="2.5"
+     id="circle6" />
+  <g
+     class="cgfx__up"
+     display="inline"
+     id="g8"
+     transform="translate(-988,-984)">
+    <circle
+       style="opacity:0.3"
+       cx="0"
+       cy="1.5"
+       r="6.9899998"
+       id="circle7" />
+    <circle
+       style="fill:#333333"
+       cx="0"
+       cy="0"
+       r="6.9899998"
+       id="circle8" />
+    <path
+       style="opacity:0.2;fill:#f4f4f4"
+       d="m 0,-6.99 c -3.86,0 -6.99,3.13 -6.99,6.99 0,3.86 3.13,6.99 6.99,6.99 C 3.86,6.99 6.99,3.86 6.99,0 6.99,-3.86 3.86,-6.99 0,-6.99 Z M 0,6.44 c -3.56,0 -6.43,-2.88 -6.43,-6.44 0,-3.56 2.88,-6.44 6.43,-6.44 3.56,0 6.44,2.88 6.44,6.44 0,3.56 -2.88,6.44 -6.44,6.44 z"
+       id="path8" />
+  </g>
+  <g
+     class="cgfx__pressed"
+     id="g9"
+     transform="translate(-988,-984)">
+    <circle
+       style="fill:#333333"
+       cx="0"
+       cy="0"
+       r="6.9899998"
+       id="circle9" />
+    <path
+       style="opacity:0.2;fill:#f4f4f4"
+       d="m 0,-6.99 c -3.86,0 -6.99,3.13 -6.99,6.99 0,3.86 3.13,6.99 6.99,6.99 C 3.86,6.99 6.99,3.86 6.99,0 6.99,-3.86 3.86,-6.99 0,-6.99 Z M 0,6.44 c -3.56,0 -6.43,-2.88 -6.43,-6.44 0,-3.56 2.88,-6.44 6.43,-6.44 3.56,0 6.44,2.88 6.44,6.44 0,3.56 -2.88,6.44 -6.44,6.44 z"
+       id="path9" />
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g10"
+     transform="translate(-988,-984)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc9">Terminal 1a</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc10">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g12"
+     transform="translate(-988,-984)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc11">Terminal 1b</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc12">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g14"
+     transform="translate(-988,-984)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc13">Terminal 2a</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc14">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g16"
+     transform="translate(-988,-984)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc15">Terminal 2b</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc16">breadboard</desc>
+  </g>
+</svg>

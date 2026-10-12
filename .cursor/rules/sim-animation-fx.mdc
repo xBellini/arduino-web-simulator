@@ -1,0 +1,33 @@
+---
+description: Do not change overload/glow/smoke/wire animation FX unless the user asks
+globs: src/index.css,src/ui/canvas/ComponentShape.tsx,src/circuit/visuals.ts,src/circuit/currents.ts
+alwaysApply: false
+---
+
+# Simulation animation FX
+
+User-visible motion and effects are intentional. **Do not change them** when fixing logic, solvers, or bugs unless the user explicitly asks.
+
+## Protected FX (hands off by default)
+
+- Resistor: heat glow, smoke wisps, embers, fire pulse, scorch, blown red X
+- LED: glow, dim, blown mark, flicker
+- Wires: current dashes, flow speed, mA labels, direction
+- Buzzer, capacitor charge pulse, diode conduct glow
+
+## Allowed without asking
+
+- Fix **when** FX appear (e.g. stop wire flow after open circuit)
+- Fix **data** driving FX (current, heat level, `ledBlown` flags)
+- Bug fixes that leave timing, colors, keyframes, and SVG marks **unchanged**
+
+## Requires explicit user request
+
+- New/changed keyframes, durations, delays, colors, opacity
+- Different smoke/ember counts, paths, or blown-mark geometry
+- Faster/slower blow timers purely for “better look”
+- Removing or replacing an effect
+
+## If unsure
+
+Ask: “Should I change the animation, or only the circuit behavior?”

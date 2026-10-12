@@ -1,0 +1,723 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="182" height="82" viewBox="0 0 182 82" role="img" aria-labelledby="title desc">
+  <title id="title">PCF8574 LCD backpack</title>
+  <desc id="desc">Editable black LCD I2C backpack with blue contrast trimmer, PCF8574 controller, LED jumper, address pads, sixteen LCD female sockets and four side female sockets ordered GND, VCC, SDA, SCL from top to bottom.</desc>
+  <g id="module-rotated" transform="rotate(180 91 41)">
+    <g id="pcb" inkscape:groupmode="layer" inkscape:label="Black PCB">
+      <rect x="17" y="3" width="163" height="76" rx="0.8" fill="#333333" />
+      <rect x="18" y="4" width="161" height="74" fill="#191919" />
+    </g>
+    <g id="traces" inkscape:groupmode="layer" inkscape:label="PCB copper routing" fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <path id="trace-lcd-1-clearance" d="M23 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-1" d="M23 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-2-clearance" d="M33 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-2" d="M33 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-3-clearance" d="M43 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-3" d="M43 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-4-clearance" d="M53 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-4" d="M53 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-5-clearance" d="M63 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-5" d="M63 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-6-clearance" d="M73 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-6" d="M73 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-7-clearance" d="M83 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-7" d="M83 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-8-clearance" d="M93 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-8" d="M93 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-9-clearance" d="M103 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-9" d="M103 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-10-clearance" d="M113 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-10" d="M113 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-11-clearance" d="M123 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-11" d="M123 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-12-clearance" d="M133 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-12" d="M133 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-13-clearance" d="M143 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-13" d="M143 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-14-clearance" d="M153 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-14" d="M153 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-15-clearance" d="M163 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-15" d="M163 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-lcd-16-clearance" d="M173 8V14.5" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-lcd-16" d="M173 8V14.5" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-1-clearance" d="M111 19.9H115.6L117 21.299999999999997" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-1" d="M111 19.9H115.6L117 21.299999999999997" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-2-clearance" d="M111 25.0H115.6L117 26.4" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-2" d="M111 25.0H115.6L117 26.4" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-3-clearance" d="M111 30.099999999999998H115.6L117 31.499999999999996" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-3" d="M111 30.099999999999998H115.6L117 31.499999999999996" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-4-clearance" d="M111 35.199999999999996H115.6L117 36.599999999999994" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-4" d="M111 35.199999999999996H115.6L117 36.599999999999994" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-5-clearance" d="M111 40.3H115.6L117 41.699999999999996" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-5" d="M111 40.3H115.6L117 41.699999999999996" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-6-clearance" d="M111 45.4H115.6L117 46.8" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-6" d="M111 45.4H115.6L117 46.8" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-7-clearance" d="M111 50.5H115.6L117 51.9" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-7" d="M111 50.5H115.6L117 51.9" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-right-8-clearance" d="M111 55.599999999999994H115.6L117 56.99999999999999" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-right-8" d="M111 55.599999999999994H115.6L117 56.99999999999999" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-1-clearance" d="M73 19.9H69.8L68.4 21.299999999999997" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-1" d="M73 19.9H69.8L68.4 21.299999999999997" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-2-clearance" d="M73 25.0H69.8L68.4 26.4" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-2" d="M73 25.0H69.8L68.4 26.4" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-3-clearance" d="M73 30.099999999999998H69.8L68.4 31.499999999999996" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-3" d="M73 30.099999999999998H69.8L68.4 31.499999999999996" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-4-clearance" d="M73 35.199999999999996H69.8L68.4 36.599999999999994" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-4" d="M73 35.199999999999996H69.8L68.4 36.599999999999994" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-5-clearance" d="M73 40.3H69.8L68.4 41.699999999999996" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-5" d="M73 40.3H69.8L68.4 41.699999999999996" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-6-clearance" d="M73 45.4H69.8L68.4 46.8" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-6" d="M73 45.4H69.8L68.4 46.8" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-7-clearance" d="M73 50.5H69.8L68.4 51.9" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-7" d="M73 50.5H69.8L68.4 51.9" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-ic-left-8-clearance" d="M73 55.599999999999994H69.8L68.4 56.99999999999999" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-ic-left-8" d="M73 55.599999999999994H69.8L68.4 56.99999999999999" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-gnd-clearance" d="M172.5 28H169L164 33H159" stroke="#101813" stroke-width="1.5" />
+      <path id="trace-gnd" d="M172.5 28H169L164 33H159" stroke="#354037" stroke-width="0.9" />
+      <path id="trace-vcc-clearance" d="M172.5 38H169L164 43H159" stroke="#101813" stroke-width="1.5" />
+      <path id="trace-vcc" d="M172.5 38H169L164 43H159" stroke="#354037" stroke-width="0.9" />
+      <path id="trace-sda-clearance" d="M172.5 48H169L164 53H159" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-sda" d="M172.5 48H169L164 53H159" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-scl-clearance" d="M172.5 58H169L164 63H159" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-scl" d="M172.5 58H169L164 63H159" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-c1-top-clearance" d="M61 21V18H57" stroke="#101813" stroke-width="1.4" />
+      <path id="trace-c1-top" d="M61 21V18H57" stroke="#354037" stroke-width="0.8" />
+      <path id="trace-c1-bottom-clearance" d="M61 31V35L63 37H65" stroke="#101813" stroke-width="1.4" />
+      <path id="trace-c1-bottom" d="M61 31V35L63 37H65" stroke="#354037" stroke-width="0.8" />
+      <path id="trace-r1-top-clearance" d="M51 21V18H47" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r1-top" d="M51 21V18H47" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r1-bottom-clearance" d="M51 31V34L54 37H59" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r1-bottom" d="M51 31V34L54 37H59" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-led-anode-clearance" d="M34 44V40H38V34" stroke="#101813" stroke-width="1.25" />
+      <path id="trace-led-anode" d="M34 44V40H38V34" stroke="#354037" stroke-width="0.65" />
+      <path id="trace-led-cathode-clearance" d="M34 55V57L35.5 58.5H39" stroke="#101813" stroke-width="1.25" />
+      <path id="trace-led-cathode" d="M34 55V57L35.5 58.5H39" stroke="#354037" stroke-width="0.65" />
+      <path id="trace-transistor-base-clearance" d="M41 36V38L43 40V43" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-transistor-base" d="M41 36V38L43 40V43" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-jumper-upper-clearance" d="M21 31H27L30 28H35" stroke="#101813" stroke-width="1.45" />
+      <path id="trace-jumper-upper" d="M21 31H27L30 28H35" stroke="#354037" stroke-width="0.85" />
+      <path id="trace-jumper-lower-clearance" d="M21 41V50L25 54H28" stroke="#101813" stroke-width="1.45" />
+      <path id="trace-jumper-lower" d="M21 41V50L25 54H28" stroke="#354037" stroke-width="0.85" />
+      <path id="trace-r3-top-clearance" d="M53 43V40H57" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r3-top" d="M53 43V40H57" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r4-top-clearance" d="M63 43V40H65" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r4-top" d="M63 43V40H65" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r2-bottom-clearance" d="M43 53V55L47 59H51" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r2-bottom" d="M43 53V55L47 59H51" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r3-bottom-clearance" d="M53 53V56L55 58H60" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r3-bottom" d="M53 53V56L55 58H60" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r4-bottom-clearance" d="M63 53V56L65 58H70" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r4-bottom" d="M63 53V56L65 58H70" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r5-left-clearance" d="M55 67H50L47 64H45" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r5-left" d="M55 67H50L47 64H45" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r5-right-clearance" d="M65 67H70L74 63H78" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r5-right" d="M65 67H70L74 63H78" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r6-left-clearance" d="M76 67H73L70 70V72" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r6-left" d="M76 67H73L70 70V72" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r6-right-clearance" d="M86 67H90L94 63H98" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r6-right" d="M86 67H90L94 63H98" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r7-left-clearance" d="M97 67H94L91 70V72" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r7-left" d="M97 67H94L91 70V72" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-r7-right-clearance" d="M107 67H112L116 63V60" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-r7-right" d="M107 67H112L116 63V60" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-address-0-upper-clearance" d="M126 59V53" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-address-0-upper" d="M126 59V53" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-address-0-lower-clearance" d="M126 66H128.5L130 64.5V62" stroke="#101813" stroke-width="1.25" />
+      <path id="trace-address-0-lower" d="M126 66H128.5L130 64.5V62" stroke="#354037" stroke-width="0.65" />
+      <path id="trace-address-1-upper-clearance" d="M134 59V53" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-address-1-upper" d="M134 59V53" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-address-1-lower-clearance" d="M134 66H136.5L138 64.5V62" stroke="#101813" stroke-width="1.25" />
+      <path id="trace-address-1-lower" d="M134 66H136.5L138 64.5V62" stroke="#354037" stroke-width="0.65" />
+      <path id="trace-address-2-upper-clearance" d="M142 59V53" stroke="#101813" stroke-width="1.15" />
+      <path id="trace-address-2-upper" d="M142 59V53" stroke="#354037" stroke-width="0.55" />
+      <path id="trace-address-2-lower-clearance" d="M142 66H144.5L146 64.5V62" stroke="#101813" stroke-width="1.25" />
+      <path id="trace-address-2-lower" d="M142 66H144.5L146 64.5V62" stroke="#354037" stroke-width="0.65" />
+    </g>
+    <g id="pcb-vias" inkscape:groupmode="layer" inkscape:label="Plated vias">
+      <g id="via-1">
+        <circle cx="23" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="23" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-2">
+        <circle cx="33" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="33" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-3">
+        <circle cx="43" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="43" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-4">
+        <circle cx="53" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="53" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-5">
+        <circle cx="63" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="63" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-6">
+        <circle cx="73" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="73" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-7">
+        <circle cx="83" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="83" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-8">
+        <circle cx="93" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="93" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-9">
+        <circle cx="103" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="103" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-10">
+        <circle cx="113" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="113" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-11">
+        <circle cx="123" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="123" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-12">
+        <circle cx="133" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="133" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-13">
+        <circle cx="143" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="143" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-14">
+        <circle cx="153" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="153" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-15">
+        <circle cx="163" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="163" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-16">
+        <circle cx="173" cy="14.5" r="0.8" fill="#566352" />
+        <circle cx="173" cy="14.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-17">
+        <circle cx="117" cy="21.299999999999997" r="0.8" fill="#566352" />
+        <circle cx="117" cy="21.299999999999997" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-18">
+        <circle cx="117" cy="26.4" r="0.8" fill="#566352" />
+        <circle cx="117" cy="26.4" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-19">
+        <circle cx="117" cy="31.499999999999996" r="0.8" fill="#566352" />
+        <circle cx="117" cy="31.499999999999996" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-20">
+        <circle cx="117" cy="36.599999999999994" r="0.8" fill="#566352" />
+        <circle cx="117" cy="36.599999999999994" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-21">
+        <circle cx="117" cy="41.699999999999996" r="0.8" fill="#566352" />
+        <circle cx="117" cy="41.699999999999996" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-22">
+        <circle cx="117" cy="46.8" r="0.8" fill="#566352" />
+        <circle cx="117" cy="46.8" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-23">
+        <circle cx="117" cy="51.9" r="0.8" fill="#566352" />
+        <circle cx="117" cy="51.9" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-24">
+        <circle cx="117" cy="56.99999999999999" r="0.8" fill="#566352" />
+        <circle cx="117" cy="56.99999999999999" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-25">
+        <circle cx="68.4" cy="21.299999999999997" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="21.299999999999997" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-26">
+        <circle cx="68.4" cy="26.4" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="26.4" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-27">
+        <circle cx="68.4" cy="31.499999999999996" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="31.499999999999996" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-28">
+        <circle cx="68.4" cy="36.599999999999994" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="36.599999999999994" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-29">
+        <circle cx="68.4" cy="41.699999999999996" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="41.699999999999996" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-30">
+        <circle cx="68.4" cy="46.8" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="46.8" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-31">
+        <circle cx="68.4" cy="51.9" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="51.9" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-32">
+        <circle cx="68.4" cy="56.99999999999999" r="0.8" fill="#566352" />
+        <circle cx="68.4" cy="56.99999999999999" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-33">
+        <circle cx="159" cy="33" r="0.8" fill="#566352" />
+        <circle cx="159" cy="33" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-34">
+        <circle cx="159" cy="43" r="0.8" fill="#566352" />
+        <circle cx="159" cy="43" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-35">
+        <circle cx="159" cy="53" r="0.8" fill="#566352" />
+        <circle cx="159" cy="53" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-36">
+        <circle cx="159" cy="63" r="0.8" fill="#566352" />
+        <circle cx="159" cy="63" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-37">
+        <circle cx="57" cy="18" r="0.8" fill="#566352" />
+        <circle cx="57" cy="18" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-38">
+        <circle cx="65" cy="37" r="0.8" fill="#566352" />
+        <circle cx="65" cy="37" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-39">
+        <circle cx="47" cy="18" r="0.8" fill="#566352" />
+        <circle cx="47" cy="18" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-40">
+        <circle cx="59" cy="37" r="0.8" fill="#566352" />
+        <circle cx="59" cy="37" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-41">
+        <circle cx="39" cy="58.5" r="0.8" fill="#566352" />
+        <circle cx="39" cy="58.5" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-42">
+        <circle cx="28" cy="54" r="0.8" fill="#566352" />
+        <circle cx="28" cy="54" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-43">
+        <circle cx="57" cy="40" r="0.8" fill="#566352" />
+        <circle cx="57" cy="40" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-44">
+        <circle cx="65" cy="40" r="0.8" fill="#566352" />
+        <circle cx="65" cy="40" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-45">
+        <circle cx="51" cy="59" r="0.8" fill="#566352" />
+        <circle cx="51" cy="59" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-46">
+        <circle cx="60" cy="58" r="0.8" fill="#566352" />
+        <circle cx="60" cy="58" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-47">
+        <circle cx="70" cy="58" r="0.8" fill="#566352" />
+        <circle cx="70" cy="58" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-48">
+        <circle cx="45" cy="64" r="0.8" fill="#566352" />
+        <circle cx="45" cy="64" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-49">
+        <circle cx="78" cy="63" r="0.8" fill="#566352" />
+        <circle cx="78" cy="63" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-50">
+        <circle cx="70" cy="72" r="0.8" fill="#566352" />
+        <circle cx="70" cy="72" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-51">
+        <circle cx="98" cy="63" r="0.8" fill="#566352" />
+        <circle cx="98" cy="63" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-52">
+        <circle cx="91" cy="72" r="0.8" fill="#566352" />
+        <circle cx="91" cy="72" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-53">
+        <circle cx="116" cy="60" r="0.8" fill="#566352" />
+        <circle cx="116" cy="60" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-54">
+        <circle cx="126" cy="53" r="0.8" fill="#566352" />
+        <circle cx="126" cy="53" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-55">
+        <circle cx="130" cy="62" r="0.8" fill="#566352" />
+        <circle cx="130" cy="62" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-56">
+        <circle cx="134" cy="53" r="0.8" fill="#566352" />
+        <circle cx="134" cy="53" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-57">
+        <circle cx="138" cy="62" r="0.8" fill="#566352" />
+        <circle cx="138" cy="62" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-58">
+        <circle cx="142" cy="53" r="0.8" fill="#566352" />
+        <circle cx="142" cy="53" r="0.38" fill="#101510" />
+      </g>
+      <g id="via-59">
+        <circle cx="146" cy="62" r="0.8" fill="#566352" />
+        <circle cx="146" cy="62" r="0.38" fill="#101510" />
+      </g>
+    </g>
+    <g id="components" inkscape:groupmode="layer" inkscape:label="Surface mount components">
+      <g id="R1" transform="translate(51 26)">
+        <g transform="rotate(90)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">472</text>
+        </g>
+      </g>
+      <g id="C1" transform="translate(61 26)">
+        <g transform="rotate(90)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#b4a087" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+        </g>
+      </g>
+      <g id="R2" transform="translate(43 48)">
+        <g transform="rotate(90)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">102</text>
+        </g>
+      </g>
+      <g id="R3" transform="translate(53 48)">
+        <g transform="rotate(90)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">472</text>
+        </g>
+      </g>
+      <g id="R4" transform="translate(63 48)">
+        <g transform="rotate(90)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">472</text>
+        </g>
+      </g>
+      <g id="R5" transform="translate(60 67)">
+        <g transform="rotate(0)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">103</text>
+        </g>
+      </g>
+      <g id="R6" transform="translate(81 67)">
+        <g transform="rotate(0)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">103</text>
+        </g>
+      </g>
+      <g id="R7" transform="translate(102 67)">
+        <g transform="rotate(0)">
+          <rect x="-7" y="-3.5" width="14" height="7" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+          <rect x="-5.8" y="-2.3" width="11.6" height="4.6" rx="0.45" fill="#aeb4ad" />
+          <rect x="-3.3" y="-2.2" width="6.6" height="4.4" fill="#333333" />
+          <path d="M-5-1.6H-3.8M3.8-1.6H5" stroke="#eeeeea" stroke-width="0.7" />
+          <text x="-2.7" y="1.1" fill="#e3e6dc" font-family="Consolas,monospace" font-size="2.6">103</text>
+        </g>
+      </g>
+      <g id="pcf8574">
+        <rect x="69.5" y="18.6" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="19.0" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 19.3H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="18.6" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="19.0" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 19.3H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="23.700000000000003" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="24.1" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 24.400000000000002H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="23.700000000000003" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="24.1" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 24.400000000000002H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="28.8" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="29.2" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 29.5H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="28.8" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="29.2" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 29.5H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="33.9" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="34.3" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 34.599999999999994H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="33.9" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="34.3" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 34.599999999999994H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="39.0" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="39.4" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 39.699999999999996H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="39.0" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="39.4" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 39.699999999999996H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="44.1" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="44.5" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 44.8H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="44.1" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="44.5" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 44.8H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="49.199999999999996" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="49.599999999999994" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 49.89999999999999H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="49.199999999999996" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="49.599999999999994" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 49.89999999999999H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="69.5" y="54.3" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="70" y="54.699999999999996" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M70.5 54.99999999999999H75.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="107.5" y="54.3" width="6.5" height="2.6" rx="0.6" fill="#9ca49a" stroke="#080c09" stroke-width="0.35" />
+        <rect x="108" y="54.699999999999996" width="6" height="1.8" rx="0.3" fill="#b9b4b8" />
+        <path d="M108.5 54.99999999999999H113.5" stroke="#eeeeea" stroke-width="0.55" />
+        <rect x="76" y="16" width="32" height="43" rx="0.7" fill="#191919" />
+        <rect x="77" y="17" width="30" height="41" fill="#333333" />
+        <path d="M77 17H107" stroke="#626662" stroke-width="0.65" />
+        <circle cx="80" cy="20" r="1.1" fill="#1f2320" />
+        <g id="ic-lettering" transform="translate(92 37.5) rotate(90)" font-family="Consolas,monospace" text-anchor="middle">
+          <text x="0" y="-1" font-size="4.4" fill="#858a80">PCF8574T</text>
+          <text x="0" y="5.5" font-size="3.3" fill="#737b72">NXP</text>
+        </g>
+      </g>
+      <g id="transistor">
+        <rect x="34" y="26" width="3" height="4" fill="#b9b4b8" />
+        <rect x="33" y="35" width="3" height="3" fill="#b9b4b8" />
+        <rect x="40" y="35" width="3" height="3" fill="#b9b4b8" />
+        <rect x="32" y="30" width="12" height="5" rx="0.5" fill="#333333" />
+      </g>
+      <g id="power-led">
+        <rect x="29" y="42" width="10" height="15" fill="none" stroke="#d3d8cd" stroke-width="0.6" />
+        <rect x="32" y="43" width="4" height="13" rx="0.5" fill="#b9b4b8" />
+        <rect x="31" y="46" width="6" height="7" fill="#b5c9a7" />
+        <rect x="32.2" y="47.2" width="3.6" height="4.6" fill="#dedfd0" />
+      </g>
+    </g>
+    <g id="contrast-trimmer" inkscape:groupmode="layer" inkscape:label="Contrast trimmer">
+      <rect x="118" y="18" width="34" height="32" rx="0.7" fill="#191919" />
+      <rect x="121" y="17" width="29" height="31" rx="0.8" fill="#2455a8" />
+      <rect x="120" y="18" width="30" height="29" rx="0.6" fill="#337dce" />
+      <path d="M121 46V19H149" fill="none" stroke="#639bd9" stroke-width="0.8" />
+      <circle cx="135" cy="32" r="7.4" fill="#1d4075" />
+      <circle cx="135" cy="32" r="6.1" fill="#b1b1a1" />
+      <path d="M131 27.5A6 6 0 0 1 140.2 29" fill="none" stroke="#e3e1cb" stroke-width="1" />
+      <path d="M133.8 26H136.2V30.8H140.8V33.2H136.2V38H133.8V33.2H129.2V30.8H133.8Z" fill="#333333" />
+      <circle cx="123" cy="43" r="1.2" fill="#d7d4bc" />
+      <text id="pot-value" x="135" y="44" text-anchor="middle" fill="#173d77" font-family="Consolas,monospace" font-size="3.8" font-weight="bold" transform="rotate(180 135 42.7)">10K</text>
+    </g>
+    <g id="address-pads" inkscape:groupmode="layer" inkscape:label="Address solder pads">
+      <rect id="A0-pad-57" x="124.2" y="57" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M125 57.6H127" stroke="#e3e6dc" stroke-width="0.5" />
+      <rect id="A0-pad-64" x="124.2" y="64" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M125 64.6H127" stroke="#e3e6dc" stroke-width="0.5" />
+      <text x="122" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.5" transform="rotate(180 124.7 73.425)">A0</text>
+      <rect id="A1-pad-57" x="132.2" y="57" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M133 57.6H135" stroke="#e3e6dc" stroke-width="0.5" />
+      <rect id="A1-pad-64" x="132.2" y="64" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M133 64.6H135" stroke="#e3e6dc" stroke-width="0.5" />
+      <text x="130" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.5" transform="rotate(180 132.7 73.425)">A1</text>
+      <rect id="A2-pad-57" x="140.2" y="57" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M141 57.6H143" stroke="#e3e6dc" stroke-width="0.5" />
+      <rect id="A2-pad-64" x="140.2" y="64" width="3.6" height="4" rx="0.35" fill="#a8aea6" stroke="#424c45" stroke-width="0.5" />
+      <path d="M141 64.6H143" stroke="#e3e6dc" stroke-width="0.5" />
+      <text x="138" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.5" transform="rotate(180 140.7 73.425)">A2</text>
+    </g>
+    <g id="backlight-jumper" inkscape:groupmode="layer" inkscape:label="LED jumper">
+      <rect x="17" y="26" width="11" height="21" fill="none" stroke="#d3d8cd" stroke-width="0.7" />
+      <rect x="17" y="28" width="9" height="17" rx="0.5" fill="#333333" />
+      <g id="jumper-contacts" fill="#b9b4b8">
+        <rect x="17" y="30" width="6" height="2.5" rx="0.3" />
+        <rect x="17" y="40" width="6" height="2.5" rx="0.3" />
+      </g>
+      <g id="jumper-cap">
+        <rect id="jumper-closed-base" x="2" y="27" width="19.5" height="19" rx="0.35" fill="#181818" />
+        <path d="M2 27H21.5V46H2V40H5.5Q8 40 8 37.5V35.5Q8 33 5.5 33H2Z" fill="#202020" />
+        <path d="M3 28H20.5V45H3V40.8H5.5Q8.8 40.8 8.8 37.5V35.5Q8.8 32.2 5.5 32.2H3Z" fill="#303030" />
+        <path d="M3 28H20.5V45" fill="none" stroke="#4b4b4b" stroke-width="0.65" />
+        <path d="M2 27V46H21.5" fill="none" stroke="#131313" stroke-width="0.7" />
+        <path id="jumper-metal-bridge" d="M3.8 32.4V40.6" fill="none" stroke="#ad9b67" stroke-width="1.2" stroke-linecap="square" />
+        <path d="M3.45 32.7V40.3" fill="none" stroke="#dfd1a0" stroke-width="0.4" />
+        <path d="M18.5 29V44" stroke="#262626" stroke-width="0.6" />
+        <path d="M3 28V32M3 41V45" stroke="#454545" stroke-width="0.8" />
+      </g>
+    </g>
+    <g id="labels" inkscape:groupmode="layer" inkscape:label="Silkscreen">
+      <text x="18" y="24" fill="#e3e6dc" font-family="Consolas,monospace" font-size="5" transform="rotate(180 22.5 22.25)">LED</text>
+      <text x="25" y="62" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.6" transform="rotate(180 31.9 60.39)">POWER</text>
+      <text x="21" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="3.5" transform="rotate(180 22.05 73.775)">K</text>
+      <text x="156" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="3.8" transform="rotate(180 162.84 73.67)">HW-061</text>
+      <text x="110" y="75" fill="#e3e6dc" font-family="Consolas,monospace" font-size="3.2" text-anchor="middle" transform="rotate(180 110 73.9)">LCD-I2C</text>
+    </g>
+    <g id="lcd-header" inkscape:groupmode="layer" inkscape:label="LCD female header">
+      <rect x="18" y="3" width="160" height="10" rx="0.8" fill="#333333" />
+      <g transform="translate(23 8)" id="pin-LCD-1" data-pin="LCD-1" data-terminal-x="159.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(33 8)" id="pin-LCD-2" data-pin="LCD-2" data-terminal-x="149.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(43 8)" id="pin-LCD-3" data-pin="LCD-3" data-terminal-x="139.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(53 8)" id="pin-LCD-4" data-pin="LCD-4" data-terminal-x="129.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(63 8)" id="pin-LCD-5" data-pin="LCD-5" data-terminal-x="119.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(73 8)" id="pin-LCD-6" data-pin="LCD-6" data-terminal-x="109.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(83 8)" id="pin-LCD-7" data-pin="LCD-7" data-terminal-x="99.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(93 8)" id="pin-LCD-8" data-pin="LCD-8" data-terminal-x="89.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(103 8)" id="pin-LCD-9" data-pin="LCD-9" data-terminal-x="79.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(113 8)" id="pin-LCD-10" data-pin="LCD-10" data-terminal-x="69.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(123 8)" id="pin-LCD-11" data-pin="LCD-11" data-terminal-x="59.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(133 8)" id="pin-LCD-12" data-pin="LCD-12" data-terminal-x="49.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(143 8)" id="pin-LCD-13" data-pin="LCD-13" data-terminal-x="39.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(153 8)" id="pin-LCD-14" data-pin="LCD-14" data-terminal-x="29.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(163 8)" id="pin-LCD-15" data-pin="LCD-15" data-terminal-x="19.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <g transform="translate(173 8)" id="pin-LCD-16" data-pin="LCD-16" data-terminal-x="9.0" data-terminal-y="74.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+    </g>
+    <g id="i2c-header" inkscape:groupmode="layer" inkscape:label="I2C female header">
+      <rect x="167" y="23" width="11" height="40" rx="0.8" fill="#333333" />
+      <g transform="translate(172.5 28)" id="pin-GND" data-pin="GND" data-terminal-x="9.5" data-terminal-y="54.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <text x="153" y="29.8" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.7" transform="translate(4 0) rotate(180 157.23 28.155)">GND</text>
+      <g transform="translate(172.5 38)" id="pin-VCC" data-pin="VCC" data-terminal-x="9.5" data-terminal-y="44.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <text x="153" y="39.8" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.7" transform="translate(4 0) rotate(180 157.23 38.154999999999994)">VCC</text>
+      <g transform="translate(172.5 48)" id="pin-SDA" data-pin="SDA" data-terminal-x="9.5" data-terminal-y="34.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <text x="153" y="49.8" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.7" transform="translate(4 0) rotate(180 157.23 48.154999999999994)">SDA</text>
+      <g transform="translate(172.5 58)" id="pin-SCL" data-pin="SCL" data-terminal-x="9.5" data-terminal-y="24.0">
+        <path opacity="0.15" fill="#ffffff" d="m 1.5,-1.5 v 3 L 3.206,3.206 C 3.387,3.025 3.5,2.775 3.5,2.5 v -5 c 0,-0.275 -0.113,-0.525 -0.294,-0.706 z" />
+        <path opacity="0.3" fill="#ffffff" d="m 1.5,1.5 h -3 L -3.206,3.206 C -3.025,3.387 -2.775,3.5 -2.5,3.5 h 5 c 0.275,0 0.525,-0.112 0.706,-0.294 z" />
+        <path opacity="0.25" d="M -1.5,-1.5 -3.206,-3.206 C -3.387,-3.025 -3.5,-2.775 -3.5,-2.5 v 5 c 0,0.275 0.112,0.525 0.294,0.706 L -1.5,1.5 Z" />
+        <path opacity="0.35" d="M -3.206,-3.206 -1.5,-1.5 h 3 L 3.206,-3.206 C 3.025,-3.387 2.775,-3.5 2.5,-3.5 h -5 c -0.275,0 -0.525,0.112 -0.706,0.294 z" />
+        <rect x="-1.5" y="-1.5" fill="#191919" width="3" height="3" />
+      </g>
+      <text x="153" y="59.8" fill="#e3e6dc" font-family="Consolas,monospace" font-size="4.7" transform="translate(4 0) rotate(180 157.23 58.154999999999994)">SCL</text>
+    </g>
+  </g>
+</svg>

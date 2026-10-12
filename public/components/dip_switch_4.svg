@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="-1000 -1000 44.5 39.5"
+   version="1.1"
+   id="svg44"
+   sodipodi:docname="dip_switch_4.svg"
+   width="44.5"
+   height="39.5"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs44" />
+  <sodipodi:namedview
+     id="namedview44"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="10.088"
+     inkscape:cx="38.758922"
+     inkscape:cy="27.805313"
+     inkscape:window-width="2560"
+     inkscape:window-height="1521"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg44" />
+  <rect
+     fill="#177cce"
+     stroke="#125f93"
+     stroke-width="0.5"
+     x="-999.75"
+     y="-999.75"
+     width="44"
+     height="39"
+     rx="1"
+     id="rect1" />
+  <circle
+     cx="-992.75"
+     cy="-995.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle1" />
+  <circle
+     cx="-982.75"
+     cy="-995.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle2" />
+  <circle
+     cx="-972.75"
+     cy="-995.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle3" />
+  <circle
+     cx="-962.75"
+     cy="-995.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle4" />
+  <circle
+     cx="-992.75"
+     cy="-965.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle5" />
+  <circle
+     cx="-982.75"
+     cy="-965.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle6" />
+  <circle
+     cx="-972.75"
+     cy="-965.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle7" />
+  <circle
+     cx="-962.75"
+     cy="-965.25"
+     r="1"
+     fill="none"
+     stroke-width="0.35"
+     stroke="#125f93"
+     id="circle8" />
+  <g
+     fill="#e8f1f7"
+     id="g13"
+     transform="translate(-977.75,-980.25)">
+    <path
+       d="m -13.357,-11.993 c 0,1.404 -0.945,2.35 -2.34,2.35 -1.404,0 -2.35,-0.946 -2.35,-2.35 v -2.188 c 0,-1.404 0.946,-2.35 2.35,-2.35 1.395,0 2.34,0.946 2.34,2.35 z m -1.012,-2.245 c 0,-0.85 -0.478,-1.356 -1.328,-1.356 -0.851,0 -1.337,0.506 -1.337,1.356 v 2.302 c 0,0.85 0.487,1.356 1.337,1.356 0.85,0 1.328,-0.506 1.328,-1.356 z"
+       id="path8" />
+    <path
+       d="m -10.935,-14.352 v 4.212 c 0,0.277 -0.229,0.497 -0.497,0.497 -0.277,0 -0.516,-0.22 -0.516,-0.497 v -5.836 c 0,-0.306 0.268,-0.554 0.554,-0.554 0.21,0 0.392,0.105 0.487,0.277 l 2.512,4.432 v -4.212 c 0,-0.277 0.239,-0.497 0.516,-0.497 0.268,0 0.497,0.22 0.497,0.497 v 5.836 c 0,0.315 -0.268,0.554 -0.554,0.554 -0.21,0 -0.382,-0.125 -0.478,-0.287 z"
+       id="path9" />
+    <path
+       d="m -15.193,10.858 -0.798,0.461 c -0.071,0.044 -0.177,0.08 -0.257,0.08 -0.248,0 -0.434,-0.195 -0.434,-0.435 0,-0.16 0.08,-0.301 0.23,-0.39 l 1.401,-0.807 c 0.08,-0.044 0.168,-0.071 0.257,-0.071 0.284,0 0.514,0.23 0.514,0.514 v 5.417 c 0,0.257 -0.204,0.461 -0.452,0.461 -0.257,0 -0.461,-0.204 -0.461,-0.461 z"
+       id="path10" />
+    <path
+       d="m -6.331,16 c -0.284,0 -0.514,-0.23 -0.514,-0.514 0,-0.115 0.044,-0.239 0.115,-0.328 l 2.234,-2.686 c 0.257,-0.311 0.372,-0.594 0.372,-0.975 0,-0.523 -0.337,-0.958 -0.913,-0.958 -0.381,0 -0.665,0.053 -1.046,0.248 -0.071,0.036 -0.142,0.071 -0.23,0.071 -0.23,0 -0.443,-0.177 -0.443,-0.417 0,-0.16 0.088,-0.319 0.248,-0.399 0.541,-0.284 0.975,-0.346 1.472,-0.346 0.532,0 0.993,0.177 1.321,0.514 0.337,0.337 0.505,0.798 0.505,1.33 0,0.692 -0.328,1.117 -0.621,1.499 -0.15,0.195 -1.135,1.356 -1.737,2.092 H -3.6 c 0.257,0 0.452,0.186 0.452,0.425 C -3.149,15.814 -3.343,16 -3.601,16 Z"
+       id="path11" />
+    <path
+       d="m 4.683,13.225 c -0.257,0 -0.461,-0.195 -0.461,-0.452 0,-0.248 0.204,-0.452 0.461,-0.452 h 0.115 c 0.585,0 1.064,-0.39 1.064,-0.86 0,-0.541 -0.337,-0.922 -0.922,-0.922 -0.372,0 -0.683,0.053 -1.063,0.239 -0.062,0.036 -0.142,0.053 -0.213,0.053 -0.222,0 -0.435,-0.177 -0.435,-0.417 0,-0.168 0.089,-0.319 0.249,-0.399 0.54,-0.265 0.975,-0.318 1.462,-0.318 0.532,0 0.984,0.168 1.321,0.488 0.337,0.319 0.514,0.762 0.514,1.276 0,0.505 -0.23,0.949 -0.647,1.276 0.514,0.346 0.825,0.869 0.825,1.463 0,1.108 -0.825,1.889 -2.013,1.889 -0.576,0 -1.055,-0.115 -1.516,-0.328 -0.16,-0.08 -0.257,-0.222 -0.257,-0.399 0,-0.239 0.204,-0.426 0.461,-0.426 0.062,0 0.133,0.027 0.195,0.053 0.337,0.16 0.683,0.257 1.117,0.257 0.532,0 1.1,-0.328 1.1,-1.046 0,-0.532 -0.532,-0.975 -1.188,-0.975 z"
+       id="path12" />
+    <path
+       d="m 16.043,14.724 v 0.913 c 0,0.257 -0.204,0.452 -0.461,0.452 -0.249,0 -0.452,-0.195 -0.452,-0.452 v -0.913 h -1.755 c -0.275,0 -0.514,-0.195 -0.514,-0.488 0,-0.053 0.009,-0.115 0.035,-0.177 l 1.507,-4.061 c 0.071,-0.186 0.239,-0.301 0.443,-0.301 0.239,0 0.425,0.204 0.425,0.461 0,0.053 -0.009,0.106 -0.026,0.16 l -1.339,3.537 h 1.224 v -0.886 c 0,-0.257 0.204,-0.461 0.452,-0.461 0.257,0 0.461,0.204 0.461,0.461 v 0.886 h 0.532 c 0.248,0 0.443,0.186 0.443,0.435 0,0.248 -0.195,0.435 -0.443,0.435 h -0.532 z"
+       id="path13" />
+  </g>
+  <g
+     class="cgfx__switch1"
+     transform="translate(-992.75,-980.25)"
+     id="g16">
+    <rect
+       x="-2.7"
+       y="-7.25"
+       fill="#c1d5e0"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="14.5"
+       id="rect13" />
+    <rect
+       class="cgfx__toggle-off"
+       display="inline"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect14" />
+    <rect
+       class="cgfx__toggle-on"
+       transform="translate(0,-8.5)"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect15" />
+    <rect
+       class="cgfx__hitarea-interaction cgfx__switch1"
+       style="fill:#ff0000"
+       opacity="0"
+       display="none"
+       x="-2.7"
+       y="-7.25"
+       width="5.4000001"
+       height="14.5"
+       id="rect16" />
+  </g>
+  <g
+     class="cgfx__switch2"
+     transform="translate(-982.75,-980.25)"
+     id="g20">
+    <rect
+       x="-2.7"
+       y="-7.25"
+       fill="#c1d5e0"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="14.5"
+       id="rect17" />
+    <rect
+       class="cgfx__toggle-off"
+       display="inline"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect18" />
+    <rect
+       class="cgfx__toggle-on"
+       transform="translate(0,-8.5)"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect19" />
+    <rect
+       class="cgfx__hitarea-interaction cgfx__switch2"
+       style="fill:#ff0000"
+       opacity="0"
+       display="none"
+       x="-2.7"
+       y="-7.25"
+       width="5.4000001"
+       height="14.5"
+       id="rect20" />
+  </g>
+  <g
+     class="cgfx__switch3"
+     transform="translate(-972.75,-980.25)"
+     id="g24">
+    <rect
+       x="-2.7"
+       y="-7.25"
+       fill="#c1d5e0"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="14.5"
+       id="rect21" />
+    <rect
+       class="cgfx__toggle-off"
+       display="inline"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect22" />
+    <rect
+       class="cgfx__toggle-on"
+       transform="translate(0,-8.5)"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect23" />
+    <rect
+       class="cgfx__hitarea-interaction cgfx__switch3"
+       style="fill:#ff0000"
+       opacity="0"
+       display="none"
+       x="-2.7"
+       y="-7.25"
+       width="5.4000001"
+       height="14.5"
+       id="rect24" />
+  </g>
+  <g
+     class="cgfx__switch4"
+     transform="translate(-962.75,-980.25)"
+     id="g28">
+    <rect
+       x="-2.7"
+       y="-7.25"
+       fill="#c1d5e0"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="14.5"
+       id="rect25" />
+    <rect
+       class="cgfx__toggle-off"
+       display="inline"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect26" />
+    <rect
+       class="cgfx__toggle-on"
+       transform="translate(0,-8.5)"
+       x="-2.7"
+       y="1.25"
+       fill="#ffffff"
+       stroke="#125f93"
+       stroke-width="0.5"
+       width="5.4000001"
+       height="6"
+       id="rect27" />
+    <rect
+       class="cgfx__hitarea-interaction cgfx__switch4"
+       style="fill:#ff0000"
+       opacity="0"
+       display="none"
+       x="-2.7"
+       y="-7.25"
+       width="5.4000001"
+       height="14.5"
+       id="rect28" />
+  </g>
+  <rect
+     class="cgfx__hitarea"
+     style="fill:#ff0000"
+     opacity="0"
+     display="none"
+     x="-999.75"
+     y="-999.75"
+     width="44"
+     height="39"
+     rx="1"
+     id="rect29" />
+  <g
+     class="cgfx__terminal"
+     id="g30"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc29">1B</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc30">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g32"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc31">2B</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc32">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g34"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc33">3B</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc34">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g36"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc35">4B</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc36">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g38"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc37">1A</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc38">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g40"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc39">2A</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc40">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g42"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc41">3A</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc42">breadboard</desc>
+  </g>
+  <g
+     class="cgfx__terminal"
+     id="g44"
+     transform="translate(-977.75,-980.25)">
+    <desc
+       class="cgfx__terminalname"
+       id="desc43">4A</desc>
+    <desc
+       class="cgfx__terminaltype"
+       id="desc44">breadboard</desc>
+  </g>
+</svg>

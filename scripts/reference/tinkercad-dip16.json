@@ -1,0 +1,104 @@
+{
+  "footprintId": null,
+  "footprintName": "L293D DIP16",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_DIP16_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-dip16.svg",
+  "terminals": [
+    {
+      "name": "Enable 1 & 2",
+      "x": -35,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Input 1",
+      "x": -25,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Output 1",
+      "x": -15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Ground",
+      "x": -5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Ground",
+      "x": 5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Output 2",
+      "x": 15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Input 2",
+      "x": 25,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Power 2",
+      "x": 35,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "Enable 3 & 4",
+      "x": 35,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Input 3",
+      "x": 25,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Output 3",
+      "x": 15,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Ground",
+      "x": 5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Ground",
+      "x": -5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Output 4",
+      "x": -15,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Input 4",
+      "x": -25,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "Power 1",
+      "x": -35,
+      "y": -15,
+      "dir": -90
+    }
+  ]
+}

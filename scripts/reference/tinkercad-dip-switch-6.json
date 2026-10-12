@@ -1,0 +1,80 @@
+{
+  "footprintId": null,
+  "footprintName": "DIP Switch 6",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_DipDpstX6_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-dip-switch-6.svg",
+  "terminals": [
+    {
+      "name": "1B",
+      "x": -25,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "2B",
+      "x": -15,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "3B",
+      "x": -5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "4B",
+      "x": 5,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "5B",
+      "x": 15,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "6B",
+      "x": 25,
+      "y": -15,
+      "dir": -90
+    },
+    {
+      "name": "1A",
+      "x": -25,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "2A",
+      "x": -15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "3A",
+      "x": -5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "4A",
+      "x": 5,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "5A",
+      "x": 15,
+      "y": 15,
+      "dir": 90
+    },
+    {
+      "name": "6A",
+      "x": 25,
+      "y": 15,
+      "dir": 90
+    }
+  ]
+}

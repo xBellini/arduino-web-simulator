@@ -1,0 +1,104 @@
+{
+  "footprintId": null,
+  "footprintName": "LCD 16 x 2",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_16x2LCD_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-lcd-16x2.svg",
+  "terminals": [
+    {
+      "name": "Ground",
+      "x": -130,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "Power",
+      "x": -120,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "Contrast",
+      "x": -110,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "Register Select",
+      "x": -100,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "Read/Write",
+      "x": -90,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "Enable",
+      "x": -80,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB0",
+      "x": -70,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB1",
+      "x": -60,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB2",
+      "x": -50,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB3",
+      "x": -40,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB4",
+      "x": -30,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB5",
+      "x": -20,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB6",
+      "x": -10,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "DB7",
+      "x": 0,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "LED Anode",
+      "x": 10,
+      "y": -65,
+      "dir": -90
+    },
+    {
+      "name": "LED Cathode",
+      "x": 20,
+      "y": -65,
+      "dir": -90
+    }
+  ]
+}

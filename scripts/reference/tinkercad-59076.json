@@ -1,0 +1,26 @@
+{
+  "footprintId": 59076,
+  "footprintName": "TO220",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/59076.json",
+  "svgOut": "scripts\\reference\\tinkercad-59076.svg",
+  "terminals": [
+    {
+      "name": "Source",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Drain",
+      "x": 0,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Gate",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

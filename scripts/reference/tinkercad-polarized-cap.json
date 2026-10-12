@@ -1,0 +1,20 @@
+{
+  "footprintId": null,
+  "footprintName": "E45-21",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_PolarizedCapacitor_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-polarized-cap.svg",
+  "terminals": [
+    {
+      "name": "Negative",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Positive",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

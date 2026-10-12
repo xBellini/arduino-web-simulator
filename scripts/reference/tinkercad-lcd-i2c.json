@@ -1,0 +1,32 @@
+{
+  "footprintId": null,
+  "footprintName": "LCD 16 x 2 (I2C) connector",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_16x2LCDI2C_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-lcd-i2c.svg",
+  "terminals": [
+    {
+      "name": "Ground",
+      "x": -162.5,
+      "y": -46,
+      "dir": 180
+    },
+    {
+      "name": "Power",
+      "x": -162.5,
+      "y": -36,
+      "dir": 180
+    },
+    {
+      "name": "SDA",
+      "x": -162.5,
+      "y": -26,
+      "dir": 180
+    },
+    {
+      "name": "SCL",
+      "x": -162.5,
+      "y": -16,
+      "dir": 180
+    }
+  ]
+}

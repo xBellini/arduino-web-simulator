@@ -1,0 +1,13 @@
+{
+  "footprintId": 116691,
+  "footprintName": "LDR",
+  "deviceName": "Photoresistor (LDR)",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/116691.json",
+  "svgOut": "scripts/reference/tinkercad-ldr.svg",
+  "publicSvg": "public/components/ldr.svg",
+  "crop": { "width": 26, "height": 30, "originX": 0, "originY": -13, "script": "scripts/crop-tinkercad-components.mjs" },
+  "terminals": [
+    { "name": "Terminal 1", "pinId": "1", "x": -5, "y": 0, "dir": 90 },
+    { "name": "Terminal 2", "pinId": "2", "x": 5, "y": 0, "dir": 90 }
+  ]
+}

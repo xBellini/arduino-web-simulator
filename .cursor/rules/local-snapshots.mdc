@@ -1,0 +1,27 @@
+---
+description: Local backup snapshots — max 10, prune oldest automatically
+alwaysApply: true
+---
+
+# Local snapshots (backup-local.ps1)
+
+This project uses **dated folder copies** next to the repo (`../arduino-simulator-backup-YYYY-MM-DD_HHmm`), not git tags.
+
+## Retention
+
+- **Keep at most 10** snapshot folders.
+- After creating a snapshot, **delete the oldest** until only 10 remain.
+- Sort order: folder name (timestamp suffix), oldest first.
+
+## When the user asks for a snapshot / backup
+
+1. Prefer `Backup.bat` (double-clickable; stable path for antivirus). Equivalent: `.\backup-local.ps1` from the project root. Never copy `node_modules` or `dist` manually.
+2. The script creates the backup **and** prunes extras — do not skip pruning.
+3. Do **not** invent agent-only temp scripts for backup — use `Backup.bat` / `backup-local.ps1`. Note: Cursor’s Shell tool may still wrap commands in `%TEMP%\ps-script-*.ps1`; for Avast-free runs, the user double-clicks `Backup.bat` (or you ask them to).
+4. Do not create ad-hoc duplicate backups outside the `arduino-simulator-backup-*` naming pattern.
+5. README: do not invent a snapshot inventory — point to `backup-local.ps1` / this rule only (see `readme-updates.mdc`).
+
+## Do not
+
+- Accumulate unlimited snapshots in the parent folder.
+- Ask the user to delete old backups manually unless the script fails.

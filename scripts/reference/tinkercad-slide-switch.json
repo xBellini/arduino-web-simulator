@@ -1,0 +1,26 @@
+{
+  "footprintId": null,
+  "footprintName": "SWITCH-SPDT",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_SlideSwitch_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-slide-switch.svg",
+  "terminals": [
+    {
+      "name": "Terminal 1",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Terminal 2",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Common",
+      "x": 0,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

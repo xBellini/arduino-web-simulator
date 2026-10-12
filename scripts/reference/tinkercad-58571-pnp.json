@@ -1,0 +1,26 @@
+{
+  "footprintId": 58571,
+  "footprintName": "TO92-EBC",
+  "source": "https://editor.tinkercad.com/assets_30ucufg/js/packaged_devices/58571.json",
+  "svgOut": "scripts\\reference\\tinkercad-58571-pnp.svg",
+  "terminals": [
+    {
+      "name": "Collector",
+      "x": 10,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Base",
+      "x": 0,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Emitter",
+      "x": -10,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

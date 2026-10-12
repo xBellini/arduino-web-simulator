@@ -1,0 +1,32 @@
+{
+  "footprintId": null,
+  "footprintName": "5MM-RGB-LED",
+  "source": "C:\\Users\\sergi\\Downloads\\TinkerCAD_RBGLed_SVG.json",
+  "svgOut": "scripts\\reference\\tinkercad-rgb-led.svg",
+  "terminals": [
+    {
+      "name": "Red",
+      "x": -15,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Cathode",
+      "x": -5,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Blue",
+      "x": 5,
+      "y": 0,
+      "dir": 90
+    },
+    {
+      "name": "Green",
+      "x": 15,
+      "y": 0,
+      "dir": 90
+    }
+  ]
+}

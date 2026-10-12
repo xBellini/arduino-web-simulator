@@ -1,0 +1,87 @@
+/**
+ * What: ZS-042 style DS3231 + AT24C32 RTC module — footprint, dual I2C headers, TWI slaves.
+ * Role: PartModule packaging around the datasheet DS3231 and AT24C32 ICs. No on-module
+ * display; sketches talk to it over Wire (Uno SDA/SCL). Left 6-pin and right 4-pin headers
+ * share SCL/SDA/VCC/GND copper.
+ * Owns/exports: `ds3231RtcModule`, `DS3231_RTC_TYPE`, `isDs3231RtcType`,
+ * `createDs3231ModuleSlaves`.
+ * Conventions: Artwork is `public/components/ds3231_rtc.svg` (viewBox 0 0 182 110).
+ * Pin x/y match that file's `data-terminal-*` (left x=7, right x=172, 12-unit pitch).
+ * Left header top→bottom: 32K, SQW, SCL, SDA, VCC, GND. Right header: SCL, SDA, VCC, GND.
+ * RTC @ 0x68, EEPROM @ 0x57. SQW/32K are not driven. Ideal I2C (no pull-up SPICE).
+ * Not-here: IC register maps — `src/avr/ds3231.ts` and `src/avr/at24c32.ts`.
+ *
+ * Changelog:
+ * - 09-10-2026 — Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
+ * - 09-10-2026 — DS3231 RTC module (I2C + AT24C32)
+ */
+import type { PartModule } from '../partModule';
+import type { TwiSlave } from '../../avr/twiBus';
+import { CPU_FREQ_HZ } from '../../avr/runner';
+import {
+  DS3231_I2C_ADDR,
+  createDs3231,
+  createDs3231TwiSlave,
+  type Ds3231,
+} from '../../avr/ds3231';
+import {
+  AT24C32_I2C_ADDR,
+  createAt24c32,
+  createAt24c32TwiSlave,
+} from '../../avr/at24c32';
+
+export const DS3231_RTC_TYPE = 'ds3231_rtc';
+export { DS3231_I2C_ADDR, AT24C32_I2C_ADDR };
+
+export function isDs3231RtcType(type: string): boolean {
+  return type === DS3231_RTC_TYPE;
+}
+
+export function createDs3231ModuleSlaves(wallClock = new Date()): {
+  rtc: TwiSlave;
+  eeprom: TwiSlave;
+  core: Ds3231;
+} {
+  const core = createDs3231({
+    wallClock,
+    startCycle: 0,
+    cyclesPerSecond: CPU_FREQ_HZ,
+  });
+  return {
+    rtc: createDs3231TwiSlave(core),
+    eeprom: createAt24c32TwiSlave(createAt24c32()),
+    core,
+  };
+}
+
+/** Left/right header pairs that are the same PCB net. */
+const HEADER_SHORTS: ReadonlyArray<readonly [string, string]> = [
+  ['scl', 'scl_r'],
+  ['sda', 'sda_r'],
+  ['vcc', 'vcc_r'],
+  ['gnd', 'gnd_r'],
+];
+
+export const ds3231RtcModule: PartModule = {
+  type: DS3231_RTC_TYPE,
+  internalPinShorts: HEADER_SHORTS,
+
+  definition: {
+    type: DS3231_RTC_TYPE,
+    label: 'DS3231 RTC',
+    scale: 2,
+    artwork: '/components/ds3231_rtc.svg',
+    pins: [
+      { id: '32k', description: '32K', x: 7, y: 26, type: 'digital' },
+      { id: 'sqw', description: 'SQW', x: 7, y: 38, type: 'digital' },
+      { id: 'scl', description: 'SCL', x: 7, y: 50, type: 'digital' },
+      { id: 'sda', description: 'SDA', x: 7, y: 62, type: 'digital' },
+      { id: 'vcc', description: 'VCC', x: 7, y: 74, type: 'power' },
+      { id: 'gnd', description: 'GND', x: 7, y: 86, type: 'ground' },
+      { id: 'scl_r', description: 'SCL', x: 172, y: 36, type: 'digital' },
+      { id: 'sda_r', description: 'SDA', x: 172, y: 48, type: 'digital' },
+      { id: 'vcc_r', description: 'VCC', x: 172, y: 60, type: 'power' },
+      { id: 'gnd_r', description: 'GND', x: 172, y: 72, type: 'ground' },
+    ],
+  },
+};
