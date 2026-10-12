@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="182" height="110" viewBox="0 0 182 110" role="img" aria-labelledby="title description">
+<title id="title">DS3231 RTC module</title><desc id="description">Editable top view of a blue DS3231 real-time clock module, with DS3231 RTC IC, AT24C32 EEPROM, power LED, resistors, capacitors, diode, resistor arrays, address jumpers, silkscreen and four mounting holes. Six female sockets at left: 32K, SQW, SCL, SDA, VCC, GND. Four plated expansion holes at right: SCL, SDA, VCC, GND.</desc>
+<g id="pcb" inkscape:groupmode="layer" inkscape:label="Blue PCB"><path d="M7 2H175L180 7V102L175 108H7L2 102V9ZM32.2 9a4.8 4.8 0 1 0 9.6 0a4.8 4.8 0 1 0-9.6 0ZM32.2 101a4.8 4.8 0 1 0 9.6 0a4.8 4.8 0 1 0-9.6 0ZM158.2 9a4.8 4.8 0 1 0 9.6 0a4.8 4.8 0 1 0-9.6 0ZM172 36m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0ZM172 48m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0ZM172 60m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0ZM172 72m-2.2 0a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0-4.4 0Z" fill="#174479" fill-rule="evenodd" stroke="#2c628c" stroke-width="0.6" /></g>
+<g id="copper" inkscape:groupmode="layer" inkscape:label="PCB traces" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path id="trace-32k" d="M7 26H27L34 33V45" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M7 26H27L34 33V45" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-sqw" d="M7 38H24L31 45V49" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M7 38H24L31 45V49" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-scl" d="M7 50H21L29 58H35" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M7 50H21L29 58H35" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-sda" d="M7 62H23L28 67H39" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M7 62H23L28 67H39" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-vcc" d="M7 74H47L51 70H58" stroke="#092d5b" stroke-width="1.55" /><path d="M7 74H47L51 70H58" stroke="#1d5287" stroke-width="1" />
+<path id="trace-gnd" d="M7 86H47L52 91H60" stroke="#092d5b" stroke-width="1.55" /><path d="M7 86H47L52 91H60" stroke="#1d5287" stroke-width="1" />
+<path id="trace-scl-exp" d="M168.5 36H160L151 45H140" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M168.5 36H160L151 45H140" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-sda-exp" d="M168.5 48H158L151 55H142" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M168.5 48H158L151 55H142" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-vcc-exp" d="M168.5 60H162L155 67H143" stroke="#092d5b" stroke-width="1.55" /><path d="M168.5 60H162L155 67H143" stroke="#1d5287" stroke-width="1" />
+<path id="trace-gnd-exp" d="M168.5 72H162L155 79H143" stroke="#092d5b" stroke-width="1.55" /><path d="M168.5 72H162L155 79H143" stroke="#1d5287" stroke-width="1" />
+<path id="trace-led" d="M63 20V26H66" stroke="#092d5b" stroke-width="1.35" /><path d="M63 20V26H66" stroke="#1d5287" stroke-width="0.8" />
+<path id="trace-res" d="M64 35V39" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M64 35V39" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-cap" d="M68 45H73L78 50H83" stroke="#092d5b" stroke-width="1.35" /><path d="M68 45H73L78 50H83" stroke="#1d5287" stroke-width="0.8" />
+<path id="trace-cap2" d="M68 57H74L78 61H83" stroke="#092d5b" stroke-width="1.35" /><path d="M68 57H74L78 61H83" stroke="#1d5287" stroke-width="0.8" />
+<path id="trace-eeprom" d="M81 85H75L72 82H67" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M81 85H75L72 82H67" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-eeprom2" d="M84 97H77L73 93H67" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M84 97H77L73 93H67" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-diode" d="M137 43V48L134 51" stroke="#092d5b" stroke-width="1.3" /><path d="M137 43V48L134 51" stroke="#1d5287" stroke-width="0.75" />
+<path id="trace-res-charge" d="M155 24H164L168 28" stroke="#092d5b" stroke-width="1.3" /><path d="M155 24H164L168 28" stroke="#1d5287" stroke-width="0.75" />
+<path id="trace-a0" d="M139 89V84H128L122 90H120" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M139 89V84H128L122 90H120" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-a1" d="M148 89V82H126L115 93H110" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M148 89V82H126L115 93H110" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-a2" d="M157 89V80H163L171 88V92L162 101H150" stroke="#092d5b" stroke-width="1.2000000000000002" /><path d="M157 89V80H163L171 88V92L162 101H150" stroke="#1d5287" stroke-width="0.65" />
+<path id="trace-rtc-top-0" d="M86 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M86 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-0" d="M86 62V68L88 70" stroke="#092d5b" stroke-width="1.1" /><path d="M86 62V68L88 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-1" d="M92 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M92 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-1" d="M92 62V68L94 70" stroke="#092d5b" stroke-width="1.1" /><path d="M92 62V68L94 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-2" d="M98 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M98 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-2" d="M98 62V68L100 70" stroke="#092d5b" stroke-width="1.1" /><path d="M98 62V68L100 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-3" d="M104 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M104 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-3" d="M104 62V68L106 70" stroke="#092d5b" stroke-width="1.1" /><path d="M104 62V68L106 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-4" d="M110 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M110 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-4" d="M110 62V68L112 70" stroke="#092d5b" stroke-width="1.1" /><path d="M110 62V68L112 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-5" d="M116 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M116 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-5" d="M116 62V68L118 70" stroke="#092d5b" stroke-width="1.1" /><path d="M116 62V68L118 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-6" d="M122 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M122 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-6" d="M122 62V68L124 70" stroke="#092d5b" stroke-width="1.1" /><path d="M122 62V68L124 70" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-top-7" d="M128 9V5" stroke="#092d5b" stroke-width="1.1" /><path d="M128 9V5" stroke="#1d5287" stroke-width="0.55" />
+<path id="trace-rtc-bottom-7" d="M128 62V68L130 70" stroke="#092d5b" stroke-width="1.1" /><path d="M128 62V68L130 70" stroke="#1d5287" stroke-width="0.55" />
+</g><g id="plated-holes" inkscape:groupmode="layer" inkscape:label="Mounting and expansion holes">
+<circle id="mount-1" cx="37" cy="9" r="5.1" fill="none" stroke="#bcc4a5" stroke-width="0.85" />
+<circle id="mount-2" cx="37" cy="101" r="5.1" fill="none" stroke="#bcc4a5" stroke-width="0.85" />
+<circle id="mount-3" cx="163" cy="9" r="5.1" fill="none" stroke="#bcc4a5" stroke-width="0.85" />
+<g id="expansion-SCL"><rect x="166.5" y="30.5" width="11" height="11" fill="none" stroke="#e5e9dd" stroke-width="0.7" /><circle cx="172" cy="36" r="3.05" fill="none" stroke="#b9b4ac" stroke-width="1.5" /></g>
+<g id="expansion-SDA"><rect x="166.5" y="42.5" width="11" height="11" fill="none" stroke="#e5e9dd" stroke-width="0.7" /><circle cx="172" cy="48" r="3.05" fill="none" stroke="#b9b4ac" stroke-width="1.5" /></g>
+<g id="expansion-VCC"><rect x="166.5" y="54.5" width="11" height="11" fill="none" stroke="#e5e9dd" stroke-width="0.7" /><circle cx="172" cy="60" r="3.05" fill="none" stroke="#b9b4ac" stroke-width="1.5" /></g>
+<g id="expansion-GND"><rect x="166.5" y="66.5" width="11" height="11" fill="none" stroke="#e5e9dd" stroke-width="0.7" /><circle cx="172" cy="72" r="3.05" fill="none" stroke="#b9b4ac" stroke-width="1.5" /></g>
+</g><g id="vias" fill="#092846" stroke="#46709a" stroke-width="0.5">
+<circle id="via-0" cx="34" cy="45" r="1.05" />
+<circle id="via-1" cx="31" cy="49" r="1.05" />
+<circle id="via-2" cx="35" cy="58" r="1.05" />
+<circle id="via-3" cx="39" cy="67" r="1.05" />
+<circle id="via-4" cx="58" cy="70" r="1.05" />
+<circle id="via-5" cx="60" cy="91" r="1.05" />
+<circle id="via-6" cx="140" cy="45" r="1.05" />
+<circle id="via-7" cx="142" cy="55" r="1.05" />
+<circle id="via-8" cx="143" cy="67" r="1.05" />
+<circle id="via-9" cx="143" cy="79" r="1.05" />
+<circle id="via-10" cx="73" cy="39" r="1.05" />
+<circle id="via-11" cx="168" cy="28" r="1.05" />
+<circle id="via-12" cx="120" cy="90" r="1.05" />
+<circle id="via-13" cx="110" cy="93" r="1.05" />
+<circle id="via-14" cx="150" cy="101" r="1.05" />
+</g>
+<g id="components" inkscape:groupmode="layer" inkscape:label="Components and solder lands">
+<g id="power-resistor"><rect x="57" y="27.4" width="18" height="9.2" rx="0.7" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="58.4" y="29.2" width="15.2" height="5.6" rx="0.7" fill="#a7aaa1" stroke="#0b3059" stroke-width="0.35" /><rect x="59.1" y="29.6" width="13.8" height="4.8" rx="0.4" fill="#d0d1c6" /><rect x="62.4" y="29.3" width="7.2" height="5.4" rx="0.3" fill="#333333" />
+<text x="66" y="33.2" fill="#edf0df" font-family="Consolas,monospace" font-size="2.8" text-anchor="middle">201</text>
+</g>
+<g id="capacitor-1"><rect x="57" y="39.4" width="18" height="9.2" rx="0.7" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="58.4" y="41.2" width="15.2" height="5.6" rx="0.7" fill="#a7aaa1" stroke="#0b3059" stroke-width="0.35" /><rect x="59.1" y="41.6" width="13.8" height="4.8" rx="0.4" fill="#d0d1c6" /><rect x="62.4" y="41.3" width="7.2" height="5.4" rx="0.3" fill="#b8a06a" />
+</g>
+<g id="capacitor-2"><rect x="57" y="52.4" width="18" height="9.2" rx="0.7" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="58.4" y="54.2" width="15.2" height="5.6" rx="0.7" fill="#a7aaa1" stroke="#0b3059" stroke-width="0.35" /><rect x="59.1" y="54.6" width="13.8" height="4.8" rx="0.4" fill="#d0d1c6" /><rect x="62.4" y="54.3" width="7.2" height="5.4" rx="0.3" fill="#b8a06a" />
+</g>
+<g id="charge-resistor"><rect x="145" y="19.4" width="18" height="9.2" rx="0.7" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="146.4" y="21.2" width="15.2" height="5.6" rx="0.7" fill="#a7aaa1" stroke="#0b3059" stroke-width="0.35" /><rect x="147.1" y="21.6" width="13.8" height="4.8" rx="0.4" fill="#d0d1c6" /><rect x="150.4" y="21.3" width="7.2" height="5.4" rx="0.3" fill="#333333" />
+<text x="154" y="25.2" fill="#edf0df" font-family="Consolas,monospace" font-size="2.8" text-anchor="middle">201</text>
+</g>
+<g id="power-led"><rect x="56" y="14" width="20" height="11" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="58" y="17" width="16" height="5.5" rx="0.5" fill="#b9b4b8" /><rect x="62" y="16" width="8" height="7.5" rx="0.6" fill="#c2c9ad" /><rect x="63.2" y="17.2" width="5.6" height="5.1" fill="#e5e3c8" /><path d="M69 16V23.5" stroke="#8d9f7f" stroke-width="0.8" /></g>
+<g id="charging-diode"><rect x="133" y="20" width="8" height="25" rx="1" fill="none" stroke="#e1e6da" stroke-width="0.7" /><rect x="134.5" y="22" width="5" height="21" rx="1" fill="#b9b4b8" /><rect x="134" y="26" width="6" height="13" rx="1" fill="#a95734" /><rect x="134" y="27" width="6" height="2.7" fill="#333333" /><path d="M135 31V37" stroke="#ce8553" stroke-width="0.7" /></g>
+<g id="ds3231">
+<g id="ds3231-top-1"><rect x="84.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="84.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="85.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M85.0 14.8H87.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-1"><rect x="84.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="84.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="85.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M85.0 58.8H87.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-2"><rect x="90.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="90.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="91.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M91.0 14.8H93.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-2"><rect x="90.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="90.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="91.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M91.0 58.8H93.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-3"><rect x="96.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="96.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="97.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M97.0 14.8H99.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-3"><rect x="96.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="96.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="97.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M97.0 58.8H99.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-4"><rect x="102.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="102.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="103.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M103.0 14.8H105.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-4"><rect x="102.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="102.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="103.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M103.0 58.8H105.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-5"><rect x="108.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="108.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="109.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M109.0 14.8H111.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-5"><rect x="108.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="108.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="109.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M109.0 58.8H111.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-6"><rect x="114.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="114.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="115.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M115.0 14.8H117.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-6"><rect x="114.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="114.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="115.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M115.0 58.8H117.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-7"><rect x="120.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="120.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="121.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M121.0 14.8H123.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-7"><rect x="120.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="120.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="121.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M121.0 58.8H123.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-top-8"><rect x="126.2" y="8.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="126.85" y="9" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="127.4" y="9.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M127.0 14.8H129.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="ds3231-bottom-8"><rect x="126.2" y="52.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="126.85" y="53" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="127.4" y="53.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M127.0 58.8H129.0" stroke="#777d7b" stroke-width="0.65" /></g>
+<rect x="82" y="18" width="50" height="35" rx="0.7" fill="#191919" /><rect x="83" y="19" width="48" height="33" fill="#333333" /><path d="M83 19H131" stroke="#61665e" stroke-width="0.65" /><circle cx="86" cy="48" r="1.3" fill="#1b1f1a" />
+<text x="107.0" y="28" fill="#8f9484" font-family="Consolas,monospace" font-size="5" text-anchor="middle">DS3231</text>
+<text x="107.0" y="35" fill="#777e6e" font-family="Consolas,monospace" font-size="4" text-anchor="middle">+152A3</text>
+<text x="107.0" y="41" fill="#777e6e" font-family="Consolas,monospace" font-size="4" text-anchor="middle">337AA</text>
+</g>
+<g id="at24c32">
+<g id="at24c32-top-1"><rect x="82.7" y="70.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="83.35" y="71" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="83.9" y="71.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M83.5 76.8H85.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-bottom-1"><rect x="82.7" y="96.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="83.35" y="97" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="83.9" y="97.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M83.5 102.8H85.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-top-2"><rect x="88.7" y="70.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="89.35" y="71" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="89.9" y="71.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M89.5 76.8H91.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-bottom-2"><rect x="88.7" y="96.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="89.35" y="97" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="89.9" y="97.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M89.5 102.8H91.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-top-3"><rect x="94.7" y="70.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="95.35" y="71" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="95.9" y="71.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M95.5 76.8H97.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-bottom-3"><rect x="94.7" y="96.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="95.35" y="97" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="95.9" y="97.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M95.5 102.8H97.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-top-4"><rect x="100.7" y="70.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="101.35" y="71" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="101.9" y="71.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M101.5 76.8H103.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<g id="at24c32-bottom-4"><rect x="100.7" y="96.5" width="3.6" height="10" rx="1" fill="#8598a0" stroke="#082a52" stroke-width="0.5" /><rect x="101.35" y="97" width="2.3" height="9" rx="0.55" fill="#b9b4b8" /><rect x="101.9" y="97.5" width=".8" height="8" rx="0.3" fill="#eeeade" /><path d="M101.5 102.8H103.5" stroke="#777d7b" stroke-width="0.65" /></g>
+<rect x="82" y="80" width="23" height="17" rx="0.7" fill="#191919" /><rect x="83" y="81" width="21" height="15" fill="#333333" /><path d="M83 81H104" stroke="#61665e" stroke-width="0.65" /><circle cx="86" cy="92" r="1.3" fill="#1b1f1a" />
+<text x="93.5" y="86.5" fill="#8f9484" font-family="Consolas,monospace" font-size="3.4" text-anchor="middle">AT24C32</text>
+<text x="93.5" y="91.5" fill="#777e6e" font-family="Consolas,monospace" font-size="2.7" text-anchor="middle">EEPROM</text>
+</g>
+<g id="resistor-array-1"><rect x="58" y="65" width="15" height="16" fill="none" stroke="#e1e6da" stroke-width=".6" />
+<rect x="59" y="67.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="67.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="70.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="70.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="74.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="74.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="77.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="77.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="62" y="66" width="7" height="15" rx=".4" fill="#292929" />
+<text x="65.5" y="74" fill="#edf0df" font-family="Consolas,monospace" font-size="2.5" text-anchor="middle">103</text>
+</g>
+<g id="resistor-array-2"><rect x="58" y="86" width="15" height="16" fill="none" stroke="#e1e6da" stroke-width=".6" />
+<rect x="59" y="88.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="88.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="91.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="91.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="95.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="95.0" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="59" y="98.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="69" y="98.5" width="3" height="1.8" fill="#b9b4b8" />
+<rect x="62" y="87" width="7" height="15" rx=".4" fill="#292929" />
+<text x="65.5" y="95" fill="#edf0df" font-family="Consolas,monospace" font-size="2.5" text-anchor="middle">103</text>
+</g>
+<g id="address-A0"><rect x="135.7" y="86" width="6.6" height="14" fill="none" stroke="#e1e6da" stroke-width=".65" />
+<rect x="137.2" y="88" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="137.7" y="88.5" width="2.6" height="2.5" fill="#777d79" />
+<rect x="137.2" y="95" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="137.7" y="95.5" width="2.6" height="2.5" fill="#777d79" />
+</g>
+<g id="address-A1"><rect x="144.7" y="86" width="6.6" height="14" fill="none" stroke="#e1e6da" stroke-width=".65" />
+<rect x="146.2" y="88" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="146.7" y="88.5" width="2.6" height="2.5" fill="#777d79" />
+<rect x="146.2" y="95" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="146.7" y="95.5" width="2.6" height="2.5" fill="#777d79" />
+</g>
+<g id="address-A2"><rect x="153.7" y="86" width="6.6" height="14" fill="none" stroke="#e1e6da" stroke-width=".65" />
+<rect x="155.2" y="88" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="155.7" y="88.5" width="2.6" height="2.5" fill="#777d79" />
+<rect x="155.2" y="95" width="3.6" height="3.5" rx=".45" fill="#b9b4b8" /><rect x="155.7" y="95.5" width="2.6" height="2.5" fill="#777d79" />
+</g>
+<g id="solder-joint-0"><circle cx="44" cy="55" r="4.1" fill="#092947" /><path d="M41 54L42.4 51.5 45.2 51.8 47.2 54.2 46 57.4 43.5 58 40.9 56Z" fill="#a2aaa2" /><path d="M42.5 52.4 45 52.6 46 54.2 44 55.5 42.2 54.5Z" fill="#e0dfd0" /></g>
+<g id="solder-joint-1"><circle cx="137" cy="55" r="4.1" fill="#092947" /><path d="M134 54L135.4 51.5 138.2 51.8 140.2 54.2 139 57.4 136.5 58 133.9 56Z" fill="#a2aaa2" /><path d="M135.5 52.4 138 52.6 139 54.2 137 55.5 135.2 54.5Z" fill="#e0dfd0" /></g>
+</g><g id="silkscreen" inkscape:groupmode="layer" inkscape:label="PCB silkscreen">
+<text x="13" y="16" fill="#edf0df" font-family="Consolas,monospace" font-size="11" text-anchor="middle">MH</text>
+<text x="66" y="13" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="middle">POWER</text>
+<text x="52" y="21" fill="#edf0df" font-family="Consolas,monospace" font-size="7" text-anchor="middle">+</text>
+<text x="179" y="25" fill="#edf0df" font-family="Consolas,monospace" font-size="4" text-anchor="end">J</text>
+<rect x="109" y="72" width="36" height="11" fill="#e4e8db" />
+<text x="127" y="80.5" fill="#174479" font-family="Consolas,monospace" font-size="7" text-anchor="middle">DS3231</text>
+<text x="139" y="106" fill="#edf0df" font-family="Consolas,monospace" font-size="5" text-anchor="middle">A0</text>
+<text x="148" y="106" fill="#edf0df" font-family="Consolas,monospace" font-size="5" text-anchor="middle">A1</text>
+<text x="157" y="106" fill="#edf0df" font-family="Consolas,monospace" font-size="5" text-anchor="middle">A2</text>
+<text x="165" y="38.4" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="end">SCL</text>
+<text x="165" y="50.4" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="end">SDA</text>
+<text x="165" y="62.4" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="end">VCC</text>
+<text x="165" y="74.4" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="end">GND</text>
+</g><g id="input-header" inkscape:groupmode="layer" inkscape:label="Six female sockets"><rect x="2" y="20.5" width="10" height="72" rx=".8" fill="#333333" />
+<g id="pin-32K" data-pin="32K" data-terminal-x="7" data-terminal-y="26" transform="translate(7 26)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="28.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">32K</text>
+<g id="pin-SQW" data-pin="SQW" data-terminal-x="7" data-terminal-y="38" transform="translate(7 38)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="40.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">SQW</text>
+<g id="pin-SCL" data-pin="SCL" data-terminal-x="7" data-terminal-y="50" transform="translate(7 50)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="52.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">SCL</text>
+<g id="pin-SDA" data-pin="SDA" data-terminal-x="7" data-terminal-y="62" transform="translate(7 62)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="64.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">SDA</text>
+<g id="pin-VCC" data-pin="VCC" data-terminal-x="7" data-terminal-y="74" transform="translate(7 74)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="76.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">VCC</text>
+<g id="pin-GND" data-pin="GND" data-terminal-x="7" data-terminal-y="86" transform="translate(7 86)"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<text x="15" y="88.2" fill="#edf0df" font-family="Consolas,monospace" font-size="6" text-anchor="start">GND</text>
+</g><g id="right-header" inkscape:groupmode="layer" inkscape:label="Four female expansion sockets"><rect x="166.5" y="30.5" width="11" height="47" rx="0.8" fill="#333333" /><g data-pin="SCL-expansion" data-terminal-x="172" data-terminal-y="36" transform="translate(172 36)" id="socket-right-SCL"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<g data-pin="SDA-expansion" data-terminal-x="172" data-terminal-y="48" transform="translate(172 48)" id="socket-right-SDA"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<g data-pin="VCC-expansion" data-terminal-x="172" data-terminal-y="60" transform="translate(172 60)" id="socket-right-VCC"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+<g data-pin="GND-expansion" data-terminal-x="172" data-terminal-y="72" transform="translate(172 72)" id="socket-right-GND"><path opacity="0.15" fill="#ffffff" d="M1.5-1.5v3l2 2v-7Z" /><path opacity="0.3" fill="#ffffff" d="M1.5 1.5h-3l-2 2h7Z" /><path opacity="0.25" fill="#000000" d="M-1.5-1.5-3.5-3.5v7l2-2Z" /><path opacity="0.35" fill="#000000" d="M-3.5-3.5-1.5-1.5h3l2-2Z" /><rect x="-1.5" y="-1.5" width="3" height="3" fill="#191919" /></g>
+</g></svg>
