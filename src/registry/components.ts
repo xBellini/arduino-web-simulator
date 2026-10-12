@@ -31,6 +31,8 @@
  *
  *---------------------------------------------------------------------------------------------------------------------
  * Changelog:
+ * - 12-10-2026 — Restored ds3231_rtc in Modules palette after SVG re-added
+ * - 12-10-2026 — Removed ds3231_rtc from Modules palette until public/components/ds3231_rtc.svg exists (blank UI crash)
  * - 09-10-2026 — Modules palette: DS3231 RTC (part module)
  * - 08-10-2026 — ICs palette: 74HC combinational set (definition-only); DIP pins via packagePins
  * - 06-10-2026 — Added hidden wire_junction (single-pin tee node; not in palette)
