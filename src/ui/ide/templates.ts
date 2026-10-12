@@ -9,6 +9,7 @@
  * Not-here: download helpers (`sketchFile.ts`) or project JSON sketch fields beyond copy-in.
  *
  * Changelog:
+ * - 12-10-2026 — DS3231 template notes editable RTC address in part properties
  * - 09-10-2026 — DS3231 Wire.h template (RTC 0x68 / EEPROM 0x57)
  * - 09-10-2026 ? Moved from `src/sketch/templates.ts` (tree reorganization)
  * - 05-10-2026 — I2C 20×4 LiquidCrystal_I2C template (PCF8574 backpack @ 0x27)
@@ -218,7 +219,7 @@ void loop() {
   {
     id: 'ds3231_rtc',
     label: 'DS3231 RTC (I2C)',
-    description: 'Read DS3231 time over Wire (0x68); EEPROM at 0x57',
+    description: 'Read DS3231 time over Wire (default 0x68); match part properties',
     filename: 'ds3231_rtc',
     source: `/*
  * DS3231 RTC module over I2C (Wire).
@@ -227,7 +228,9 @@ void loop() {
  *   Uno SDA (A4) / SCL (A5) / 5V / GND  →  module SDA / SCL / VCC / GND
  *   Left or right header — they are the same PCB nets.
  *
- * RTC address 0x68, AT24C32 EEPROM 0x57.
+ * RTC address defaults to 0x68 — change via part properties (double-click /
+ * right-click → Change properties) and keep DS3231_ADDR in sync (or pass the
+ * same address to an RTC library). AT24C32 EEPROM stays at 0x57.
  * Uses Wire.h only (no extra RTC library).
  */
 

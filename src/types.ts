@@ -16,6 +16,7 @@
  * Not-here: registry entries, geometry, reducers, or SPICE netlists — only types.
  *
  * Changelog:
+ * - 12-10-2026 — rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
  * - 25-09-2026 — CapacitanceUnit + capacitanceValue/Unit on PlacedComponent
  * - 25-09-2026 — Pin `label` → `description`; optional `letter`; drop `pinLetters`;
  *   `defaultPartLabel` may be a line array
@@ -166,6 +167,11 @@ export interface PlacedComponent {
    * Uses the shared type SVG; this text is the per-instance chip name.
    */
   partLabel?: string;
+  /**
+   * DS3231 RTC 7-bit I2C address (sim knob; real chip is fixed 0x68).
+   * Only used when type === 'ds3231_rtc'. Default 0x68.
+   */
+  rtcI2cAddr?: number;
 }
 
 export interface Wire {

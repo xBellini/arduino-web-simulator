@@ -8,10 +8,12 @@
  * Conventions: Artwork is `public/components/ds3231_rtc.svg` (viewBox 0 0 182 110).
  * Pin x/y match that file's `data-terminal-*` (left x=7, right x=172, 12-unit pitch).
  * Left header top→bottom: 32K, SQW, SCL, SDA, VCC, GND. Right header: SCL, SDA, VCC, GND.
- * RTC @ 0x68, EEPROM @ 0x57. SQW/32K are not driven. Ideal I2C (no pull-up SPICE).
+ * RTC default @ 0x68 (`rtcI2cAddr` editable in properties), EEPROM fixed @ 0x57.
+ * SQW/32K are not driven. Ideal I2C (no pull-up SPICE).
  * Not-here: IC register maps — `src/avr/ds3231.ts` and `src/avr/at24c32.ts`.
  *
  * Changelog:
+ * - 12-10-2026 — properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
  * - 09-10-2026 — Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
  * - 09-10-2026 — DS3231 RTC module (I2C + AT24C32)
  */
@@ -33,8 +35,30 @@ import {
 export const DS3231_RTC_TYPE = 'ds3231_rtc';
 export { DS3231_I2C_ADDR, AT24C32_I2C_ADDR };
 
+/** Inclusive 7-bit address range accepted by the properties editor / project load. */
+export const RTC_I2C_ADDR_MIN = 0x03;
+export const RTC_I2C_ADDR_MAX = 0x77;
+
 export function isDs3231RtcType(type: string): boolean {
   return type === DS3231_RTC_TYPE;
+}
+
+/** Parse a 7-bit I2C address from number or hex/decimal string; null if invalid. */
+export function parseRtcI2cAddr(raw: unknown): number | null {
+  let n: number;
+  if (typeof raw === 'number') {
+    n = raw;
+  } else if (typeof raw === 'string') {
+    const t = raw.trim().toLowerCase();
+    if (!t) return null;
+    n = t.startsWith('0x') ? Number.parseInt(t, 16) : Number.parseInt(t, 10);
+  } else {
+    return null;
+  }
+  if (!Number.isInteger(n) || n < RTC_I2C_ADDR_MIN || n > RTC_I2C_ADDR_MAX) {
+    return null;
+  }
+  return n;
 }
 
 export function createDs3231ModuleSlaves(wallClock = new Date()): {
@@ -83,5 +107,15 @@ export const ds3231RtcModule: PartModule = {
       { id: 'vcc_r', description: 'VCC', x: 172, y: 60, type: 'power' },
       { id: 'gnd_r', description: 'GND', x: 172, y: 72, type: 'ground' },
     ],
+  },
+
+  properties: {
+    editable: true,
+    defaults: () => ({
+      rtcI2cAddr: DS3231_I2C_ADDR,
+    }),
+    load(raw, into) {
+      into.rtcI2cAddr = parseRtcI2cAddr(raw.rtcI2cAddr) ?? DS3231_I2C_ADDR;
+    },
   },
 };

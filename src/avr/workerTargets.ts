@@ -7,6 +7,7 @@
  * backpack LCD-header nets.
  *
  * Changelog:
+ * - 12-10-2026 — DS3231 rtcAddr from placed rtcI2cAddr (default 0x68)
  * - 09-10-2026 — Discover DS3231 RTC modules on the MCU I2C nets
  * - 09-10-2026 ? Moved from `src/sim/buildLcdWorkerTargets.ts` (tree reorganization)
  * - 09-10-2026 — Merged `src/sim/buildTwiWorkerTargets.ts` into this file (tree reorganization)
@@ -190,7 +191,7 @@ export function buildTwiWorkerTargets(
     out.push({
       type: DS3231_RTC_TYPE,
       id: rtc.id,
-      rtcAddr: DS3231_I2C_ADDR,
+      rtcAddr: rtc.rtcI2cAddr ?? DS3231_I2C_ADDR,
       eepromAddr: AT24C32_I2C_ADDR,
     });
   }

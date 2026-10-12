@@ -106,7 +106,7 @@ Solver badge under the Sketch IDE timer: green **ngspice** / yellow **legacy**. 
 ### Known limits
 
 - Digital MCU co-sim only (no ADC / PWM electrical model yet; sources are ideal)
-- Wire / TWI master is live (ideal I2C). PCF8574 LCD backpack is the board only (no glass); wire its LCD header to a parallel LCD, or link is detected when RS/E nets match. **DS3231 RTC module** (with AT24C32 EEPROM) sits on the same bus: RTC at `0x68`, EEPROM at `0x57`; wire SDA/SCL/VCC/GND to the Uno (either header)
+- Wire / TWI master is live (ideal I2C). PCF8574 LCD backpack is the board only (no glass); wire its LCD header to a parallel LCD, or link is detected when RS/E nets match. **DS3231 RTC module** (with AT24C32 EEPROM) sits on the same bus: RTC I2C address defaults to `0x68` (editable in part properties — sketch/library must match); EEPROM fixed at `0x57`; wire SDA/SCL/VCC/GND to the Uno (either header)
 - No breadboard row auto-nets
 - Caps need ngspice `.tran` (legacy MNA has no C stamp)
 - Compile: local arduino-cli in dev, else Hexi / Import .hex / bundled blink

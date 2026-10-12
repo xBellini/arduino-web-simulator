@@ -2,14 +2,15 @@
  * What: Primary breadboard SVG workspace — pan/zoom, place/drag parts, wire routing, selection, editors.
  * Exports SimCanvas; orchestrates SimContext (geometry, placement, undo) + simLiveStore (pin/sim flags while
  * running). Renders ComponentShape per component, PinLabel on snap/hover, WireFlowOverlay, NgspiceDebugOverlay
- * when dcSolverBackend is ngspice; mounts ContextMenu plus Led/Resistor/Capacitor/Instrument/PartLabel
- * property portals.
+ * when dcSolverBackend is ngspice; mounts ContextMenu plus Led/Resistor/Capacitor/Instrument/PartLabel/
+ * Ds3231 property portals.
  * World coords via ui/canvas/geometry (screenToWorld, snap, wire polylines). To add canvas interaction: extend
  * pointer handlers/state here and dispatch store actions. To add context-menu or double-click edit flow: build
  * ContextMenuItem list or setPropertiesEditor target — reuse existing editor components. New part types still
  * need registry + often ComponentOverlays; netlist/sim in src/circuit + src/avr — not duplicated here.
  *
  * Changelog:
+ * - 12-10-2026 — Ds3231PropertiesEditor for RTC I2C address
  * - 09-10-2026 ? Moved from `src/components/SimCanvas.tsx` (tree reorganization)
  * - 07-10-2026 — Stripped wire draft/resize debug instrumentation after confirmed polish
  * - 06-10-2026 — Debug instrumentation: draft bend click (2nd-curve stick)
@@ -92,8 +93,13 @@ import { ContextMenu } from './ContextMenu';
 import { LedPropertiesEditor } from '../editors/LedPropertiesEditor';
 import { LcdPropertiesEditor } from '../editors/LcdPropertiesEditor';
 import { InstrumentPropertiesEditor } from '../editors/InstrumentPropertiesEditor';
+import { Ds3231PropertiesEditor } from '../editors/Ds3231PropertiesEditor';
 import { isParallelLcdType } from '../../components/output/lcdParallel';
 import { lcdColorsFromComponent } from '../../values/lcd';
+import {
+  DS3231_I2C_ADDR,
+  DS3231_RTC_TYPE,
+} from '../../components/modules/ds3231Rtc';
 import { PartLabelEditor } from '../editors/PartLabelEditor';
 import { PinLabel } from './ComponentShape';
 import { ResistorValueEditor } from '../editors/ResistorValueEditor';
@@ -2345,6 +2351,21 @@ export function SimCanvas() {
             x={propertiesEditor.x}
             y={propertiesEditor.y}
             component={propertiesEditorTarget}
+            onSave={(patch) => {
+              updateComponent(propertiesEditorTarget.id, patch);
+            }}
+            onClose={closePropertiesEditor}
+          />
+        )}
+
+      {propertiesEditor &&
+        propertiesEditorTarget?.type === DS3231_RTC_TYPE && (
+          <Ds3231PropertiesEditor
+            x={propertiesEditor.x}
+            y={propertiesEditor.y}
+            initialRtcI2cAddr={
+              propertiesEditorTarget.rtcI2cAddr ?? DS3231_I2C_ADDR
+            }
             onSave={(patch) => {
               updateComponent(propertiesEditorTarget.id, patch);
             }}
