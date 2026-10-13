@@ -2,12 +2,11 @@
  * What: Primary breadboard SVG workspace — pan/zoom, place/drag parts, wire routing, selection, editors.
  * Exports SimCanvas; orchestrates SimContext (geometry, placement, undo) + simLiveStore (pin/sim flags while
  * running). Renders ComponentShape per component, PinLabel on snap/hover, WireFlowOverlay, NgspiceDebugOverlay
- * when dcSolverBackend is ngspice; mounts ContextMenu plus Led/Resistor/Capacitor/Instrument/PartLabel/
- * Ds3231 property portals.
+ * when dcSolverBackend is ngspice; mounts ContextMenu and part-declared property editors.
  * World coords via ui/canvas/geometry (screenToWorld, snap, wire polylines). To add canvas interaction: extend
  * pointer handlers/state here and dispatch store actions. To add context-menu or double-click edit flow: build
- * ContextMenuItem list or setPropertiesEditor target — reuse existing editor components. New part types still
- * need registry + often ComponentOverlays; netlist/sim in src/circuit + src/avr — not duplicated here.
+ * ContextMenuItem list or setPropertiesEditor target. Property fields/custom editors live with each part;
+ * adding a part does not require another canvas branch.
  *
 # Changelog
 # Date       | Author | Remarks
@@ -23,6 +22,7 @@
 # 07-10-2026 | Cursor | Stripped wire draft/resize debug instrumentation after confirmed polish
 # 09-10-2026 | Cursor | Moved from `src/components/SimCanvas.tsx` (tree reorganization)
 # 12-10-2026 | Cursor | Ds3231PropertiesEditor for RTC I2C address
+# 13-10-2026 | Codex | Replace type-specific editor branches with registered forms; chip-name editor becomes fallback only.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -67,43 +67,13 @@ import {
   wireSegmentCrosshairPoint,
   type Point,
 } from './geometry';
-import {
-  DEFAULT_RESISTANCE_POWER_RATING,
-  DEFAULT_RESISTANCE_TOLERANCE,
-  DEFAULT_RESISTANCE_UNIT,
-  DEFAULT_RESISTANCE_VALUE,
-} from '../../values/resistor';
-import {
-  DEFAULT_CAPACITANCE_UNIT,
-  DEFAULT_CAPACITANCE_VALUE,
-  DEFAULT_CAPACITANCE_VOLTAGE_RATING,
-  DEFAULT_POLARIZED_CAPACITANCE_UNIT,
-  DEFAULT_POLARIZED_CAPACITANCE_VALUE,
-  DEFAULT_POLARIZED_VOLTAGE_RATING,
-} from '../../values/capacitor';
-import {
-  DEFAULT_LED_COLOR,
-  DEFAULT_LED_FORWARD_CURRENT,
-  DEFAULT_LED_FORWARD_VOLTAGE,
-  type LedColorHex,
-} from '../../values/led';
 import { componentHasEditableProperties, componentHasChipMarking } from '../editors/editable';
-import { CapacitorValueEditor } from '../editors/CapacitorValueEditor';
+import { getPartModule } from '../../components';
+import { PartPropertiesEditor } from '../editors/PartPropertiesEditor';
 import { ComponentShape } from './ComponentShape';
 import { ContextMenu } from './ContextMenu';
-import { LedPropertiesEditor } from '../editors/LedPropertiesEditor';
-import { LcdPropertiesEditor } from '../editors/LcdPropertiesEditor';
-import { InstrumentPropertiesEditor } from '../editors/InstrumentPropertiesEditor';
-import { Ds3231PropertiesEditor } from '../editors/Ds3231PropertiesEditor';
-import { isParallelLcdType } from '../../components/output/lcdParallel';
-import { lcdColorsFromComponent } from '../../values/lcd';
-import {
-  DS3231_I2C_ADDR,
-  DS3231_RTC_TYPE,
-} from '../../components/modules/ds3231Rtc';
 import { PartLabelEditor } from '../editors/PartLabelEditor';
 import { PinLabel } from './ComponentShape';
-import { ResistorValueEditor } from '../editors/ResistorValueEditor';
 import { WireFlowOverlay } from './WireFlowOverlay';
 import { NgspiceDebugOverlay } from '../debug/NgspiceDebugOverlay';
 import { SimPerfOverlay } from '../debug/SimPerfOverlay';
@@ -2024,6 +1994,7 @@ export function SimCanvas() {
   const propertiesEditorTarget = propertiesEditor
     ? components.find((c) => c.id === propertiesEditor.componentId)
     : null;
+  const partProperties = propertiesEditorTarget ? getPartModule(propertiesEditorTarget.type)?.properties : undefined;
   const placementLabel = placementType
     ? getDefinition(placementType).label
     : null;
@@ -2235,147 +2206,22 @@ export function SimCanvas() {
         />
       )}
 
-      {propertiesEditor &&
-        propertiesEditorTarget?.type === 'resistor' && (
-          <ResistorValueEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            initialValue={
-              propertiesEditorTarget.resistanceValue ?? DEFAULT_RESISTANCE_VALUE
-            }
-            initialUnit={
-              propertiesEditorTarget.resistanceUnit ?? DEFAULT_RESISTANCE_UNIT
-            }
-            initialPowerRating={
-              propertiesEditorTarget.resistancePowerRating ??
-              DEFAULT_RESISTANCE_POWER_RATING
-            }
-            initialTolerance={
-              propertiesEditorTarget.resistanceTolerance ??
-              DEFAULT_RESISTANCE_TOLERANCE
-            }
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
-
-      {propertiesEditor &&
-        (propertiesEditorTarget?.type === 'capacitor' ||
-          propertiesEditorTarget?.type === 'polarized_capacitor') && (
-          <CapacitorValueEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            title={
-              propertiesEditorTarget.type === 'polarized_capacitor'
-                ? 'Polarized capacitor properties'
-                : 'Capacitor properties'
-            }
-            initialValue={
-              propertiesEditorTarget.capacitanceValue ??
-              (propertiesEditorTarget.type === 'polarized_capacitor'
-                ? DEFAULT_POLARIZED_CAPACITANCE_VALUE
-                : DEFAULT_CAPACITANCE_VALUE)
-            }
-            initialUnit={
-              propertiesEditorTarget.capacitanceUnit ??
-              (propertiesEditorTarget.type === 'polarized_capacitor'
-                ? DEFAULT_POLARIZED_CAPACITANCE_UNIT
-                : DEFAULT_CAPACITANCE_UNIT)
-            }
-            initialVoltageRating={
-              propertiesEditorTarget.capacitanceVoltageRating ??
-              (propertiesEditorTarget.type === 'polarized_capacitor'
-                ? DEFAULT_POLARIZED_VOLTAGE_RATING
-                : DEFAULT_CAPACITANCE_VOLTAGE_RATING)
-            }
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
-
-      {propertiesEditor &&
-        propertiesEditorTarget?.type === 'led' && (
-          <LedPropertiesEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            initialColor={
-              (propertiesEditorTarget.ledColor as LedColorHex | undefined) ??
-              DEFAULT_LED_COLOR
-            }
-            initialForwardVoltage={
-              propertiesEditorTarget.ledForwardVoltage ??
-              DEFAULT_LED_FORWARD_VOLTAGE
-            }
-            initialForwardCurrent={
-              propertiesEditorTarget.ledForwardCurrent ??
-              DEFAULT_LED_FORWARD_CURRENT
-            }
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
+      {propertiesEditor && propertiesEditorTarget && partProperties && (
+        partProperties.Editor ? (
+          <partProperties.Editor key={propertiesEditorTarget.id} component={propertiesEditorTarget}
+            x={propertiesEditor.x} y={propertiesEditor.y}
+            onSave={patch => updateComponent(propertiesEditorTarget.id, patch)} onClose={closePropertiesEditor} />
+        ) : partProperties.fields?.length ? (
+          <PartPropertiesEditor key={propertiesEditorTarget.id} component={propertiesEditorTarget}
+            properties={partProperties} title={partProperties.title ?? getDefinition(propertiesEditorTarget.type).label + ' properties'}
+            x={propertiesEditor.x} y={propertiesEditor.y}
+            onSave={patch => updateComponent(propertiesEditorTarget.id, patch)} onClose={closePropertiesEditor} />
+        ) : null
+      )}
 
       {propertiesEditor &&
         propertiesEditorTarget &&
-        isParallelLcdType(propertiesEditorTarget.type) && (
-          <LcdPropertiesEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            title={
-              propertiesEditorTarget.type === 'lcd_20x4'
-                ? '20×4 LCD display'
-                : '16×2 LCD display'
-            }
-            initialBackground={
-              lcdColorsFromComponent(propertiesEditorTarget).background
-            }
-            initialCharacter={
-              lcdColorsFromComponent(propertiesEditorTarget).character
-            }
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
-
-      {propertiesEditor &&
-        (propertiesEditorTarget?.type === 'power_supply' ||
-          propertiesEditorTarget?.type === 'oscillator') && (
-          <InstrumentPropertiesEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            component={propertiesEditorTarget}
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
-
-      {propertiesEditor &&
-        propertiesEditorTarget?.type === DS3231_RTC_TYPE && (
-          <Ds3231PropertiesEditor
-            x={propertiesEditor.x}
-            y={propertiesEditor.y}
-            initialRtcI2cAddr={
-              propertiesEditorTarget.rtcI2cAddr ?? DS3231_I2C_ADDR
-            }
-            onSave={(patch) => {
-              updateComponent(propertiesEditorTarget.id, patch);
-            }}
-            onClose={closePropertiesEditor}
-          />
-        )}
-
-      {propertiesEditor &&
-        propertiesEditorTarget &&
+        !partProperties?.Editor && !partProperties?.fields?.length &&
         componentHasChipMarking(propertiesEditorTarget.type) && (
           <PartLabelEditor
             x={propertiesEditor.x}

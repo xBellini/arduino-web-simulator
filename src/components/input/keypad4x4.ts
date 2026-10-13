@@ -10,10 +10,12 @@
 # Date       | Author | Remarks
 # 05-10-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
 # 09-10-2026 | Cursor | Moved from `src/parts/keypad4x4.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
 export const keypad4x4Module: PartModule = {
+  palette: { category: 'input', order: 40 },
   type: 'keypad_4x4',
 
   definition: {

@@ -5,7 +5,7 @@
  * Conventions: keys are `PlacedComponent.type` strings and must match each module's `type`.
  * Artwork-only parts (DIP shells, switches) stay in `src/registry/components.ts`.
  * Parallel LCDs (`lcd_16x2`, `lcd_20x4`) and PCF8574 LCD backpack are modules.
- * To add a part: create `src/components/<type>.ts(x)` exporting a `PartModule`, then one line here.
+ * To add a part: create `src/components/<type>.ts(x)` exporting a `PartModule`, declare its palette/properties metadata, then register it here.
  * Not-here: the hook contract (`partModule.ts`) or any part behaviour.
  *
 # Changelog
@@ -21,6 +21,7 @@
 # 08-10-2026 | Cursor | Registered 74HC combinational gates (definition-only; no spiceStamp yet)
 # 09-10-2026 | Cursor | Moved from `src/parts/index.ts` (tree reorganization)
 #                     | Registered ds3231_rtc (I2C DS3231 + AT24C32)
+# 13-10-2026 | Codex | Document part-owned palette metadata and forms; retain one explicit module registry.
  */
 import type { PartModule } from './partModule';
 import { resistorModule } from './passives/resistor';

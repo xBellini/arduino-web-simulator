@@ -17,6 +17,7 @@
 # 09-10-2026 | Cursor | DS3231 RTC module (I2C + AT24C32)
 #                     | Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
 # 12-10-2026 | Cursor | properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
+# 13-10-2026 | Codex | Own RTC address form and palette placement; add clock/time/I2C keywords; retain address parser and hex display.
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';
@@ -88,6 +89,7 @@ const HEADER_SHORTS: ReadonlyArray<readonly [string, string]> = [
 ];
 
 export const ds3231RtcModule: PartModule = {
+  palette: { category: 'modules', order: 50, keywords: ['rtc', 'clock', 'time', 'i2c'] },
   type: DS3231_RTC_TYPE,
   internalPinShorts: HEADER_SHORTS,
 
@@ -111,7 +113,14 @@ export const ds3231RtcModule: PartModule = {
   },
 
   properties: {
-    editable: true,
+    title: 'DS3231 RTC properties',
+    fields: [{
+      key: 'rtcI2cAddr', label: 'RTC I2C address', kind: 'integer',
+      parse: parseRtcI2cAddr,
+      format: value => '0x' + value.toString(16).toUpperCase().padStart(2, '0'),
+      error: 'Address must be 7-bit hex 0x03–0x77',
+      hint: 'Default 0x68. Sketch / library must use the same address.',
+    }],
     defaults: () => ({
       rtcI2cAddr: DS3231_I2C_ADDR,
     }),

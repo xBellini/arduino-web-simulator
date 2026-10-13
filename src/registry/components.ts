@@ -8,11 +8,10 @@
  * `partFootprints`; canvas size = viewBox × `scale`.
  * To add a simulating part: create `src/components/<type>.ts(x)` with a `PartModule` (definition +
  * hooks), register it in `src/components/index.ts`, add `public/components/<type>.svg`, and list the type
- * in a `PALETTE_CATEGORIES.types` array. Do not add it to `STATIC_REGISTRY`.
+ * on the module with `palette: { category, order }`. Do not add it to `STATIC_REGISTRY`.
  * To add an artwork-only part (unique SVG, no sim): add `public/components/<type>.svg` with a valid
  * viewBox, add a `STATIC_REGISTRY` entry with `type`, `label`, `scale`, `pins` (measure coords
- * in the SVG), optional `artwork: art('<type>')`, append `type` to a `PALETTE_CATEGORIES.types`
- * array, and set `marking` if the properties panel should edit chip name or value.
+ * in the SVG), optional `artwork: art('<type>')`, and `palette: { category, order }`, and set `marking` if the properties panel should edit chip name or value.
  * To add a package IC that simulates: put `package: 'dip8'` / `'to92'` / `'to220'` (etc.) on
  * the part module's `definition` — see `src/components/modules/ne555.ts`, `transistorNpn.ts`. Omit `scale`
  * to inherit the package shell's scale; set `scale` only to override. Blank DIP / TO shells
@@ -20,9 +19,8 @@
  * `packagePins.ts`). Named DIPs use `dipDevicePins(packageId, pinMap)` — never hardcode pin
  * x/y when reusing a package SVG. Optional per-pin `letter` overrides casing text when it
  * should differ from `description`.
- * To wire the palette: only types listed under `PALETTE_CATEGORIES` appear in the sidebar;
- * order within a category follows each category's `types` array; `PALETTE_ORDER` is the flat
- * drag order — keep new types in both registry and a category.
+ * To wire the palette: only entries with `palette` metadata appear in the sidebar;
+ * order within a category follows each part's `palette.order`; `PALETTE_ORDER` is derived.
  * To tune pin coords: open the SVG, read viewBox units at each lead/hole center, set matching
  * `PinDefinition` ids (wire/sim code may depend on ids); use `breadboardGrid` helpers for
  * breadboard tie/rail ids only on `breadboard`.
@@ -57,6 +55,7 @@
 # 12-10-2026 | Cursor  | Removed ds3231_rtc from Modules palette until public/components/ds3231_rtc.svg exists (blank UI crash)
 #                      | Restored ds3231_rtc in Modules palette after SVG re-added
 # 13-10-2026 | Bellini | Readded bare_packages in PALETTE_CATEGORIES for debugging
+# 13-10-2026 | Codex | Derive membership/order from part metadata; retain all 63 entries and hide internal junctions.
  */
 import type {
   ComponentDefinition,
@@ -144,7 +143,8 @@ function breadboardPins(): PinDefinition[] {
  * Anything that simulates belongs in `src/components/<type>.ts`.
  */
 const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
-  arduino_uno: { // Adjusted already
+  arduino_uno: {
+    palette: { category: 'boards', order: 0 }, // Adjusted already
     type: 'arduino_uno',
     label: 'Arduino Uno',
     scale: 2,
@@ -185,7 +185,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
 	].map((p) => ({ ...p, type: arduinoUnoPinType(p.id) })),
   },
   
-  arduino_nano: { // Adjusted already
+  arduino_nano: {
+    palette: { category: 'boards', order: 10 }, // Adjusted already
     type: 'arduino_nano',
     label: 'Arduino Nano',
     scale: 1,
@@ -225,6 +226,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   breadboard: {
+    palette: { category: 'prototyping', order: 0 },
     type: 'breadboard',
     label: 'Breadboard',
     scale: 1,
@@ -232,6 +234,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
 
   servo: {
+    palette: { category: 'output', order: 60 },
     type: 'servo',
     label: 'Micro Servo',
     scale: 1,
@@ -244,6 +247,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
 
   slide_switch: {
+    palette: { category: 'input', order: 10 },
     type: 'slide_switch',
     label: 'Slide Switch',
     scale: 1,
@@ -257,6 +261,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
 
   /** TinkerCAD Relay SPDT (DIL12 footprint 122167). Artwork only — SPICE later. */
   relay_spdt: {
+    palette: { category: 'output', order: 70 },
     type: 'relay_spdt',
     label: 'Relay SPDT',
     scale: 2,
@@ -274,6 +279,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
 
   /** TinkerCAD Relay DPDT (DIL16 footprint 122164). Artwork only — SPICE later. */
   relay_dpdt: {
+    palette: { category: 'output', order: 80 },
     type: 'relay_dpdt',
     label: 'Relay DPDT',
     scale: 2,
@@ -293,6 +299,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
 
   /** TinkerCAD Photoresistor / LDR (footprint 116691). Artwork only — SPICE later. */
   ldr: {
+    palette: { category: 'input', order: 50 },
     type: 'ldr',
     label: 'Photoresistor',
     scale: 2,
@@ -304,7 +311,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     ],
   },
 
-  seven_segment: { // Adjusted already
+  seven_segment: {
+    palette: { category: 'output', order: 20 }, // Adjusted already
     type: 'seven_segment',
     label: '7-Segment Display',
     scale: 2,
@@ -323,7 +331,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     ],
   },
   
-  dip_switch_4: { // Adjusted already
+  dip_switch_4: {
+    palette: { category: 'input', order: 20 }, // Adjusted already
     type: 'dip_switch_4',
     label: 'DIP Switch (4)',
     scale: 2,
@@ -340,7 +349,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     ],
   },
   
-  dip_switch_6: { // Adjusted already
+  dip_switch_6: {
+    palette: { category: 'input', order: 30 }, // Adjusted already
     type: 'dip_switch_6',
     label: 'DIP Switch (6)',
     scale: 2,
@@ -361,7 +371,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     ],
   },
 
-  to92: { // Adjusted
+  to92: {
+    palette: { category: 'bare_packages', order: 0 }, // Adjusted
     type: 'to92',
     label: 'TO92',
     scale: 2,
@@ -374,7 +385,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     ]),
   },
 
-  to220: { // Adjusted
+  to220: {
+    palette: { category: 'bare_packages', order: 10 }, // Adjusted
     type: 'to220',
     label: 'TO220',
     scale: 2,
@@ -388,6 +400,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
 
   dip4: {
+    palette: { category: 'bare_packages', order: 20 },
     type: 'dip4',
     label: 'DIP4',
     scale: 2,
@@ -397,6 +410,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip6: {
+    palette: { category: 'bare_packages', order: 30 },
     type: 'dip6',
     label: 'DIP6',
     scale: 2,
@@ -406,6 +420,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip8: {
+    palette: { category: 'bare_packages', order: 40 },
     type: 'dip8',
     label: 'DIP8',
     scale: 2,
@@ -415,6 +430,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip14: {
+    palette: { category: 'bare_packages', order: 50 },
     type: 'dip14',
     label: 'DIP14',
     scale: 2,
@@ -424,6 +440,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip16: {
+    palette: { category: 'bare_packages', order: 60 },
     type: 'dip16',
     label: 'DIP16',
     scale: 2,
@@ -433,6 +450,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
 
   dip18: {
+    palette: { category: 'bare_packages', order: 70 },
     type: 'dip18',
     label: 'DIP18',
     scale: 2,
@@ -442,6 +460,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip20: {
+    palette: { category: 'bare_packages', order: 80 },
     type: 'dip20',
     label: 'DIP20',
     scale: 2,
@@ -451,6 +470,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip24: {
+    palette: { category: 'bare_packages', order: 90 },
     type: 'dip24',
     label: 'DIP24',
     scale: 2,
@@ -460,6 +480,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
 
   dip28: {
+    palette: { category: 'bare_packages', order: 100 },
     type: 'dip28',
     label: 'DIP28',
     scale: 2,
@@ -469,6 +490,7 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
   },
   
   dip40: {
+    palette: { category: 'bare_packages', order: 110 },
     type: 'dip40',
     label: 'DIP40',
     scale: 2,
@@ -493,138 +515,34 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
 export const COMPONENT_REGISTRY: Record<string, ComponentRegistryEntry> = {
   ...STATIC_REGISTRY,
   ...Object.fromEntries(
-    Object.entries(PART_MODULES).map(([type, mod]) => [type, mod.definition]),
+    Object.entries(PART_MODULES).map(([type, mod]) => [type, { ...mod.definition, palette: mod.palette }]),
   ),
 };
 
-export const PALETTE_CATEGORIES = [
-  {
-    id: 'boards',
-    label: 'Boards',
-    types: ['arduino_uno', 'arduino_nano'],
-  },
-  {
-    id: 'prototyping',
-    label: 'Prototyping',
-    types: ['breadboard'],
-  },
-  {
-    id: 'passives',
-    label: 'Passives',
-    types: [
-	'resistor',
-	'capacitor',
-	'polarized_capacitor',
-	'potentiometer',
-	],
-  },
-  {
-    id: 'semiconductors',
-    label: 'Semiconductors',
-    types: [
-	'diode', 
-	'transistor_npn',
-	'transistor_pnp',
-	'mosfet_n',
-	'mosfet_p',
-	],
-  },
-  {
-    id: 'output',
-    label: 'Output',
-    types: [
-      'led',
-      'rgb_led',
-      'seven_segment',
-      'lcd_16x2',
-      'lcd_20x4',
-      'buzzer',
-      'servo',
-      'relay_spdt',
-      'relay_dpdt',
-    ],
-  },
-  {
-    id: 'input',
-    label: 'Input',
-    types: [
-	  'button',
-	  'slide_switch',
-	  'dip_switch_4',
-	  'dip_switch_6',
-	  'keypad_4x4',
-	  'ldr',
-	],
-  },
-  {
-    id: 'modules',
-    label: 'Modules',
-    types: [
-      'rfid_rc522',
-      'max7219_matrix_8x8',
-      'microsd_module',
-      'button_matrix_4x4',
-      'pcf8574_lcd_backpack',
-      'ds3231_rtc',
-    ],
-  },
-  {
-    id: 'ics',
-    label: 'ICs',
-    types: [
-      'ne555',
-    ],
-  },
-    {
-    id: 'logic_gates',
-    label: 'Logic Gates',
-    types: [
-      '74hc00',
-      '74hc02',
-      '74hc03',
-      '74hc04',
-      '74hc08',
-      '74hc10',
-      '74hc11',
-      '74hc20',
-      '74hc21',
-      '74hc27',
-      '74hc32',
-      '74hc86',
-    ],
-  },
-  {
-    id: 'bare_packages',
-    label: 'Bare Packages',
-    types: [
-      'to92',
-	  'to220',
-	  'dip4',
-	  'dip6',
-	  'dip8',
-	  'dip14',
-	  'dip16',
-	  'dip18',
-	  'dip20',
-	  'dip24',
-	  'dip28',
-	  'dip40',
-	],
-  },
-  {
-    id: 'instruments',
-    label: 'Instruments',
-    types: [
-	  'power_supply',
-	  'voltmeter', 
-	  'ammeter',
-	  'ohmmeter',
-	  'oscillator'
-	],
-  },
+export const PALETTE_CATEGORY_DEFINITIONS = [
+  { id: 'boards', label: 'Boards' },
+  { id: 'prototyping', label: 'Prototyping' },
+  { id: 'passives', label: 'Passives' },
+  { id: 'semiconductors', label: 'Semiconductors' },
+  { id: 'output', label: 'Output' },
+  { id: 'input', label: 'Input' },
+  { id: 'modules', label: 'Modules' },
+  { id: 'ics', label: 'ICs' },
+  { id: 'logic_gates', label: 'Logic Gates' },
+  { id: 'bare_packages', label: 'Bare Packages' },
+  { id: 'instruments', label: 'Instruments' },
 ] as const;
 
-export type PaletteCategoryId = (typeof PALETTE_CATEGORIES)[number]['id'];
+export type PaletteCategoryId = (typeof PALETTE_CATEGORY_DEFINITIONS)[number]['id'];
+
+/** Membership lives with each part; absent metadata keeps internal parts hidden. */
+export const PALETTE_CATEGORIES = PALETTE_CATEGORY_DEFINITIONS.map(category => ({
+  ...category,
+  types: Object.values(COMPONENT_REGISTRY)
+    .filter(entry => entry.palette?.category === category.id)
+    .sort((a, b) => a.palette!.order - b.palette!.order || a.type.localeCompare(b.type))
+    .map(entry => entry.type),
+}));
 
 export const PALETTE_ORDER = PALETTE_CATEGORIES.flatMap((category) => [
   ...category.types,

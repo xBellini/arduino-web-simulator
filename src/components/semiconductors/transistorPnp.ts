@@ -17,11 +17,13 @@
 #                     | Pin list inlined (NE555-style); casing from pin labels
 # 25-09-2026 | Cursor | to92DevicePins; letter + description; array defaultPartLabel
 # 09-10-2026 | Cursor | Moved from `src/parts/transistorPnp.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 import { to92DevicePins } from '../../registry/packagePins';
 
 export const transistorPnpModule: PartModule = {
+  palette: { category: 'semiconductors', order: 20 },
   type: 'transistor_pnp',
 
   definition: {

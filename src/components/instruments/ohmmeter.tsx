@@ -13,6 +13,7 @@
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 30-09-2026 | Cursor | Corrected pin coordinates
 # 09-10-2026 | Cursor | Moved from `src/parts/ohmmeter.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import {
   DEFAULT_RESISTANCE_UNIT,
@@ -25,6 +26,7 @@ import { InstrumentReadout } from '../overlayKit';
 import { MNA_OHM_FLOOR } from '../passives/resistor';
 
 export const ohmmeterModule: PartModule = {
+  palette: { category: 'instruments', order: 30 },
   type: 'ohmmeter',
 
   definition: {

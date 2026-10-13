@@ -15,6 +15,7 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 09-10-2026 | Cursor | Moved from `src/parts/button.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { SpiceStampCtx } from '../partModule';
 import type { PartModule } from '../partModule';
@@ -38,6 +39,7 @@ function columnExternallyWired(ctx: SpiceStampCtx, pins: readonly string[]): boo
 }
 
 export const buttonModule: PartModule = {
+  palette: { category: 'input', order: 0 },
   type: 'button',
   ensurePins: ['1a', '1b', '2a', '2b'],
 

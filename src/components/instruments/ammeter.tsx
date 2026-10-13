@@ -13,6 +13,7 @@
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 30-09-2026 | Cursor | Corrected pin coordinates
 # 09-10-2026 | Cursor | Moved from `src/parts/ammeter.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import { formatCurrentMa } from '../../values/electric';
 import type { PartModule } from '../partModule';
@@ -22,6 +23,7 @@ const SHUNT_OHMS = 0.001;
 const MIN_WIRE_CURRENT_MA = 0.05;
 
 export const ammeterModule: PartModule = {
+  palette: { category: 'instruments', order: 20 },
   type: 'ammeter',
 
   definition: {

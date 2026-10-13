@@ -17,6 +17,7 @@
 #                     | Header: engine is eecircuit-engine (ngspice-45); A-device decks are refused
 #                     | Moved from `src/parts/74hc21.ts` (tree reorganization)
 #                     | Moved to `src/components/IC/Logic Gates/`; fixed relative imports
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';
@@ -28,6 +29,7 @@ const GATES = [
 ] as const;
 
 export const hc21Module: PartModule = {
+  palette: { category: 'logic_gates', order: 80 },
   type: '74hc21',
 
   definition: {

@@ -10,10 +10,12 @@
 # 05-10-2026 | Cursor | Changelog creation / simulating parallel 16×2
 #                     | Glass rect matched to SVG bluish display area (260×63)
 # 09-10-2026 | Cursor | Moved from `src/parts/lcd16x2.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import { createParallelLcdModule } from './lcdParallel';
 
 export const lcd16x2Module = createParallelLcdModule({
+  palette: { category: 'output', order: 30 },
   type: 'lcd_16x2',
   label: '16x2 LCD',
   cols: 16,

@@ -16,10 +16,12 @@
 # 17-09-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
 # 23-09-2026 | Cursor | Dropped explicit `scale`; inherits dip8 package scale
 # 09-10-2026 | Cursor | Moved from `src/parts/ne555.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
 export const ne555Module: PartModule = {
+  palette: { category: 'ics', order: 0 },
   type: 'ne555',
 
   definition: {

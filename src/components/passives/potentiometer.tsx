@@ -12,6 +12,7 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 09-10-2026 | Cursor | Moved from `src/parts/potentiometer.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
@@ -37,6 +38,7 @@ function PotKnobOverlay({ position }: { position: number }) {
 }
 
 export const potentiometerModule: PartModule = {
+  palette: { category: 'passives', order: 30 },
   type: 'potentiometer',
 
   definition: {

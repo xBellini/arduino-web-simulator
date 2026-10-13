@@ -12,12 +12,14 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 09-10-2026 | Cursor | Moved from `src/parts/buzzer.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
 const BUZZER_MA = 30;
 
 export const buzzerModule: PartModule = {
+  palette: { category: 'output', order: 50 },
   type: 'buzzer',
 
   definition: {

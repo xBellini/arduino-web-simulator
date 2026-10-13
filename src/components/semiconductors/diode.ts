@@ -12,10 +12,12 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 09-10-2026 | Cursor | Moved from `src/parts/diode.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
 export const diodeModule: PartModule = {
+  palette: { category: 'semiconductors', order: 0 },
   type: 'diode',
 
   definition: {

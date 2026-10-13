@@ -16,7 +16,9 @@
 #                     | Per-instance background + highlight colors (properties panel)
 # 09-10-2026 | Cursor | Header: EN edges come from avrWorkerHost (unused lcdGpioProbe.ts deleted)
 #                     | Moved from `src/parts/lcdParallel.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Forward variant palette metadata; register custom LCD editor preserving color preview.
  */
+import { LcdPropertiesEditor } from '../../ui/editors/LcdPropertiesEditor';
 import type { ReactNode } from 'react';
 import {
   createHd44780,
@@ -43,6 +45,7 @@ export interface LcdGlassRect {
 }
 
 export interface ParallelLcdSpec {
+  palette?: import('../../types').PaletteMetadata;
   type: string;
   label: string;
   cols: number;
@@ -217,6 +220,7 @@ export function createParallelLcdModule(spec: ParallelLcdSpec): PartModule {
   const { type, label, cols, rows, scale, artwork, pins, glass } = spec;
 
   return {
+    palette: spec.palette,
     type,
 
     definition: {
@@ -241,7 +245,12 @@ export function createParallelLcdModule(spec: ParallelLcdSpec): PartModule {
     },
 
     properties: {
-      editable: true,
+      Editor: ({ component, x, y, onSave, onClose }) => (
+        <LcdPropertiesEditor x={x} y={y} title={cols + '×' + rows + ' LCD display'}
+          initialBackground={lcdColorsFromComponent(component).background}
+          initialCharacter={lcdColorsFromComponent(component).character}
+          onSave={onSave} onClose={onClose} />
+      ),
       defaults: () => ({
         lcdBackgroundColor: DEFAULT_LCD_BACKGROUND,
         lcdCharacterColor: DEFAULT_LCD_CHARACTER,

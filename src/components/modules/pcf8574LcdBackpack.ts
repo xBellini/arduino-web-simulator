@@ -18,6 +18,7 @@
 #                     | Single-file module (pins + PCF behaviour + board map); was split across sim/
 #                     | Remapped lcd1–lcd16 left→right for stacking above LCD (artwork unchanged)
 # 09-10-2026 | Cursor | Moved from `src/parts/pcf8574LcdBackpack.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';
@@ -187,6 +188,7 @@ function lcdHeaderPins(): PartModule['definition']['pins'] {
 }
 
 export const pcf8574LcdBackpackModule: PartModule = {
+  palette: { category: 'modules', order: 40 },
   type: PCF8574_LCD_BACKPACK_TYPE,
 
   definition: {

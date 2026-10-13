@@ -17,9 +17,12 @@
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 24-09-2026 | Cursor | Pin B x aligned to resistor.svg viewBox width (~49.5)
 # 09-10-2026 | Cursor | Moved from `src/parts/resistor.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Own palette placement and resistance/unit/rating/tolerance form schema; retain defaults and validation.
  */
 import type { PlacedComponent, ResistancePowerRating } from '../../types';
 import {
+  parseResistanceValue, RESISTANCE_UNITS, UNIT_LABELS,
+  RESISTANCE_POWER_RATINGS, RESISTANCE_TOLERANCES, TOLERANCE_LABELS,
   DEFAULT_RESISTANCE_POWER_RATING,
   DEFAULT_RESISTANCE_TOLERANCE,
   DEFAULT_RESISTANCE_UNIT,
@@ -101,6 +104,7 @@ function ResistorBandOverlay({ component }: { component: PlacedComponent }) {
 }
 
 export const resistorModule: PartModule = {
+  palette: { category: 'passives', order: 0 },
   type: 'resistor',
 
   definition: {
@@ -229,7 +233,13 @@ export const resistorModule: PartModule = {
   },
 
   properties: {
-    editable: true,
+    title: 'Resistor properties',
+    fields: [
+      { key: 'resistanceValue', label: 'Resistance value', kind: 'number', parse: parseResistanceValue, error: 'Enter a positive number' },
+      { key: 'resistanceUnit', label: 'Resistance unit', kind: 'select', options: RESISTANCE_UNITS.map(value => ({ value, label: UNIT_LABELS[value] })) },
+      { key: 'resistancePowerRating', label: 'Power rating', kind: 'select', options: RESISTANCE_POWER_RATINGS.map(value => ({ value, label: value })) },
+      { key: 'resistanceTolerance', label: 'Tolerance', kind: 'select', options: RESISTANCE_TOLERANCES.map(value => ({ value, label: TOLERANCE_LABELS[value] })) },
+    ],
     defaults: () => ({
       resistanceValue: DEFAULT_RESISTANCE_VALUE,
       resistanceUnit: DEFAULT_RESISTANCE_UNIT,

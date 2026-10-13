@@ -15,6 +15,7 @@
 # 24-09-2026 | Cursor | Glow uses rgb_led.svg body silhouette (not old oval outside footprint)
 #                     | Wire mA from series-R (not rated If); sub-threshold ignored; seriesPins
 # 09-10-2026 | Cursor | Moved from `src/parts/rgbLed.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { CSSProperties } from 'react';
 import { netForPin, type NetLevel } from '../../circuit/netlist';
@@ -69,6 +70,7 @@ function RgbLitOverlay({
 }
 
 export const rgbLedModule: PartModule = {
+  palette: { category: 'output', order: 10 },
   type: 'rgb_led',
 
   definition: {

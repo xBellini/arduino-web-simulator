@@ -1,3 +1,8 @@
+<!--
+# Changelog
+# Date       | Author | Remarks
+# 13-10-2026 | Codex | Map shared property forms and part-owned metadata; behavioral changes documented in README.
+-->
 # Project map (plain language)
 
 This guide lists the **important files** and what they do. You do not need to know TypeScript to use it.
@@ -87,7 +92,7 @@ arduino-simulator/
     │   │   ├── ContextMenu.tsx    # Right-click menus
     │   │   └── geometry.ts        # Coordinates, wire paths, pin snap
     │   ├── editors/               # Property popovers
-    │   │   ├── ResistorValueEditor.tsx / CapacitorValueEditor.tsx / LedPropertiesEditor.tsx
+    │   │   ├── PartPropertiesEditor.tsx # Shared schema form; fields live with each part
     │   │   ├── LcdPropertiesEditor.tsx / InstrumentPropertiesEditor.tsx
     │   │   ├── PartLabelEditor.tsx# DIP/TO marking text
     │   │   ├── editable.ts        # Which components open a properties panel

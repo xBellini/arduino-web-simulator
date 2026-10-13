@@ -19,8 +19,9 @@
 # 23-09-2026 | Cursor | `definition.scale` optional when `package` is set (inherits footprint)
 # 09-10-2026 | Cursor | Moved from `src/parts/partModule.ts` (tree reorganization)
 #                     | `internalPinShorts` for module PCB copper (DS3231 dual headers)
+# 13-10-2026 | Codex | Add palette metadata, property-field schemas and custom Editor contract; replace editable flag with form capability.
  */
-import type { ReactNode } from 'react';
+import type { ReactNode, ComponentType } from 'react';
 import type {
   ComponentDefinition,
   ComponentRegistryEntry,
@@ -276,7 +277,39 @@ export type PinRole = 'source' | 'sink';
 // ui/palette/Palette.tsx, and ui/editors/editable.ts
 // ---------------------------------------------------------------------------
 
+/** Only optional scalar instance settings may be exposed by a property form. */
+export type PartPropertyKey = {
+  [K in keyof PlacedComponent]-?: undefined extends PlacedComponent[K]
+    ? NonNullable<PlacedComponent[K]> extends string | number | boolean ? K : never
+    : never;
+}[keyof PlacedComponent];
+
+export interface PartPropertyField {
+  key: PartPropertyKey;
+  label: string;
+  kind: 'number' | 'integer' | 'select' | 'color' | 'boolean';
+  unit?: string;
+  hint?: string;
+  options?: readonly { value: string; label: string }[];
+  /** Existing part parsers retain their accepted input and bounds. */
+  parse?: (text: string) => number | null;
+  format?: (value: number) => string;
+  error?: string;
+}
+
+export interface PartEditorProps {
+  component: PlacedComponent;
+  x: number;
+  y: number;
+  onSave: (patch: Partial<PlacedComponent>) => void;
+  onClose: () => void;
+}
+
 export interface PartProperties {
+  title?: string;
+  fields?: readonly PartPropertyField[];
+  /** Custom UI for previews or coupled controls such as unit-converting steppers. */
+  Editor?: ComponentType<PartEditorProps>;
   /**
    * Instance fields written when the part is newly placed. Also used for the palette preview,
    * so the two can never drift apart.
@@ -287,8 +320,6 @@ export interface PartProperties {
    * Must validate every field: a saved project is user-editable input.
    */
   load?: (raw: Record<string, unknown>, into: PlacedComponent) => void;
-  /** True when double-clicking the part opens a value editor (beyond chip renaming). */
-  editable?: boolean;
 }
 
 export interface PartOverlayProps {
@@ -301,6 +332,7 @@ export interface PartOverlayProps {
 // ---------------------------------------------------------------------------
 
 export interface PartModule {
+  palette?: import('../types').PaletteMetadata;
   /** Must equal the key this module is registered under and `definition.type`. */
   type: string;
   /** Catalog entry: pins, artwork, package, marking; `scale` optional (inherits from `package`). */

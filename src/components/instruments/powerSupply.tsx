@@ -16,7 +16,9 @@
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 30-09-2026 | Cursor | Corrected pin coordinates
 # 09-10-2026 | Cursor | Moved from `src/parts/powerSupply.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Own palette placement and custom editor registration; retain unit conversion, steppers and legacy current limits.
  */
+import { InstrumentPropertiesEditor } from '../../ui/editors/InstrumentPropertiesEditor';
 import { isCurrentUnit, isVoltageUnit, supplyVoltageVolts } from '../../values/electric';
 import type { PartModule } from '../partModule';
 import { InstrumentReadout } from '../overlayKit';
@@ -26,6 +28,7 @@ function isFiniteNumber(value: unknown): value is number {
 }
 
 export const powerSupplyModule: PartModule = {
+  palette: { category: 'instruments', order: 0 },
   type: 'power_supply',
   standaloneSource: true,
 
@@ -99,7 +102,7 @@ export const powerSupplyModule: PartModule = {
   },
 
   properties: {
-    editable: true,
+    Editor: InstrumentPropertiesEditor,
     defaults: () => ({
       supplyVoltage: 5,
       supplyVoltageUnit: 'V',

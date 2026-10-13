@@ -12,12 +12,14 @@
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 30-09-2026 | Cursor | Corrected pin coordinates
 # 09-10-2026 | Cursor | Moved from `src/parts/voltmeter.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import { formatVoltage } from '../../values/electric';
 import type { PartModule } from '../partModule';
 import { InstrumentReadout } from '../overlayKit';
 
 export const voltmeterModule: PartModule = {
+  palette: { category: 'instruments', order: 10 },
   type: 'voltmeter',
 
   definition: {

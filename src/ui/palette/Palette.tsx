@@ -3,7 +3,7 @@
  * data from PALETTE_CATEGORIES + getDefinition (src/registry/components). Click toggles startPlacement(type)
  * / cancelPlacement via SimContext; active row follows state.placementType. Search matches label, type id,
  * and category label (componentMatchesQuery). To surface a new part: register in COMPONENT_REGISTRY and add
- * its type string to a PALETTE_CATEGORIES.types array — no Palette edit unless you change UX (new filter,
+ * palette metadata beside its definition — no Palette edit unless you change UX (new filter,
  * sort). Thumbnails are PaletteIcon → ComponentShape. Placement rules/snap live in SimCanvas/geometry — not here.
  *
  * Merged in from `src/components/PaletteIcon.tsx`: Memoized palette row thumbnail — mini SVG
@@ -37,6 +37,7 @@
 # 09-10-2026 | Cursor | Merged `src/components/PaletteIcon.tsx` into this file (tree reorganization)
 #                     | Merged `src/utils/paletteIcon.ts` into this file (tree reorganization)
 #                     | Moved from `src/components/Palette.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Use derived membership and include part-owned keywords in search.
  */
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { PALETTE_CATEGORIES, getDefinition, type PaletteCategoryId } from '../../registry/components';
@@ -130,6 +131,7 @@ function componentMatchesQuery(
     type,
     type.replace(/_/g, ' '),
     categoryLabel,
+    ...(def.palette?.keywords ?? []),
   ]
     .join(' ')
     .toLowerCase();

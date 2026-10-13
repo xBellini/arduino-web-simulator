@@ -21,6 +21,7 @@
 #                     | Stamp TI SN74HC08 behavioral model (Y A B VCC GND) instead of XSPICE 74HC.LIB
 #                     | Moved from `src/parts/74hc08.ts` (tree reorganization)
 #                     | Moved to `src/components/IC/Logic Gates/`; fixed relative imports
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';
@@ -34,6 +35,7 @@ const GATES = [
 ] as const;
 
 export const hc08Module: PartModule = {
+  palette: { category: 'logic_gates', order: 40 },
   type: '74hc08',
 
   definition: {

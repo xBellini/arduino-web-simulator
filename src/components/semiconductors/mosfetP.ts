@@ -16,11 +16,13 @@
 #                     | Pin list inlined (NE555-style); casing from pin labels
 # 25-09-2026 | Cursor | to220DevicePins; letter + description; array defaultPartLabel
 # 09-10-2026 | Cursor | Moved from `src/parts/mosfetP.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 import { to220DevicePins } from '../../registry/packagePins';
 
 export const mosfetPModule: PartModule = {
+  palette: { category: 'semiconductors', order: 40 },
   type: 'mosfet_p',
 
   definition: {

@@ -10,10 +10,12 @@
 # 05-10-2026 | Cursor | Changelog creation / simulating parallel 20×4 (placeholder SVG OK)
 #                     | Pins + glass matched to lcd_20x4.svg (was placeholder layout)
 # 09-10-2026 | Cursor | Moved from `src/parts/lcd20x4.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import { createParallelLcdModule } from './lcdParallel';
 
 export const lcd20x4Module = createParallelLcdModule({
+  palette: { category: 'output', order: 40 },
   type: 'lcd_20x4',
   label: '20x4 LCD',
   cols: 20,

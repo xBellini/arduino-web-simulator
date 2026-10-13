@@ -11,10 +11,12 @@
 # 03-10-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
 # 05-10-2026 | Cursor | Pin x: footprint space (terminal 32 − viewBox min-x 25 → 7)
 # 09-10-2026 | Cursor | Moved from `src/parts/max7219Matrix8x8.ts` (tree reorganization)
+# 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
  */
 import type { PartModule } from '../partModule';
 
 export const max7219Matrix8x8Module: PartModule = {
+  palette: { category: 'modules', order: 10 },
   type: 'max7219_matrix_8x8',
 
   definition: {

@@ -20,10 +20,12 @@
 # 24-09-2026 | Cursor | Retuned glow/blown-X to current led.svg footprint (~14.7×29.5)
 #                     | Glow uses LED body silhouette path (not a small oval); blown-X on dome
 # 09-10-2026 | Cursor | Moved from `src/parts/led.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Own palette placement and color/Vf/If form schema; retain presets and numeric parsers.
  */
 import type { CSSProperties } from 'react';
 import type { PlacedComponent } from '../../types';
 import {
+  LED_COLOR_OPTIONS, parseForwardVoltage, parseForwardCurrent,
   DEFAULT_LED_COLOR,
   DEFAULT_LED_FORWARD_CURRENT,
   DEFAULT_LED_FORWARD_VOLTAGE,
@@ -346,6 +348,7 @@ function LedGlowOverlay({
 }
 
 export const ledModule: PartModule = {
+  palette: { category: 'output', order: 0 },
   type: 'led',
 
   definition: {
@@ -582,7 +585,12 @@ export const ledModule: PartModule = {
   },
 
   properties: {
-    editable: true,
+    title: 'LED properties',
+    fields: [
+      { key: 'ledColor', label: 'LED color', kind: 'color', options: LED_COLOR_OPTIONS.map(option => ({ value: option.hex, label: option.label })) },
+      { key: 'ledForwardVoltage', label: 'Forward voltage', kind: 'number', unit: 'V', parse: parseForwardVoltage, error: 'Forward voltage must be between 0 and 10 V' },
+      { key: 'ledForwardCurrent', label: 'Forward current', kind: 'number', unit: 'mA', parse: parseForwardCurrent, error: 'Forward current must be between 0 and 1000 mA' },
+    ],
     defaults: () => ({
       ledColor: DEFAULT_LED_COLOR,
       ledForwardVoltage: defaultForwardVoltageForColor(DEFAULT_LED_COLOR),

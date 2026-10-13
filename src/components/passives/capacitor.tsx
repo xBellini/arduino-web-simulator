@@ -16,14 +16,16 @@
 # 26-09-2026 | Cursor | Restore native SPICE C stamp; drop discrete companion invent
 # 28-09-2026 | Cursor | Charge/fill driven only from SPICE Vc / #branch (no invented RC)
 # 09-10-2026 | Cursor | Moved from `src/parts/capacitor.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Own palette placement and shared capacitor form schema; preserve both variants and their defaults.
  */
-import type { PartModule } from '../partModule';
+import type { PartModule, PartPropertyField } from '../partModule';
 import type { PlacedComponent } from '../../types';
 import type { CircuitNetlist } from '../../circuit/netlist';
 import { netForPin } from '../../circuit/netlist';
 import type { CircuitSimState } from '../../circuit/solver';
 import { BLOWN_RESISTOR_OHMS } from './resistor';
 import {
+  CAPACITANCE_UNITS, CAPACITANCE_UNIT_LABELS, parseCapacitanceValue,
   capacitanceToFarads,
   DEFAULT_CAPACITANCE_UNIT,
   DEFAULT_CAPACITANCE_VALUE,
@@ -35,6 +37,13 @@ import {
 } from '../../values/capacitor';
 
 //const SUPPLY_V = 5;
+/** Shared property form for ceramic and polarized variants. */
+const CAPACITOR_FIELDS: readonly PartPropertyField[] = [
+  { key: 'capacitanceValue', label: 'Capacitance value', kind: 'number', parse: parseCapacitanceValue, error: 'Enter a positive capacitance' },
+  { key: 'capacitanceUnit', label: 'Capacitance unit', kind: 'select', options: CAPACITANCE_UNITS.map(value => ({ value, label: CAPACITANCE_UNIT_LABELS[value] })) },
+  { key: 'capacitanceVoltageRating', label: 'Voltage rating', kind: 'number', unit: 'V', parse: parseCapacitanceValue, error: 'Enter a positive voltage rating' },
+];
+
 /** Visual full-scale for charge fill — ~LED Vf reads “full”; blow still uses rating. */
 const CHARGE_VISUAL_FULL_V = 2.5;
 const POLARIZED_ESR_OHMS = 0.5;
@@ -460,6 +469,7 @@ const capacitorHooks: Pick<
 };
 
 export const capacitorModule: PartModule = {
+  palette: { category: 'passives', order: 10 },
   type: 'capacitor',
 
   definition: {
@@ -485,7 +495,8 @@ export const capacitorModule: PartModule = {
   ...capacitorHooks,
 
   properties: {
-    editable: true,
+    title: 'Capacitor properties',
+    fields: CAPACITOR_FIELDS,
     defaults: () => ({
       capacitanceValue: DEFAULT_CAPACITANCE_VALUE,
       capacitanceUnit: DEFAULT_CAPACITANCE_UNIT,
@@ -504,6 +515,7 @@ export const capacitorModule: PartModule = {
 };
 
 export const polarizedCapacitorModule: PartModule = {
+  palette: { category: 'passives', order: 20 },
   type: 'polarized_capacitor',
 
   definition: {
@@ -534,7 +546,8 @@ export const polarizedCapacitorModule: PartModule = {
   ...capacitorHooks,
 
   properties: {
-    editable: true,
+    title: 'Polarized capacitor properties',
+    fields: CAPACITOR_FIELDS,
     defaults: () => ({
       capacitanceValue: DEFAULT_POLARIZED_CAPACITANCE_VALUE,
       capacitanceUnit: DEFAULT_POLARIZED_CAPACITANCE_UNIT,

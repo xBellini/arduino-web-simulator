@@ -25,6 +25,7 @@
 # 25-09-2026 | Cursor | Pin `label` → `description`; optional `letter`; drop `pinLetters`; `defaultPartLabel` may be a line array
 #                     | CapacitanceUnit + capacitanceValue/Unit on PlacedComponent
 # 12-10-2026 | Cursor | rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
+# 13-10-2026 | Codex | Add PaletteMetadata for category, order and optional search keywords.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -63,7 +64,14 @@ export interface PinDefinition {
   type: 'digital' | 'power' | 'ground' | 'analog';
 }
 
+export interface PaletteMetadata {
+  category: 'boards' | 'prototyping' | 'passives' | 'semiconductors' | 'output' | 'input' | 'modules' | 'ics' | 'logic_gates' | 'bare_packages' | 'instruments';
+  order: number;
+  keywords?: readonly string[];
+}
+
 export interface ComponentDefinition {
+  palette?: PaletteMetadata;
   type: string;
   label: string;
   /**

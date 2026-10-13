@@ -14,7 +14,9 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
 # 09-10-2026 | Cursor | Moved from `src/parts/oscillator.tsx` (tree reorganization)
+# 13-10-2026 | Codex | Own palette placement and custom editor registration; retain frequency and enabled controls.
  */
+import { InstrumentPropertiesEditor } from '../../ui/editors/InstrumentPropertiesEditor';
 import type { PlacedComponent } from '../../types';
 import type { PartModule } from '../partModule';
 import { InstrumentReadout } from '../overlayKit';
@@ -34,6 +36,7 @@ function isHigh(comp: PlacedComponent, simTimeMs: number): boolean {
 }
 
 export const oscillatorModule: PartModule = {
+  palette: { category: 'instruments', order: 40 },
   type: 'oscillator',
   standaloneSource: true,
 
@@ -101,7 +104,7 @@ export const oscillatorModule: PartModule = {
   },
 
   properties: {
-    editable: true,
+    Editor: InstrumentPropertiesEditor,
     defaults: () => ({ oscillatorFrequencyHz: 1, oscillatorEnabled: true }),
     load(raw, into) {
       const hz = raw.oscillatorFrequencyHz;

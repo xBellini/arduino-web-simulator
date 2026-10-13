@@ -11,6 +11,7 @@
 # Date       | Author | Remarks
 # 17-09-2026 | Cursor | Changelog creation
 #                     | Expanded What with practical how-to notes
+# 13-10-2026 | Codex | Style hints in shared property forms.
  */
 :root{
 --bg-app: #0f1419;
@@ -2197,3 +2198,10 @@ color:var(--accent-hover);
 font-weight:500
 }
 
+
+/* Supporting text in part-owned property forms. */
+.resistor-value-editor-hint {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
