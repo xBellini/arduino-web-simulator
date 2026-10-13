@@ -30,32 +30,33 @@
  * or simulation models — registry is placement + artwork metadata only.
  *
 # Changelog
-# Date       | Author | Remarks
-# 17-09-2026 | Cursor | Changelog creation
-#                     | Expanded What with practical how-to notes
-#                     | Registry merges `STATIC_REGISTRY` with part module definitions
-#                     | Simulating part definitions live only in `src/parts`; this file keeps boards, breadboard, and artwork-only types
-#                     | NE555 definition moved to `src/parts/ne555.ts`
-# 19-09-2026 | Cursor | Updated dipPackagePins function to place pins on the correct place on the components
-# 23-09-2026 | Cursor | Package ICs inherit footprint `scale` when omitted (`getDefinitionScale`)
-#                     | Added DIP4 and DIP40 packages
-#                     | Modified dipPackagePins to accept closerPins as an argument, for either small or bigger ic packages
-# 24-09-2026 | Cursor | Blank TO92/TO220 shells
-#                     | TO pin helpers next to DIP (geometry only); dipPackagePins options object
-# 25-09-2026 | Cursor | TO helpers in packagePins.ts; pin description + letter
-# 28-09-2026 | Cursor | Blank DIP18 / DIP20 / DIP24 / DIP28 shells + palette ICs list
-#                     | TinkerCAD Relay SPDT / DPDT artwork + pins (no sim yet)
-#                     | TinkerCAD Keypad 4×4 + LDR (photoresistor) artwork + pins (no sim yet)
-# 03-10-2026 | Cursor | Modules category: RFID-RC522, MAX7219 8×8, microSD (part modules; palette only here)
-# 05-10-2026 | Cursor | Keypad 4×4 moved to part module (palette only here)
-#                     | Button Matrix 4×4 (tactile) in Modules; Keypad 4×4 stays numbered membrane
-#                     | Parallel lcd_16x2 / lcd_20x4 moved to part modules (palette only here)
-#                     | pcf8574_lcd_backpack part module (palette only here); lcd_i2c removed
-# 06-10-2026 | Cursor | Added hidden wire_junction (single-pin tee node; not in palette)
-# 08-10-2026 | Cursor | ICs palette: 74HC combinational set (definition-only); DIP pins via packagePins
-# 09-10-2026 | Cursor | Modules palette: DS3231 RTC (part module)
-# 12-10-2026 | Cursor | Removed ds3231_rtc from Modules palette until public/components/ds3231_rtc.svg exists (blank UI crash)
-#                     | Restored ds3231_rtc in Modules palette after SVG re-added
+# Date       | Author  | Remarks
+# 17-09-2026 | Cursor  | Changelog creation
+#                      | Expanded What with practical how-to notes
+#                      | Registry merges `STATIC_REGISTRY` with part module definitions
+#                      | Simulating part definitions live only in `src/parts`; this file keeps boards, breadboard, and artwork-only types
+#                      | NE555 definition moved to `src/parts/ne555.ts`
+# 19-09-2026 | Cursor  | Updated dipPackagePins function to place pins on the correct place on the components
+# 23-09-2026 | Cursor  | Package ICs inherit footprint `scale` when omitted (`getDefinitionScale`)
+#            | Bellini | Added DIP4 and DIP40 packages
+#            | Bellini | Modified dipPackagePins to accept closerPins as an argument, for either small or bigger ic packages
+# 24-09-2026 | Cursor  | Blank TO92/TO220 shells
+#                      | TO pin helpers next to DIP (geometry only); dipPackagePins options object
+# 25-09-2026 | Cursor  | TO helpers in packagePins.ts; pin description + letter
+# 28-09-2026 | Cursor  | Blank DIP18 / DIP20 / DIP24 / DIP28 shells + palette ICs list
+#                      | TinkerCAD Relay SPDT / DPDT artwork + pins (no sim yet)
+#                      | TinkerCAD Keypad 4×4 + LDR (photoresistor) artwork + pins (no sim yet)
+# 03-10-2026 | Cursor  | Modules category: RFID-RC522, MAX7219 8×8, microSD (part modules; palette only here)
+# 05-10-2026 | Cursor  | Keypad 4×4 moved to part module (palette only here)
+#                      | Button Matrix 4×4 (tactile) in Modules; Keypad 4×4 stays numbered membrane
+#                      | Parallel lcd_16x2 / lcd_20x4 moved to part modules (palette only here)
+#                      | pcf8574_lcd_backpack part module (palette only here); lcd_i2c removed
+# 06-10-2026 | Cursor  | Added hidden wire_junction (single-pin tee node; not in palette)
+# 08-10-2026 | Cursor  | ICs palette: 74HC combinational set (definition-only); DIP pins via packagePins
+# 09-10-2026 | Cursor  | Modules palette: DS3231 RTC (part module)
+# 12-10-2026 | Cursor  | Removed ds3231_rtc from Modules palette until public/components/ds3231_rtc.svg exists (blank UI crash)
+#                      | Restored ds3231_rtc in Modules palette after SVG re-added
+# 13-10-2026 | Bellini | Readded bare_packages in PALETTE_CATEGORIES for debugging
  */
 import type {
   ComponentDefinition,
@@ -522,10 +523,8 @@ export const PALETTE_CATEGORIES = [
     label: 'Semiconductors',
     types: [
 	'diode', 
-	'to92', 
 	'transistor_npn',
 	'transistor_pnp',
-	'to220',
 	'mosfet_n',
 	'mosfet_p',
 	],
@@ -594,11 +593,12 @@ export const PALETTE_CATEGORIES = [
       '74hc86',
     ],
   },
-  /*
   {
     id: 'bare_packages',
     label: 'Bare Packages',
     types: [
+      'to92',
+	  'to220',
 	  'dip4',
 	  'dip6',
 	  'dip8',
@@ -611,7 +611,6 @@ export const PALETTE_CATEGORIES = [
 	  'dip40',
 	],
   },
-  */
   {
     id: 'instruments',
     label: 'Instruments',
