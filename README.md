@@ -151,23 +151,7 @@ See **[docs/PROJECT_MAP.md](docs/PROJECT_MAP.md)** for a fuller map. In short:
 
 - **Simulating part:** `public/components/<type>.svg` → `src/components/<category>/<type>.ts(x)` → register in `src/components/index.ts` (include `palette` metadata and optional `properties.fields` in that module)
 - **Artwork-only:** SVG + `STATIC_REGISTRY` entry with `palette` metadata
-- Simple forms: declare `properties.fields` with labels, kinds, options, and existing parsers. Defaults still come from `properties.defaults`; project loading still uses `properties.load`.
-- Custom forms: register `properties.Editor` for specialized controls. No canvas branches or editor registration list are needed.
-- Omit `palette` for internal-only parts; category labels/order remain central, membership/order live with parts.
-- Verification: `npm run build` checks types and production bundling.
 - Details: `public/components/README.txt`, `docs/PROJECT_MAP.md`
-
-## Behavior changes — 13 October 2026
-
-- All 63 palette entries retain their categories and order. Membership now comes from each part; entries without palette metadata stay hidden.
-- Palette search also matches part keywords: DS3231 is discoverable using "clock", "time", or "i2c".
-- Resistor, both capacitors, LED and RTC use a shared property form. Units appear on separate labeled rows; LED color retains its swatch and presets.
-- Shared forms focus their first input. Apply/Enter validates and saves; Cancel, Escape or clicking outside discards the draft. Invalid numbers or selections keep the form open with an error.
-- Existing numeric/address parsers, defaults and saved field names remain unchanged; no project-file migration or stricter numeric-string parsing is introduced.
-- LCD previews and instrument steppers/unit conversion retain their custom editors. Custom editors take precedence over schemas; chip-name editing is a fallback rather than a second simultaneous dialog.
-- Electrical hooks remain unchanged. Edits still use updateComponent for undo and stopping running simulations.
-- Removed ResistorValueEditor, CapacitorValueEditor, LedPropertiesEditor and Ds3231PropertiesEditor; their forms now live in part schemas and PartPropertiesEditor.
-- The temporary migration regression files and `test:parts` command were removed after verification, at the project owner’s request. Runtime behavior is unchanged.
 
 ## Documentation
 
@@ -179,6 +163,4 @@ This README is the user-facing overview (run, use, limits). Implementation notes
 # Date       | Author | Remarks
 # 13-10-2026 | Cursor | GitHub-friendly README rewrite (how-to tutorials, slim controls)
 #                     | Changelog convention: Date | Author | Remarks (oldest first)
-# 13-10-2026 | Codex | Part-owned palette/forms migration, behavior notes, removed editor files and test:parts command.
-# 13-10-2026 | Codex | Remove temporary test files and test:parts npm script; update verification instructions. No runtime behavior changes.
 ```

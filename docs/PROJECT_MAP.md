@@ -1,7 +1,7 @@
 <!--
 # Changelog
 # Date       | Author | Remarks
-# 13-10-2026 | Codex | Map shared property forms and part-owned metadata; behavioral changes documented in README.
+# 13-10-2026 | Codex | Map shared property forms and part-owned metadata; behavioral changes documented in the relevant source-file headers.
 -->
 # Project map (plain language)
 

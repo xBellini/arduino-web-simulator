@@ -3,6 +3,11 @@
 # Changelog
 # Date       | Author | Remarks
 # 13-10-2026 | Codex | Add shared form for resistor/capacitors/LED/RTC, first-input focus, validation, Apply/Cancel/Enter/Escape/outside dismissal.
+#                     | Replaces ResistorValueEditor, CapacitorValueEditor, LedPropertiesEditor and Ds3231PropertiesEditor.
+#                     | Unit selectors occupy separate labeled rows; LED color retains its swatch and presets.
+#                     | Apply/Enter saves valid drafts; invalid numbers/selections keep the form open. Cancel/Escape/outside click discards edits.
+#                     | Reuse existing defaults and numeric/address parsers; persisted keys and project version remain unchanged.
+#                     | Temporary migration tests were run and subsequently removed at the project owner’s request.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

@@ -23,6 +23,8 @@
 # 09-10-2026 | Cursor | Moved from `src/components/SimCanvas.tsx` (tree reorganization)
 # 12-10-2026 | Cursor | Ds3231PropertiesEditor for RTC I2C address
 # 13-10-2026 | Codex | Replace type-specific editor branches with registered forms; chip-name editor becomes fallback only.
+#                     | Custom Editor takes precedence over fields; chip-name editing is the fallback, never a stacked second dialog.
+#                     | Property saves still use updateComponent, preserving undo and stopping active simulation.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
