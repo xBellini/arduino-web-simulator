@@ -8,10 +8,12 @@
  * To change default new-cap values: adjust `DEFAULT_*` / polarized defaults in part modules.
  * Not-here: charge envelope / overlays — `components/passives/capacitor.tsx` and ComponentOverlays.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/capacitance.ts` (tree reorganization)
- * - 25-09-2026 — Changelog creation; voltage rating defaults
+# Changelog
+# Date       | Author | Remarks
+# 25-09-2026 | Cursor | Changelog creation; voltage rating defaults
+# 09-10-2026 | Cursor | Moved from `src/utils/capacitance.ts` (tree reorganization)
  */
+
 import type { CapacitanceUnit } from '../types';
 
 export const CAPACITANCE_UNITS: CapacitanceUnit[] = ['pF', 'nF', 'uF', 'mF'];

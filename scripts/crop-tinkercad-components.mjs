@@ -4,10 +4,11 @@
  * How-to: fetch with `node scripts/fetch-tinkercad-svg.mjs <id> --out scripts/reference/...`,
  * then `node scripts/crop-tinkercad-components.mjs`. Artwork only — no SPICE/sim logic.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `scripts/crop-tinkercad-parts.mjs` (tree reorganization)
- * - 28-09-2026 — Keypad 4×4 + LDR crops; renamed from crop-relay-svgs.mjs
- * - 28-09-2026 — SPDT (62×42) + DPDT (80×40) crops from TinkerCAD DIL12/DIL16
+# Changelog
+# Date       | Author | Remarks
+# 28-09-2026 | Cursor | SPDT (62×42) + DPDT (80×40) crops from TinkerCAD DIL12/DIL16
+#                     | Keypad 4×4 + LDR crops; renamed from crop-relay-svgs.mjs
+# 09-10-2026 | Cursor | Moved from `scripts/crop-tinkercad-parts.mjs` (tree reorganization)
  */
 import fs from 'node:fs';
 import path from 'node:path';

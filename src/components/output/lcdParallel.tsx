@@ -9,12 +9,13 @@
  * `evaluate` is a fallback only.
  * Not-here: I2C backpack; HD44780 core — see `src/avr/hd44780.ts`.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/lcdParallel.tsx` (tree reorganization)
- * - 09-10-2026 — Header: EN edges come from avrWorkerHost (unused lcdGpioProbe.ts deleted)
- * - 05-10-2026 — Per-instance background + highlight colors (properties panel)
- * - 05-10-2026 — GPIO probe feeds bus; evaluate skips latch while probe active
- * - 05-10-2026 — Changelog creation / parallel LCD module factory
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / parallel LCD module factory
+#                     | GPIO probe feeds bus; evaluate skips latch while probe active
+#                     | Per-instance background + highlight colors (properties panel)
+# 09-10-2026 | Cursor | Header: EN edges come from avrWorkerHost (unused lcdGpioProbe.ts deleted)
+#                     | Moved from `src/parts/lcdParallel.tsx` (tree reorganization)
  */
 import type { ReactNode } from 'react';
 import {

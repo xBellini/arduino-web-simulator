@@ -7,10 +7,11 @@
  * only the one-line `export const BLINK_DEFAULT_HEX = …;` in `firmware.ts` is replaced. Non-zero exit on
  * HTTP errors, missing hex in the JSON response, or if that line is missing.
  *
- * Changelog:
- * - 09-10-2026 — Writes into `src/avr/firmware.ts` (blinkDefaultHex.ts merged there)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Writes into `src/avr/firmware.ts` (blinkDefaultHex.ts merged there)
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';

@@ -20,10 +20,12 @@
  *
  * Not here: Cache, GPIO supersede, mapping to DcSolveResult — see spice/client.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spice/ngspice.worker.ts` (tree reorganization)
- * - 09-10-2026 — Changelog creation (replaces Concord ngspice-26 pipe-mode worker)
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Changelog creation (replaces Concord ngspice-26 pipe-mode worker)
+#                     | Moved from `src/sim/spice/ngspice.worker.ts` (tree reorganization)
  */
+
 import { Simulation } from 'eecircuit-engine';
 import { convertPspiceCompat, findUnsupportedConstructs } from './pspiceCompat';
 

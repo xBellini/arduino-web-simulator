@@ -11,10 +11,11 @@
  * definition back in `STATIC_REGISTRY`.
  * Not-here: blank DIP shells, which stay artwork-only in `src/registry/components.ts`.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/ne555.ts` (tree reorganization)
- * - 23-09-2026 — Dropped explicit `scale`; inherits dip8 package scale
- * - 17-09-2026 — Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# 23-09-2026 | Cursor | Dropped explicit `scale`; inherits dip8 package scale
+# 09-10-2026 | Cursor | Moved from `src/parts/ne555.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

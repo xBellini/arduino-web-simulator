@@ -11,9 +11,10 @@
  * logic here if a pin rename breaks TypeScript keys. Prefer this script over calling `svg-to-geometry.mjs`
  * directly so the two-pass origin correction and pin merge stay in sync.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 
 import fs from 'node:fs';

@@ -2,11 +2,12 @@
  * What: Typed message protocol between the main-thread AVR host and the AVR Worker.
  * Role: Keep GPIO/LCD/USART/TWI/timebase IPC explicit and versionable.
  *
- * Changelog:
- * - 09-10-2026 — `ds3231_rtc` TWI slave (DS3231 @ 0x68 + AT24C32 @ 0x57)
- * - 09-10-2026 ? Moved from `src/sim/avrWorkerProtocol.ts` (tree reorganization)
- * - 05-10-2026 — twiSlaves on start (I2C LCD backpack / PCF)
- * - 05-10-2026 — Worker + WASM AVR path
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Worker + WASM AVR path
+#                     | twiSlaves on start (I2C LCD backpack / PCF)
+# 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerProtocol.ts` (tree reorganization)
+#                     | `ds3231_rtc` TWI slave (DS3231 @ 0x68 + AT24C32 @ 0x57)
  */
 
 import type { AvrPortName } from './pinMap';

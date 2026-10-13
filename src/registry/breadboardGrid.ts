@@ -14,9 +14,10 @@
  * multiples of `BB_ROW`.
  * Not-here: component registry entries (except consuming these constants) or wire routing logic.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 
 export const BB_COL = 18;

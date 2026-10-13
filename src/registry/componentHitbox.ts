@@ -14,10 +14,11 @@
  * To verify: place the part, drag near edges, and check wire routing avoids `getComponentBodyHitbox`.
  * Not-here: pin hit targets, palette icons, or registry pin lists.
  *
- * Changelog:
- * - 06-10-2026 — Zero hitbox for wire_junction (dots only; do not steal wire hits)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 06-10-2026 | Cursor | Zero hitbox for wire_junction (dots only; do not steal wire hits)
  */
 import type { PlacedComponent } from '../types';
 import {

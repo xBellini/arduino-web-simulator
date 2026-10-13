@@ -2,9 +2,11 @@
  * What: Parallel LCD display color presets and validation for placed components.
  * Role: Properties panel + glass overlay; ghost segments are derived from background only.
  *
- * Changelog:
- * - 09-10-2026 — Moved from `src/utils/lcdDisplay.ts` (tree reorganization); added Changelog
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Moved from `src/utils/lcdDisplay.ts` (tree reorganization); added Changelog
  */
+
 
 export const LCD_BACKGROUND_PRESETS = [
   { hex: '#1a2640', label: 'Blue glass' },

@@ -11,11 +11,13 @@
  * `components.ts` and gpio/SPICE bridges.
  * Not-here: canvas glow rendering or ngspice diode models — only property metadata here.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/led.ts` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/utils/led.ts` (tree reorganization)
  */
+
 export const LED_COLOR_OPTIONS = [
   { hex: '#E53935', label: 'Red', defaultForwardVoltage: 2.0 },
   { hex: '#FB8C00', label: 'Orange', defaultForwardVoltage: 2.1 },

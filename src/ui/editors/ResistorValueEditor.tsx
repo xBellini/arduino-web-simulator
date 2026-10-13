@@ -6,10 +6,11 @@
  * Color bands on the part SVG update through ComponentOverlays/ResistorBandOverlay when store fields change.
  * Ngspice/netlist resistance mapping lives in sim layer — not this UI file.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/ResistorValueEditor.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/ResistorValueEditor.tsx` (tree reorganization)
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

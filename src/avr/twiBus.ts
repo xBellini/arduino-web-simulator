@@ -5,11 +5,12 @@
  * Conventions: Always complete start/stop; connect/write ACK only when a slave handles them.
  * Not-here: Bit-bang GPIO I2C, pull-up SPICE, multi-master.
  *
- * Changelog:
- * - 09-10-2026 — Slave API also used by DS3231 / AT24C32
- * - 09-10-2026 ? Moved from `src/sim/twiBus.ts` (tree reorganization)
- * - 09-10-2026 — Removed `twiBusSelfCheck` (only the deleted bench-twi script used it)
- * - 05-10-2026 — Changelog creation / ideal TWI slave bus for Wire
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / ideal TWI slave bus for Wire
+# 09-10-2026 | Cursor | Removed `twiBusSelfCheck` (only the deleted bench-twi script used it)
+#                     | Moved from `src/sim/twiBus.ts` (tree reorganization)
+#                     | Slave API also used by DS3231 / AT24C32
  */
 import type { AVRTWI, TWIEventHandler } from 'avr8js';
 

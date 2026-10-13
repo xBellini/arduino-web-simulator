@@ -2,11 +2,12 @@
  * What: AVR emulation Web Worker — owns avr8js AvrRunner + LCD EN probe + TWI bus + WASM pacer.
  * Role: Run the 16 MHz timebase off the UI thread; post GPIO/USART/LCD/perf to main.
  *
- * Changelog:
- * - 09-10-2026 — Register DS3231 + AT24C32 TWI slaves; tick RTC from AVR cycles
- * - 09-10-2026 ? Moved from `src/sim/avr.worker.ts` (tree reorganization)
- * - 05-10-2026 — Ideal TWI bus + I2C LCD backpack (datasheet PCF8574 slave)
- * - 05-10-2026 — Worker + WASM AVR path (session 520145)
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Worker + WASM AVR path (session 520145)
+#                     | Ideal TWI bus + I2C LCD backpack (datasheet PCF8574 slave)
+# 09-10-2026 | Cursor | Moved from `src/sim/avr.worker.ts` (tree reorganization)
+#                     | Register DS3231 + AT24C32 TWI slaves; tick RTC from AVR cycles
  */
 
 /// <reference lib="webworker" />

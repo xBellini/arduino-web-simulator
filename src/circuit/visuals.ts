@@ -14,13 +14,15 @@
  *
  * Not here: Wire flow dots or ngspice — see circuit/currents.ts and circuit/dcSolver.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/componentVisuals.ts` (tree reorganization)
- * - 17-09-2026 — Deleted leftover per-type visual passes; modules own brightness/heat/blow
- * - 17-09-2026 — Part module `visuals` dispatch runs before the legacy per-type passes
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Part module `visuals` dispatch runs before the legacy per-type passes
+#                     | Deleted leftover per-type visual passes; modules own brightness/heat/blow
+# 09-10-2026 | Cursor | Moved from `src/sim/componentVisuals.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../types';
 import type { CircuitNetlist, NetLevel } from './netlist';

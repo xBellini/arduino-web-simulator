@@ -5,8 +5,9 @@
  * Conventions: Logic mirrors `vrEmuLcd.c` character path; graphics LCD mode omitted.
  * Not-here: GPIO latch, canvas overlay — see `src/sim/hd44780.ts` and LCD PartModules.
  *
- * Changelog:
- * - 05-10-2026 — Changelog creation / TS port of vrEmuLcd character mode + A02 font
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / TS port of vrEmuLcd character mode + A02 font
  */
 import { FONT_A02 } from './fontA02';
 

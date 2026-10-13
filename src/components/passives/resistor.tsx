@@ -12,10 +12,11 @@
  * To add a power rating: extend `ResistancePowerRating` in `types.ts` and `RATING_MW` here.
  * Not-here: band colour maths (`values/resistor`) or unit parsing (`values/resistor`).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/resistor.tsx` (tree reorganization)
- * - 24-09-2026 — Pin B x aligned to resistor.svg viewBox width (~49.5)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 24-09-2026 | Cursor | Pin B x aligned to resistor.svg viewBox width (~49.5)
+# 09-10-2026 | Cursor | Moved from `src/parts/resistor.tsx` (tree reorganization)
  */
 import type { PlacedComponent, ResistancePowerRating } from '../../types';
 import {

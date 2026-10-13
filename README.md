@@ -158,3 +158,11 @@ Local snapshots: `.\backup-local.ps1` (see `.cursor/rules/local-snapshots.mdc`).
 ## Documentation
 
 This README is the user-facing overview (run, use, limits). Implementation notes and per-file history live in source file headers and [docs/PROJECT_MAP.md](docs/PROJECT_MAP.md).
+
+## Changelog
+
+```
+# Date       | Author | Remarks
+# 13-10-2026 | Cursor | GitHub-friendly README rewrite (how-to tutorials, slim controls)
+#                     | Changelog convention: Date | Author | Remarks (oldest first)
+```

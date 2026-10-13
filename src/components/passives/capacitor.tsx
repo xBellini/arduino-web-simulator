@@ -8,13 +8,14 @@
  * To retune: `BLOW_*` / `REVERSE_SLACK_V` / `POLARIZED_ESR_OHMS`.
  * Not-here: hand-rolled RC / Thévenin companion models.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/capacitor.tsx` (tree reorganization)
- * - 28-09-2026 — Charge/fill driven only from SPICE Vc / #branch (no invented RC)
- * - 26-09-2026 — Restore native SPICE C stamp; drop discrete companion invent
- * - 25-09-2026 — SPICE C + ESR; voltage rating; blow; drop body value marking
- * - 25-09-2026 — Editable capacitance; polarized module
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 25-09-2026 | Cursor | Editable capacitance; polarized module
+#                     | SPICE C + ESR; voltage rating; blow; drop body value marking
+# 26-09-2026 | Cursor | Restore native SPICE C stamp; drop discrete companion invent
+# 28-09-2026 | Cursor | Charge/fill driven only from SPICE Vc / #branch (no invented RC)
+# 09-10-2026 | Cursor | Moved from `src/parts/capacitor.tsx` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 import type { PlacedComponent } from '../../types';

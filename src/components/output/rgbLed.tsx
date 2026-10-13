@@ -9,11 +9,12 @@
  * To retune Vf/If: `values/led.ts` `RGB_LED_CHANNELS` (pin ids must match this footprint).
  * Not-here: the single-colour LED module.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/rgbLed.tsx` (tree reorganization)
- * - 24-09-2026 — Wire mA from series-R (not rated If); sub-threshold ignored; seriesPins
- * - 24-09-2026 — Glow uses rgb_led.svg body silhouette (not old oval outside footprint)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 24-09-2026 | Cursor | Glow uses rgb_led.svg body silhouette (not old oval outside footprint)
+#                     | Wire mA from series-R (not rated If); sub-threshold ignored; seriesPins
+# 09-10-2026 | Cursor | Moved from `src/parts/rgbLed.tsx` (tree reorganization)
  */
 import type { CSSProperties } from 'react';
 import { netForPin, type NetLevel } from '../../circuit/netlist';

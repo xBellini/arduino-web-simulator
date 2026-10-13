@@ -11,24 +11,61 @@ Every project source file must start with a **What** + **Changelog** block at th
 
 **Do:** `src/**`, `scripts/**`, root tooling (`*.ps1`, `*.bat`, `*.mjs`, hand-maintained config).
 
-**Skip:** `node_modules/`, `dist/`, lockfiles, binaries, `README.md` (overview only — see below).
+**Skip:** `node_modules/`, `dist/`, lockfiles, binaries. `README.md` may have a short **project** Changelog (see `readme-updates.mdc`) — still no per-file digests there.
 
-When you create or meaningfully edit a file that lacks a header, add one. Append a changelog bullet on each non-trivial change.
+When you create or meaningfully edit a file that lacks a header, add one. Append a changelog row on each non-trivial change.
 
 ## Template
+
+`What` uses JSDoc `*` lines. **Changelog rows use `#`**, not `*` and not `-` bullets.
 
 ```ts
 /**
  * What: <who uses this file, what it owns, key exports, important conventions>
  *
- * Changelog:
- * - DD-MM-YYYY — <what changed and why>   ← newest first
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+# 18-09-2026 | Cursor | Changed x and y
+#                     | Changed z behaviour
  */
 ```
 
-PowerShell / batch: same fields with `#` or `REM` line comments.
+PowerShell / batch: same Changelog `#` lines (native comment character); What as `#` or `REM` prose above.
 
 Date format: **`DD-MM-YYYY`** (e.g. `17-09-2026`).
+
+Author: use **`Cursor`** for agent edits; use your name for hand edits.
+
+### Column alignment
+
+Fixed widths so every `|` lines up vertically:
+
+- Date pad to 10 (`DD-MM-YYYY`)
+- Author pad to 6 (`Cursor`) — or widen Author if a longer name appears in that file
+- One space on each side of `|`
+
+### Order
+
+**Oldest on top, newest at the bottom.** Append new entries; do not insert at the top.
+
+### Same day + same author
+
+**Never repeat the same Date on two consecutive rows** when Author is also the same. The first remark that day gets the full `Date | Author | Remarks` row; every further remark that day is a continuation: omit Date and Author (and their `|`). Pad spaces after `#` so **only the Remarks `|`** remains, aligned with the other rows:
+
+```
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 18-09-2026 | Cursor | Changed x and y
+#                     | Changed z behaviour
+```
+
+Wrong (do not do this):
+
+```
+# 17-09-2026 | Cursor | Changelog creation
+# 17-09-2026 | Cursor | Expanded What with practical how-to notes
+```
 
 ---
 
@@ -53,8 +90,9 @@ Answer these in prose (several sentences OK):
  * do not put width/height in registry entries. To add an IC: set package +
  * custom pins + marking, then list the type under palette `ics`.
  *
- * Changelog:
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
  */
 ```
 
@@ -70,8 +108,9 @@ Answer these in prose (several sentences OK):
  * Add a new overlay here as a helper and gate it on component.type (or
  * design.marking) inside ComponentOverlays.
  *
- * Changelog:
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
  */
 ```
 
@@ -79,39 +118,44 @@ Answer these in prose (several sentences OK):
 
 ## How to update the Changelog (every meaningful edit)
 
-1. Keep existing bullets — **never rewrite or delete** old history.
-2. Insert a **new bullet at the top** of the list (newest first).
-3. One bullet per change set; say **what** and **why**, not a dump of every line.
+1. Keep existing rows — **never rewrite or delete** old history.
+2. **Append** a new row at the **bottom** (oldest → newest).
+3. Say **what** and **why**, not a dump of every line.
+4. When touching a file that still has the old `- DD-MM-YYYY — …` bullets: convert that file’s Changelog to the `# Date | Author | Remarks` form (oldest→newest) by hand — no mass-migration scripts.
 
 **Before edit:**
 
 ```ts
- * Changelog:
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
 ```
 
-**After adding package-based ICs to `components.ts`:**
+**After adding package-based ICs to `components.ts` (same day → continuation):**
 
 ```ts
- * Changelog:
- * - 17-09-2026 — Added package IC pattern (package + pins + marking); NE555 example
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Added package IC pattern (package + pins + marking); NE555 example
 ```
 
-**After extracting overlays from ComponentShape:**
+**After a second remark on the same day by the same author:**
 
 ```ts
- * Changelog:
- * - 17-09-2026 — Moved LED/resistor/meter overlays out of ComponentShape into this file
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+# 18-09-2026 | Cursor | Changed x and y
+#                     | Changed z behaviour
 ```
 
-If the file’s **role** changed (not just a small fix), also refresh the `What` text so it still matches reality. Example: after the extract, ComponentShape’s What should say it composes PartArtwork + ComponentOverlays, not “contains all sim overlays.”
+If the file’s **role** changed (not just a small fix), also refresh the `What` text so it still matches reality. Example: after an extract, ComponentShape’s What should say it composes PartArtwork + ComponentOverlays, not “contains all sim overlays.”
 
-### What counts as a changelog bullet?
+### What counts as a changelog row?
 
-| Do add a bullet | Skip (no bullet) |
-|-----------------|------------------|
+| Do add a row | Skip (no row) |
+|--------------|---------------|
 | New export, feature, or overlay | Typo / formatting-only |
 | Behavior or API change callers must know | Reordering imports |
 | New convention (e.g. drop unused `color` field) | Pure rename with no behavior change — optional one-liner OK |
@@ -126,17 +170,18 @@ If the file’s **role** changed (not just a small fix), also refresh the `What`
 
 **New sim flag / solver path** → edit the owning `src/avr/*.ts` or `src/circuit/*.ts` file’s What (name the flag) + changelog.
 
-**New script** → create the file with a full What (how to run: `npm run …` / `node scripts/…`) and first changelog `Changelog creation`.
+**New script** → create the file with a full What (how to run: `npm run …` / `node scripts/…`) and first changelog row `Changelog creation`.
 
 ---
 
 ## README.md
 
-General-purpose only (what the project is, how to run, high-level usage/layout). **No** per-file changelogs. Brief user-facing notes still go in README when needed (`readme-updates.mdc`); implementation history stays in file headers.
+General-purpose overview (run, usage, limits). A short **project** Changelog section is allowed (highlights only). **No** per-file histories in the README — those stay in source headers. See `readme-updates.mdc`.
 
 ## Do not
 
 - Invent fake past dates for work you did not do.
-- Duplicate long changelogs into the README.
+- Dump per-file or session digests into the README.
 - Skip the header on new source files.
 - Put secrets, local paths, or huge code dumps in the header.
+- Mass-convert all headers with scripts — edit by hand when a file is touched.

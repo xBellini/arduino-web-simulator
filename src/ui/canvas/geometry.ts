@@ -12,30 +12,31 @@
  * To add pin hit radius behavior: extend pin proximity helpers alongside existing join threshold.
  * Not-here: React components, reducer actions, or simulation netlists.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/geometry.ts` (tree reorganization)
- * - 07-10-2026 — Stripped wire draft/resize debug instrumentation after confirmed polish
- * - 06-10-2026 — After vertical/horizontal exit portal, continue along exit axis first (stops column rubberband reverse)
- * - 06-10-2026 — Draft/path: preserve bend waypoints through assemble+clear (retreat no longer erases spur)
- * - 06-10-2026 — Draft bends store click waypoints; ortho legs + no-reverse tail; dedupe keeps mandatory prev
- * - 06-10-2026 — Debug instrumentation: draft 2nd-curve stick (commit vs resolveWireDraftPoints)
- * - 06-10-2026 — Resize commit: refuse merges that create diagonals; relative WIRE_DRAG snap; pin stubs keep pin axis (no snapToGrid)
- * - 06-10-2026 — Debug instrumentation: wire resize diagonals (handle/segment/commit/pin legs)
- * - 06-10-2026 — No pinWirePortal for wire_junction (stops stub funnel at tees); stripped join path logs
- * - 06-10-2026 — Removed completed straight-down / body-cross debug logs; keep resize diagonal probes
- * - 06-10-2026 — wire_junction split helpers + free-path ignores junction obstacles
- * - 06-10-2026 — Draft rubber-band: free axis snaps in GRID_SIZE steps from route anchor (not absolute board grid)
- * - 06-10-2026 — clearFreeSpaceWirePath no longer snapToGrid's free-path points (keeps off-grid portal axis straight)
- * - 05-10-2026 — Free-space routing no longer skips origin/dest as obstacles (stops wires cutting back through their own body)
- * - 05-10-2026 — Junction dots only at shared pin ends (not overlapping bends); stop snap-to-other-wire junctions on commit
- * - 05-10-2026 — Cursor draft uses exit portal again (leave body first); hairpin guard when cursor is still between pin and portal
- * - 05-10-2026 — Draft rubber-band H-first (off-column elbow on destination column)
- * - 05-10-2026 — Draft rubber-band: no exit portal + V-first off headers (avoids stub hairpin loops)
- * - 05-10-2026 — Draft cursor preview skips obstacle clearing (no inside-out detours over target body)
- * - 05-10-2026 — Fix portal along-axis snap (was calling snapToGrid on a scalar → NaN stubs)
- * - 05-10-2026 — Portal stubs stay on pin exit axis (no perpendicular grid snap); axis-aligned wires stay straight
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 05-10-2026 | Cursor | Portal stubs stay on pin exit axis (no perpendicular grid snap); axis-aligned wires stay straight
+#                     | Fix portal along-axis snap (was calling snapToGrid on a scalar → NaN stubs)
+#                     | Draft cursor preview skips obstacle clearing (no inside-out detours over target body)
+#                     | Draft rubber-band: no exit portal + V-first off headers (avoids stub hairpin loops)
+#                     | Draft rubber-band H-first (off-column elbow on destination column)
+#                     | Cursor draft uses exit portal again (leave body first); hairpin guard when cursor is still between pin and portal
+#                     | Junction dots only at shared pin ends (not overlapping bends); stop snap-to-other-wire junctions on commit
+#                     | Free-space routing no longer skips origin/dest as obstacles (stops wires cutting back through their own body)
+# 06-10-2026 | Cursor | clearFreeSpaceWirePath no longer snapToGrid's free-path points (keeps off-grid portal axis straight)
+#                     | Draft rubber-band: free axis snaps in GRID_SIZE steps from route anchor (not absolute board grid)
+#                     | wire_junction split helpers + free-path ignores junction obstacles
+#                     | Removed completed straight-down / body-cross debug logs; keep resize diagonal probes
+#                     | No pinWirePortal for wire_junction (stops stub funnel at tees); stripped join path logs
+#                     | Debug instrumentation: wire resize diagonals (handle/segment/commit/pin legs)
+#                     | Resize commit: refuse merges that create diagonals; relative WIRE_DRAG snap; pin stubs keep pin axis (no snapToGrid)
+#                     | Debug instrumentation: draft 2nd-curve stick (commit vs resolveWireDraftPoints)
+#                     | Draft bends store click waypoints; ortho legs + no-reverse tail; dedupe keeps mandatory prev
+#                     | Draft/path: preserve bend waypoints through assemble+clear (retreat no longer erases spur)
+#                     | After vertical/horizontal exit portal, continue along exit axis first (stops column rubberband reverse)
+# 07-10-2026 | Cursor | Stripped wire draft/resize debug instrumentation after confirmed polish
+# 09-10-2026 | Cursor | Moved from `src/utils/geometry.ts` (tree reorganization)
  */
 import type {
   ComponentDefinition,

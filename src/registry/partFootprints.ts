@@ -12,10 +12,11 @@
  * To debug: check console for `[partFootprints]` warnings when a viewBox is missing/invalid.
  * Not-here: breadboard (uses `breadboardGrid` sizes), palette crops, or pin placement.
  *
- * Changelog:
- * - 17-09-2026 — Removed unused listPartFootprints helper
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Removed unused listPartFootprints helper
  */
 
 const svgModules = import.meta.glob('../../public/components/*.svg', {

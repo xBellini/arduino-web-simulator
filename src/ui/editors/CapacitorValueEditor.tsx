@@ -8,13 +8,11 @@
 
  *
 
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/CapacitorValueEditor.tsx` (tree reorganization)
-
- * - 25-09-2026 — Voltage rating field
-
- * - 25-09-2026 — Changelog creation
-
+# Changelog
+# Date       | Author | Remarks
+# 25-09-2026 | Cursor | Changelog creation
+#                     | Voltage rating field
+# 09-10-2026 | Cursor | Moved from `src/components/CapacitorValueEditor.tsx` (tree reorganization)
  */
 
 import { useEffect, useRef, useState } from 'react';

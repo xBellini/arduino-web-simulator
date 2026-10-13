@@ -14,20 +14,22 @@
  * both use it, so do not re-introduce a second solve in `startCircuitOnly`.
  * Not-here: editor reducer, canvas rendering, or registry definitions.
  *
- * Changelog:
- * - 09-10-2026 — Removed XSPICE-era F4 rAF debug instrumentation
- * - 08-10-2026 — Debug F4: sample avgRafDtMs while Concord runs with XSPICE parked on disk
- * - 05-10-2026 — Prefetch SPICE charge/discharge waves before AVR start
- * - 05-10-2026 — Run AVR in Worker + WASM pacer (cycle-quanta hot loop)
- * - 05-10-2026 — Attach LCD GPIO EN-edge probe for cycle-accurate HD44780 latch
- * - 05-10-2026 — Clear HD44780 LCD instance maps on halt
- * - 28-09-2026 — Lerp SPICE waveform samples each frame for smooth cap charge overlay
- * - 25-09-2026 — Capacitor .tran refresh (~25 Hz) even when cache hits; capacitorBlown in signature
- * - 17-09-2026 — Circuit-only: skip overlay/UI when the solve signature is unchanged (MCU path untouched)
- * - 17-09-2026 — MCU and circuit-only share `runSolveFrame` (one DC solve, throttled ngspice, static skip)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | MCU and circuit-only share `runSolveFrame` (one DC solve, throttled ngspice, static skip)
+#                     | Circuit-only: skip overlay/UI when the solve signature is unchanged (MCU path untouched)
+# 25-09-2026 | Cursor | Capacitor .tran refresh (~25 Hz) even when cache hits; capacitorBlown in signature
+# 28-09-2026 | Cursor | Lerp SPICE waveform samples each frame for smooth cap charge overlay
+# 05-10-2026 | Cursor | Clear HD44780 LCD instance maps on halt
+#                     | Attach LCD GPIO EN-edge probe for cycle-accurate HD44780 latch
+#                     | Run AVR in Worker + WASM pacer (cycle-quanta hot loop)
+#                     | Prefetch SPICE charge/discharge waves before AVR start
+# 08-10-2026 | Cursor | Debug F4: sample avgRafDtMs while Concord runs with XSPICE parked on disk
+# 09-10-2026 | Cursor | Removed XSPICE-era F4 rAF debug instrumentation
  */
+
 import type { PinState, PlacedComponent, Wire } from '../types';
 import { bundledBlinkHex, compileSketch } from '../avr/firmware';
 import {

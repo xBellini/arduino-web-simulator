@@ -14,18 +14,20 @@
  *
  * Not here: Running ngspice or reading its results — see spice/client.ts and spice/worker.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spice/netlistExport.ts` (tree reorganization)
- * - 09-10-2026 — Header: results are read by ngspice.worker (opOutputParse removed)
- * - 09-10-2026 — Removed XSPICE hybrid glue (skip/only/forced-V options, `.param vcc`, gate I/O net helper)
- * - 08-10-2026 — Export options: skip/only digital ICs + forced net V sources (hybrid XSPICE↔Concord)
- * - 08-10-2026 — Emit `.param vcc=5` when 74HC / Digital Logic libs are included (XSPICE auto_bridge)
- * - 25-09-2026 — Capacitor companion Ic/dt threaded into spiceStamp for .OP dynamics
- * - 17-09-2026 — Removed leftover type switch; all stamps live on part modules
- * - 17-09-2026 — Part module `spiceStamp` dispatch runs before the legacy type switch
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Part module `spiceStamp` dispatch runs before the legacy type switch
+#                     | Removed leftover type switch; all stamps live on part modules
+# 25-09-2026 | Cursor | Capacitor companion Ic/dt threaded into spiceStamp for .OP dynamics
+# 08-10-2026 | Cursor | Emit `.param vcc=5` when 74HC / Digital Logic libs are included (XSPICE auto_bridge)
+#                     | Export options: skip/only digital ICs + forced net V sources (hybrid XSPICE↔Concord)
+# 09-10-2026 | Cursor | Removed XSPICE hybrid glue (skip/only/forced-V options, `.param vcc`, gate I/O net helper)
+#                     | Header: results are read by ngspice.worker (opOutputParse removed)
+#                     | Moved from `src/sim/spice/netlistExport.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../../types';
 import type { CircuitNetlist, McuSourceMap } from '../netlist';

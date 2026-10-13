@@ -6,9 +6,10 @@
  * compile is offline. Routes: `GET /api/compile` → availability; `POST /api/compile` with
  * `{ sketch }` → `{ stdout, stderr, hex }` or error JSON.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `vite-plugin-compile.js` (tree reorganization)
- * - 24-09-2026 — Changelog creation / local arduino-cli compile API
+# Changelog
+# Date       | Author | Remarks
+# 24-09-2026 | Cursor | Changelog creation / local arduino-cli compile API
+# 09-10-2026 | Cursor | Moved from `vite-plugin-compile.js` (tree reorganization)
  */
 import fs from 'node:fs';
 import os from 'node:os';

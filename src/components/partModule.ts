@@ -13,11 +13,12 @@
  * Not-here: any part implementation, the registry index, or artwork — see `src/components/index.ts`,
  * `src/registry/components.ts`, and `public/components/*.svg`.
  *
- * Changelog:
- * - 09-10-2026 — `internalPinShorts` for module PCB copper (DS3231 dual headers)
- * - 09-10-2026 ? Moved from `src/parts/partModule.ts` (tree reorganization)
- * - 23-09-2026 — `definition.scale` optional when `package` is set (inherits footprint)
- * - 17-09-2026 — Changelog creation / part module contract introduced
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / part module contract introduced
+# 23-09-2026 | Cursor | `definition.scale` optional when `package` is set (inherits footprint)
+# 09-10-2026 | Cursor | Moved from `src/parts/partModule.ts` (tree reorganization)
+#                     | `internalPinShorts` for module PCB copper (DS3231 dual headers)
  */
 import type { ReactNode } from 'react';
 import type {

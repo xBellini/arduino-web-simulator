@@ -5,10 +5,11 @@
  * Conventions: pins match former STATIC_REGISTRY entry; IC from `src/avr/hd44780.ts`.
  * Not-here: I2C backpack — see `pcf8574LcdBackpack.ts` (board only; wire to this LCD).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/lcd16x2.ts` (tree reorganization)
- * - 05-10-2026 — Glass rect matched to SVG bluish display area (260×63)
- * - 05-10-2026 — Changelog creation / simulating parallel 16×2
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / simulating parallel 16×2
+#                     | Glass rect matched to SVG bluish display area (260×63)
+# 09-10-2026 | Cursor | Moved from `src/parts/lcd16x2.ts` (tree reorganization)
  */
 import { createParallelLcdModule } from './lcdParallel';
 

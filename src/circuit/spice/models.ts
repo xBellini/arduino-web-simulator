@@ -31,15 +31,17 @@
  * `collectLibPathsForComponents` before `fetchSpiceLibFiles`. Not here: Emitting SPICE instance
  * lines — see netlistExport.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spice/modelCatalog.ts` (tree reorganization)
- * - 09-10-2026 — `bundled/` lib paths resolve to `public/spice/bundled/` (TI models out of the fetched library)
- * - 09-10-2026 — Merged `src/sim/spice/spiceModelResolver.ts` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/sim/spice/spiceModelResolver.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/sim/spice/spiceModelResolver.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/sim/spice/spiceModelResolver.ts] Changelog creation
+#                     | [src/sim/spice/spiceModelResolver.ts] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/sim/spice/spiceModelResolver.ts` into this file (tree reorganization)
+#                     | `bundled/` lib paths resolve to `public/spice/bundled/` (TI models out of the fetched library)
+#                     | Moved from `src/sim/spice/modelCatalog.ts` (tree reorganization)
  */
+
 import type { PlacedComponent } from '../../types';
 
 export type SpiceModelKind = 'model' | 'subckt' | 'native';

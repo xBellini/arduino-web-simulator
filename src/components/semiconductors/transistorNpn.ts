@@ -11,12 +11,13 @@
  * Conventions: shared `to92` package SVG; C-B-E left→right via `to92DevicePins`.
  * Body marking is two lines (`['2N2222', 'NPN']`). Scale inherits from the TO-92 shell.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/transistorNpn.ts` (tree reorganization)
- * - 25-09-2026 — to92DevicePins; letter + description; array defaultPartLabel
- * - 24-09-2026 — Pin list inlined (NE555-style); casing from pin labels
- * - 24-09-2026 — Migrated to `package: 'to92'` + chip marking
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 24-09-2026 | Cursor | Migrated to `package: 'to92'` + chip marking
+#                     | Pin list inlined (NE555-style); casing from pin labels
+# 25-09-2026 | Cursor | to92DevicePins; letter + description; array defaultPartLabel
+# 09-10-2026 | Cursor | Moved from `src/parts/transistorNpn.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 import { to92DevicePins } from '../../registry/packagePins';

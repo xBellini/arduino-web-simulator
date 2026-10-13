@@ -6,10 +6,11 @@
  * extend LedPropertiesPatch + values/led, add control here, apply patch in SimCanvas/store reducer. LED
  * glow/blown rendering is ComponentOverlays + sim flags — not this panel. Default color constants: values/led.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/LedPropertiesEditor.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/LedPropertiesEditor.tsx` (tree reorganization)
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

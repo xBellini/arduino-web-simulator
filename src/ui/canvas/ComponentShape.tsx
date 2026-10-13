@@ -25,16 +25,17 @@
  * padding: tweak constants here + CSS; to change when labels appear or which string: SimCanvas
  * wiring/hover logic. Snap radius and hit targets are geometry/SimCanvas — not PinLabel.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/ComponentShape.tsx` (tree reorganization)
- * - 09-10-2026 — Merged `src/components/PinLabel.tsx` into this file (tree reorganization)
- * - 09-10-2026 — Merged `src/components/PartArtwork.tsx` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/components/PartArtwork.tsx] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/components/PartArtwork.tsx] 17-09-2026 — Changelog creation
- * - [src/components/PinLabel.tsx] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/components/PinLabel.tsx] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/components/PinLabel.tsx] Changelog creation
+#                     | [src/components/PinLabel.tsx] Expanded What with practical how-to notes
+#                     | [src/components/PartArtwork.tsx] Changelog creation
+#                     | [src/components/PartArtwork.tsx] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/components/PartArtwork.tsx` into this file (tree reorganization)
+#                     | Merged `src/components/PinLabel.tsx` into this file (tree reorganization)
+#                     | Moved from `src/components/ComponentShape.tsx` (tree reorganization)
  */
 import type { CSSProperties } from 'react';
 import { getDesignDefinition, getDefinitionScale } from '../../registry/components';

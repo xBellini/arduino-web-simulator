@@ -10,9 +10,10 @@
  * To raise the frequency ceiling: the clamp lives in `properties.load` (currently 100 Hz).
  * Not-here: MCU-generated PWM, which comes from the AVR port bridge instead.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/oscillator.tsx` (tree reorganization)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 09-10-2026 | Cursor | Moved from `src/parts/oscillator.tsx` (tree reorganization)
  */
 import type { PlacedComponent } from '../../types';
 import type { PartModule } from '../partModule';

@@ -8,10 +8,11 @@
  * To support measuring other parts: extend `readings` (keep the display string in sync).
  * Not-here: voltmeter or ammeter.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/ohmmeter.tsx` (tree reorganization)
- * - 30-09-2026 - Corrected pin coordinates
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 30-09-2026 | Cursor | Corrected pin coordinates
+# 09-10-2026 | Cursor | Moved from `src/parts/ohmmeter.tsx` (tree reorganization)
  */
 import {
   DEFAULT_RESISTANCE_UNIT,

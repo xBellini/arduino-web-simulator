@@ -11,9 +11,10 @@
  * legacyStamp — they are the same numbers on purpose.
  * Not-here: pointer-down while sim runs (`SimCanvas` calls `setButtonPressed`).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/button.ts` (tree reorganization)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 09-10-2026 | Cursor | Moved from `src/parts/button.ts` (tree reorganization)
  */
 import type { SpiceStampCtx } from '../partModule';
 import type { PartModule } from '../partModule';

@@ -22,14 +22,16 @@
  * add a new instrument readout style: add a formatter here rather than duplicating in components.
  * Not-here: unit conversion (`electric.ts`) or live sim values (`simLiveStore.ts`).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/electricUnits.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/instrumentsGeometry.ts` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/utils/instrumentsGeometry.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/utils/instrumentsGeometry.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/utils/instrumentsGeometry.ts] Changelog creation
+#                     | [src/utils/instrumentsGeometry.ts] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/utils/instrumentsGeometry.ts` into this file (tree reorganization)
+#                     | Moved from `src/utils/electricUnits.ts` (tree reorganization)
  */
+
 import type { CurrentUnit, PlacedComponent, VoltageUnit } from '../types';
 
 export const DEFAULT_SUPPLY_VOLTAGE = 5;

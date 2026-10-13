@@ -7,10 +7,11 @@
  * Placeholders at the bottom of this file cover types without a TinkerCAD import — edit `writePlaceholder` calls
  * or swap a type into `TINKER_IMPORTS` once you have a real SVG. Re-run after `fetch-tinkercad-svg.mjs` updates references.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `scripts/export-parts-svg.mjs` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `scripts/export-parts-svg.mjs` (tree reorganization)
  */
 
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs';

@@ -6,10 +6,11 @@
  * add a menu action by appending a ContextMenuItem in SimCanvas builders, not new buttons here. Danger styling
  * uses .context-menu-item.danger in index.css. Property editor portals are separate components.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/ContextMenu.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/ContextMenu.tsx` (tree reorganization)
  */
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';

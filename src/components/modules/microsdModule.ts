@@ -5,9 +5,10 @@
  * Conventions: pin coords from SVG `data-terminal-*`; artwork `/components/microsd_module.svg`.
  * Not-here: SD card protocol — add hooks here later, not a second STATIC_REGISTRY entry.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/microsdModule.ts` (tree reorganization)
- * - 03-10-2026 — Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# Changelog
+# Date       | Author | Remarks
+# 03-10-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# 09-10-2026 | Cursor | Moved from `src/parts/microsdModule.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

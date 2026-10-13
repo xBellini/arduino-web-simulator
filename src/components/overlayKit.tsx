@@ -10,10 +10,11 @@
  * part's own file.
  * Not-here: part-specific art (LED glow, resistor bands, pot knob) — those live with their part.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/overlayKit.tsx` (tree reorganization)
- * - 25-09-2026 — Text baselines scale with panel height
- * - 17-09-2026 — Changelog creation / extracted from ComponentOverlays for part modules
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / extracted from ComponentOverlays for part modules
+# 25-09-2026 | Cursor | Text baselines scale with panel height
+# 09-10-2026 | Cursor | Moved from `src/parts/overlayKit.tsx` (tree reorganization)
  */
 
 /** Dark LCD-style panel with a small label and a right-aligned monospace value. */

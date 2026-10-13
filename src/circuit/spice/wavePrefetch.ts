@@ -2,10 +2,12 @@
  * What: Prefetch SPICE charge/discharge waveform caches before AVR starts.
  * Role: Move cold `.tran` fills to startup so GPIO edges can replay immediately.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spiceWavePrefetch.ts` (tree reorganization)
- * - 05-10-2026 — Prefetch at Run
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Prefetch at Run
+# 09-10-2026 | Cursor | Moved from `src/sim/spiceWavePrefetch.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../../types';
 import {

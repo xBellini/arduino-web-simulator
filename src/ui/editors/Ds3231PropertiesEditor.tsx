@@ -6,8 +6,9 @@
  * pointer, Escape). SimCanvas mounts it for type `ds3231_rtc`. EEPROM address is
  * fixed at 0x57 and is not edited here.
  *
- * Changelog:
- * - 12-10-2026 — Changelog creation / RTC I2C address editor
+# Changelog
+# Date       | Author | Remarks
+# 12-10-2026 | Cursor | Changelog creation / RTC I2C address editor
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

@@ -18,14 +18,16 @@
  * Not here: MNA matrix details or SPICE deck text — see circuit/mnaLegacy.ts and
  * spice/netlistExport.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/dcCircuitSolver.ts` (tree reorganization)
- * - 28-09-2026 — Re-export SPICE waveform cache / IC helpers used by blink replay
- * - 28-09-2026 — Restored normal line spacing (file had been double-spaced)
- * - 25-09-2026 — Thread capacitorBlown; capacitor circuits use stepped .tran
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 25-09-2026 | Cursor | Thread capacitorBlown; capacitor circuits use stepped .tran
+# 28-09-2026 | Cursor | Restored normal line spacing (file had been double-spaced)
+#                     | Re-export SPICE waveform cache / IC helpers used by blink replay
+# 09-10-2026 | Cursor | Moved from `src/sim/dcCircuitSolver.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../types';
 import type { CircuitNetlist, McuSourceMap } from './netlist';

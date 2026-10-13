@@ -7,10 +7,11 @@
  * viewBox is `25 0 177 172`). Left header top→bottom: C4…R4.
  * Not-here: switch matrix scanning — add hooks here later.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/buttonMatrix4x4.ts` (tree reorganization)
- * - 05-10-2026 — Pin x: footprint space (terminal 32.5 − viewBox min-x 25 → 7.5)
- * - 05-10-2026 — Changelog creation / definition-only registration
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / definition-only registration
+#                     | Pin x: footprint space (terminal 32.5 − viewBox min-x 25 → 7.5)
+# 09-10-2026 | Cursor | Moved from `src/parts/buttonMatrix4x4.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

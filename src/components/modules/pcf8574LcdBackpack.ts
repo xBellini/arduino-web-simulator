@@ -12,11 +12,12 @@
  * Addr fixed 0x27 until a properties editor. Ideal I2C (no pull-up SPICE).
  * Not-here: SPICE of pot/jumper/transistor; address jumpers; glass glyphs (on the LCD part).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/pcf8574LcdBackpack.ts` (tree reorganization)
- * - 05-10-2026 — Remapped lcd1–lcd16 left→right for stacking above LCD (artwork unchanged)
- * - 05-10-2026 — Single-file module (pins + PCF behaviour + board map); was split across sim/
- * - 05-10-2026 — Backpack-only part (not an LCD); pins from SVG data-terminal-*
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Backpack-only part (not an LCD); pins from SVG data-terminal-*
+#                     | Single-file module (pins + PCF behaviour + board map); was split across sim/
+#                     | Remapped lcd1–lcd16 left→right for stacking above LCD (artwork unchanged)
+# 09-10-2026 | Cursor | Moved from `src/parts/pcf8574LcdBackpack.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';

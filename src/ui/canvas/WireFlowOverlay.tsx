@@ -6,10 +6,11 @@
  * when flow appears or direction rules: edit circuit/currents helpers. To change look: index.css .wire-flow-*.
  * Static wire strokes and routing handles remain in SimCanvas — not this overlay.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/WireFlowOverlay.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/WireFlowOverlay.tsx` (tree reorganization)
  */
 import type { CSSProperties } from 'react';
 import type { Wire } from '../../types';

@@ -19,14 +19,16 @@
  *
  * Not here: Solving voltages or SPICE node naming — see circuit/dcSolver.ts and spice/netlistExport.
  *
- * Changelog:
- * - 09-10-2026 — Apply `PartModule.internalPinShorts` (duplicate module headers)
- * - 09-10-2026 ? Moved from `src/sim/circuitNetlist.ts` (tree reorganization)
- * - 28-09-2026 — MCU board copper: short all GND pins together and identical power rails (5V/3.3V)
- * - 17-09-2026 — Unwired pin nets come from `PartModule.ensurePins` instead of a button-only loop
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Unwired pin nets come from `PartModule.ensurePins` instead of a button-only loop
+# 28-09-2026 | Cursor | MCU board copper: short all GND pins together and identical power rails (5V/3.3V)
+# 09-10-2026 | Cursor | Moved from `src/sim/circuitNetlist.ts` (tree reorganization)
+#                     | Apply `PartModule.internalPinShorts` (duplicate module headers)
  */
+
 
 import type { PinRef, PlacedComponent, Wire } from '../types';
 import { getDefinition } from '../registry/components';

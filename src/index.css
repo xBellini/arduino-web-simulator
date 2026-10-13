@@ -7,9 +7,10 @@
  * classes ComponentShape sets (e.g. .is-resistor-hot) — keep JS/CSS names in sync. Logic and coordinates live
  * in TS components — not index.css.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 :root{
 --bg-app: #0f1419;

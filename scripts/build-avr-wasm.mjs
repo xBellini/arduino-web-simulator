@@ -2,8 +2,9 @@
  * What: Build AssemblyScript AVR WASM helpers (`src/avr/pacer/avr-pacer.ts`) into
  * `public/avr/avr-pacer.wasm`, which the AVR worker fetches. Run: `npm run build:avr-wasm`.
  *
- * Changelog:
- * - 09-10-2026 — Source moved from `assembly/` to `src/avr/pacer/`; added header
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Source moved from `assembly/` to `src/avr/pacer/`; added header
  */
 import { mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';

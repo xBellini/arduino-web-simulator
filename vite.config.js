@@ -8,12 +8,13 @@
  * through `userProjectsPlugin(process.cwd())` — see `scripts/vite/vite-plugin-user-projects.js`; compile API via
  * `compilePlugin()` — see `scripts/vite/vite-plugin-compile.js`.
  *
- * Changelog:
- * - 09-10-2026 — Dev-server plugins moved to `scripts/vite/`
- * - 09-10-2026 — `worker.format: 'es'` (production build failed: iife cannot bundle the module workers)
- * - 24-09-2026 — Registered local `/api/compile` (arduino-cli) plugin
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 24-09-2026 | Cursor | Registered local `/api/compile` (arduino-cli) plugin
+# 09-10-2026 | Cursor | `worker.format: 'es'` (production build failed: iife cannot bundle the module workers)
+#                     | Dev-server plugins moved to `scripts/vite/`
  */
 
 import { defineConfig } from 'vite';

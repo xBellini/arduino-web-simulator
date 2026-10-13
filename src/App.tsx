@@ -5,9 +5,10 @@
  * import component, insert in JSX here, add layout rules in index.css. Avoid business logic in App — wire through
  * context or child components. Entry bootstrap and global CSS import: main.tsx — not App.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 import { Palette } from './ui/palette/Palette';
 import { SimCanvas } from './ui/canvas/SimCanvas';

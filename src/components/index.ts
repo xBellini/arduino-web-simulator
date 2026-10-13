@@ -8,18 +8,19 @@
  * To add a part: create `src/components/<type>.ts(x)` exporting a `PartModule`, then one line here.
  * Not-here: the hook contract (`partModule.ts`) or any part behaviour.
  *
- * Changelog:
- * - 09-10-2026 — Registered ds3231_rtc (I2C DS3231 + AT24C32)
- * - 09-10-2026 ? Moved from `src/parts/index.ts` (tree reorganization)
- * - 08-10-2026 — Registered 74HC combinational gates (definition-only; no spiceStamp yet)
- * - 05-10-2026 — Registered pcf8574_lcd_backpack (backpack board only; no LCD glass)
- * - 05-10-2026 — Registered parallel lcd_16x2 / lcd_20x4 (HD44780 IC facade)
- * - 05-10-2026 — Registered Button Matrix 4×4 (tactile; distinct from Keypad 4×4)
- * - 05-10-2026 — Registered Keypad 4×4 (definition-only; no matrix scan yet)
- * - 03-10-2026 — Registered RFID-RC522, MAX7219 8×8, microSD (definition-only; no SPI sim yet)
- * - 17-09-2026 — Registered NE555 (definition-only; analog timer still pending)
- * - 17-09-2026 — Registered remaining simulating parts (sources, button, semiconductors, meters)
- * - 17-09-2026 — Changelog creation / part module registry introduced
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / part module registry introduced
+#                     | Registered remaining simulating parts (sources, button, semiconductors, meters)
+#                     | Registered NE555 (definition-only; analog timer still pending)
+# 03-10-2026 | Cursor | Registered RFID-RC522, MAX7219 8×8, microSD (definition-only; no SPI sim yet)
+# 05-10-2026 | Cursor | Registered Keypad 4×4 (definition-only; no matrix scan yet)
+#                     | Registered Button Matrix 4×4 (tactile; distinct from Keypad 4×4)
+#                     | Registered parallel lcd_16x2 / lcd_20x4 (HD44780 IC facade)
+#                     | Registered pcf8574_lcd_backpack (backpack board only; no LCD glass)
+# 08-10-2026 | Cursor | Registered 74HC combinational gates (definition-only; no spiceStamp yet)
+# 09-10-2026 | Cursor | Moved from `src/parts/index.ts` (tree reorganization)
+#                     | Registered ds3231_rtc (I2C DS3231 + AT24C32)
  */
 import type { PartModule } from './partModule';
 import { resistorModule } from './passives/resistor';

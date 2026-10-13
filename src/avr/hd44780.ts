@@ -7,9 +7,10 @@
  * To add another display size: `createHd44780({ cols, rows })` only.
  * Not-here: SVG overlay, registry pins — see `src/components/lcd*.tsx`.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/hd44780.ts` (tree reorganization)
- * - 05-10-2026 — Changelog creation / facade over vrEmuLcdChar + parallel latch
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / facade over vrEmuLcdChar + parallel latch
+# 09-10-2026 | Cursor | Moved from `src/sim/hd44780.ts` (tree reorganization)
  */
 import {
   createVrEmuLcdChar,

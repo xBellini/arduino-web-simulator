@@ -5,10 +5,11 @@
  * Conventions: pin/glass coords are viewBox-local for `lcd_20x4.svg` (same header pitch as 16×2).
  * Not-here: I2C / RTC.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/lcd20x4.ts` (tree reorganization)
- * - 05-10-2026 — Pins + glass matched to lcd_20x4.svg (was placeholder layout)
- * - 05-10-2026 — Changelog creation / simulating parallel 20×4 (placeholder SVG OK)
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / simulating parallel 20×4 (placeholder SVG OK)
+#                     | Pins + glass matched to lcd_20x4.svg (was placeholder layout)
+# 09-10-2026 | Cursor | Moved from `src/parts/lcd20x4.ts` (tree reorganization)
  */
 import { createParallelLcdModule } from './lcdParallel';
 

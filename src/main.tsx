@@ -4,9 +4,10 @@
  * (error boundary, analytics): wrap App here sparingly. New top-level routes or layout: prefer App.tsx. Env types
  * and import.meta.env: vite-env.d.ts. Build config: vite.config — not main.tsx.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

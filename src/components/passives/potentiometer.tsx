@@ -8,9 +8,10 @@
  * To change the knob graphic: the overlay below (centre 28,28 in the SVG).
  * Not-here: resistor colour bands or a resistance value editor.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/potentiometer.tsx` (tree reorganization)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 09-10-2026 | Cursor | Moved from `src/parts/potentiometer.tsx` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

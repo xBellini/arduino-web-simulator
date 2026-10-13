@@ -19,13 +19,14 @@
  * margin. Not-here: React lifecycle, scroll containers, or canvas transforms — window viewport
  * only.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/hooks/useClampToViewport.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/clampPopup.ts` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/utils/clampPopup.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/utils/clampPopup.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/utils/clampPopup.ts] Changelog creation
+#                     | [src/utils/clampPopup.ts] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/utils/clampPopup.ts` into this file (tree reorganization)
+#                     | Moved from `src/hooks/useClampToViewport.ts` (tree reorganization)
  */
 import { useLayoutEffect, useState, type RefObject } from 'react';
 

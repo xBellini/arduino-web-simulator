@@ -8,10 +8,11 @@
  * (names must match `PROJECT_NAME_PATTERN`). Files live in `<repo>/user_projects/`. Extend by adding methods
  * in the middleware block inside `configureServer` — keep JSON validation on PUT to avoid corrupt saves.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `vite-plugin-user-projects.js` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `vite-plugin-user-projects.js` (tree reorganization)
  */
 import fs from 'node:fs';
 import path from 'node:path';

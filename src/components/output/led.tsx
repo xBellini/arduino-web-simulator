@@ -14,11 +14,12 @@
  * To change the default colour-to-Vf mapping: `values/led.ts`.
  * Not-here: the RGB LED, which is a separate common-cathode part with three dies.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/led.tsx` (tree reorganization)
- * - 24-09-2026 — Glow uses LED body silhouette path (not a small oval); blown-X on dome
- * - 24-09-2026 — Retuned glow/blown-X to current led.svg footprint (~14.7×29.5)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 24-09-2026 | Cursor | Retuned glow/blown-X to current led.svg footprint (~14.7×29.5)
+#                     | Glow uses LED body silhouette path (not a small oval); blown-X on dome
+# 09-10-2026 | Cursor | Moved from `src/parts/led.tsx` (tree reorganization)
  */
 import type { CSSProperties } from 'react';
 import type { PlacedComponent } from '../../types';

@@ -13,12 +13,14 @@
  * states into reducer during run (`simLiveStore` owns live sim overlay).
  * Not-here: DC solve internals, compile pipeline details, or presentational canvas JSX.
  *
- * Changelog:
- * - 06-10-2026 — COMPLETE_WIRE_ON_WIRE: split target wire + junction pin tee while drafting
- * - 17-09-2026 — New components seed from the part module's `properties.defaults`
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | New components seed from the part module's `properties.defaults`
+# 06-10-2026 | Cursor | COMPLETE_WIRE_ON_WIRE: split target wire + junction pin tee while drafting
  */
+
 import {
   createContext,
   useCallback,

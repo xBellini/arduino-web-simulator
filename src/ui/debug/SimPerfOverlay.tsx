@@ -3,10 +3,11 @@
  * Role: Read `simPerf` from `simLiveStore` while status is running.
  * Owns/exports: `SimPerfOverlay`.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/SimPerfOverlay.tsx` (tree reorganization)
- * - 05-10-2026 — Permanent overlay (no ?simPerf=1 gate); removed agent ingest notes
- * - 05-10-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation
+#                     | Permanent overlay (no ?simPerf=1 gate); removed agent ingest notes
+# 09-10-2026 | Cursor | Moved from `src/components/SimPerfOverlay.tsx` (tree reorganization)
  */
 import type { SimPerfSnapshot } from '../../store/simLiveStore';
 

@@ -19,11 +19,13 @@
  * Not here: SPICE V-source deck lines or MNA stamping — see spice/netlistExport and
  * circuit/mnaLegacy.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/supplyCurrentLimit.ts` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/sim/supplyCurrentLimit.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../types';
 import { supplyCurrentLimitMilliamps, supplyVoltageVolts } from '../values/electric';

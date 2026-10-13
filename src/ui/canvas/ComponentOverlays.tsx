@@ -12,17 +12,18 @@
  * TO-92 / TO-220 casing legends: `pins[i].letter ?? pins[i].description`.
  * Registry artwork/pins are NOT here — src/registry and PartArtwork.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/ComponentOverlays.tsx` (tree reorganization)
- * - 25-09-2026 — Drop capacitor body value marking (value only in properties editor)
- * - 25-09-2026 — Casing from pin.letter ?? description; drop pinLetters
- * - 24-09-2026 — Casing from pin label / pinLetters; letter layout local to this file
- * - 24-09-2026 — PinLettersOverlay for TO packages; to92 smaller / to220 lower chip marking
- * - 24-09-2026 — Multi-line chip marking (newline-separated `partLabel` lines)
- * - 17-09-2026 — Dropped leftover per-type overlay blocks; modules own their chrome
- * - 17-09-2026 — Renders the part module's own `overlay` before the legacy per-type blocks
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Renders the part module's own `overlay` before the legacy per-type blocks
+#                     | Dropped leftover per-type overlay blocks; modules own their chrome
+# 24-09-2026 | Cursor | Multi-line chip marking (newline-separated `partLabel` lines)
+#                     | PinLettersOverlay for TO packages; to92 smaller / to220 lower chip marking
+#                     | Casing from pin label / pinLetters; letter layout local to this file
+# 25-09-2026 | Cursor | Casing from pin.letter ?? description; drop pinLetters
+#                     | Drop capacitor body value marking (value only in properties editor)
+# 09-10-2026 | Cursor | Moved from `src/components/ComponentOverlays.tsx` (tree reorganization)
  */
 import type { ReactNode } from 'react';
 import type { ComponentDefinition, PlacedComponent } from '../../types';

@@ -15,16 +15,16 @@
  * registry (e.g. Arduino pin classifiers).
  * Not-here: registry entries, geometry, reducers, or SPICE netlists — only types.
  *
- * Changelog:
- * - 12-10-2026 — rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
- * - 25-09-2026 — CapacitanceUnit + capacitanceValue/Unit on PlacedComponent
- * - 25-09-2026 — Pin `label` → `description`; optional `letter`; drop `pinLetters`;
- *   `defaultPartLabel` may be a line array
- * - 24-09-2026 — Documented `pinLetters` and two-line TO package markings
- * - 23-09-2026 — `scale` optional; package ICs inherit footprint scale unless overridden
- * - 17-09-2026 — Package-field example points at `src/parts/ne555.ts`
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Package-field example points at `src/parts/ne555.ts`
+# 23-09-2026 | Cursor | `scale` optional; package ICs inherit footprint scale unless overridden
+# 24-09-2026 | Cursor | Documented `pinLetters` and two-line TO package markings
+# 25-09-2026 | Cursor | Pin `label` → `description`; optional `letter`; drop `pinLetters`; `defaultPartLabel` may be a line array
+#                     | CapacitanceUnit + capacitanceValue/Unit on PlacedComponent
+# 12-10-2026 | Cursor | rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
  */
 export type PinState = 'low' | 'high' | 'floating';
 

@@ -7,9 +7,10 @@ REM http://localhost:5173/ — change the URL in the `start http://localhost:517
 REM `server.port` in vite.config.js (and align `npm run dev:stop` / VITE_PORT). To skip auto-open, remove or
 REM comment the `start "" cmd /c "timeout...` block.
 REM
-REM Changelog:
-REM - 17-09-2026 — Expanded What with practical how-to notes
-REM - 17-09-2026 — Changelog creation
+REM Changelog
+REM Date       | Author | Remarks
+REM 17-09-2026 | Cursor | Changelog creation
+REM                     | Expanded What with practical how-to notes
 setlocal
 cd /d "%~dp0"
 

@@ -8,11 +8,12 @@
  * port mirrors updated. Prefer this over in-thread `AvrRunner` for production Run.
  * Pacing is identical whether the window is focused or not (Worker owns the timebase).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/avrWorkerHost.ts` (tree reorganization)
- * - 05-10-2026 — Prime EN high before lcd-bus fall (I2C backpack only posts E low)
- * - 05-10-2026 — No focus/visibility pacing branch; Worker always wall-clock
- * - 05-10-2026 — Worker + WASM AVR path
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Worker + WASM AVR path
+#                     | No focus/visibility pacing branch; Worker always wall-clock
+#                     | Prime EN high before lcd-bus fall (I2C backpack only posts E low)
+# 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerHost.ts` (tree reorganization)
  */
 
 import { PinState, type AVRIOPort } from 'avr8js';

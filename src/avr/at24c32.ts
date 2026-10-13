@@ -10,8 +10,9 @@
  * Provenance: Microchip/Atmel AT24C32 datasheet (I2C EEPROM protocol). No MIT IC emulator
  * was vendored; this is a datasheet slave like the PCF8574 latch.
  *
- * Changelog:
- * - 09-10-2026 — Datasheet AT24C32 I2C slave for the DS3231 RTC module
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Datasheet AT24C32 I2C slave for the DS3231 RTC module
  */
 import type { TwiSlave } from './twiBus';
 

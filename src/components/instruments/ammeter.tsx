@@ -8,10 +8,11 @@
  * To change burden voltage: the 0.001 Ω stamp in spiceStamp and legacyStamp together.
  * Not-here: voltmeter or ohmmeter.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/ammeter.tsx` (tree reorganization)
- * - 30-09-2026 - Corrected pin coordinates
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 30-09-2026 | Cursor | Corrected pin coordinates
+# 09-10-2026 | Cursor | Moved from `src/parts/ammeter.tsx` (tree reorganization)
  */
 import { formatCurrentMa } from '../../values/electric';
 import type { PartModule } from '../partModule';

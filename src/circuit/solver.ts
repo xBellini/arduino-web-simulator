@@ -18,15 +18,16 @@
  *
  * Not here: AVR port sync or HEX load — see gpioBridge and avr/runner.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/circuitSolver.ts` (tree reorganization)
- * - 17-09-2026 — Prefer a caller-supplied DC result so the frame loop can skip a second MNA
- * - 17-09-2026 — Deleted leftover per-type arms; every simulating part dispatches via its module
- * - 17-09-2026 — Merged static/dynamic union passes into `applyUnions`; part module dispatch
- *   added for unions, evaluate, DC-result seeding, and state publishing
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Merged static/dynamic union passes into `applyUnions`; part module dispatch added for unions, evaluate, DC-result seeding, and state publishing
+#                     | Deleted leftover per-type arms; every simulating part dispatches via its module
+#                     | Prefer a caller-supplied DC result so the frame loop can skip a second MNA
+# 09-10-2026 | Cursor | Moved from `src/sim/circuitSolver.ts` (tree reorganization)
  */
+
 
 import { getDefinition } from '../registry/components';
 import type { PlacedComponent, PinState } from '../types';

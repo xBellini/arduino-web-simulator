@@ -7,10 +7,11 @@
  * mirroring power_supply/Oscillator patterns; live dial readouts on the SVG stay in ComponentOverlays. LED/
  * resistor editors are separate components — not this file.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/InstrumentPropertiesEditor.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/InstrumentPropertiesEditor.tsx` (tree reorganization)
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

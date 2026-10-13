@@ -10,11 +10,13 @@
  * To accept user uploads: run bytes through `parseInoSource` before storing in project state.
  * Not-here: compilation (`compileSketch`), templates (`sketch/templates.ts`), or project JSON schema.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/sketchFile.ts` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/utils/sketchFile.ts` (tree reorganization)
  */
+
 
 export function normalizeSketchFilename(name: string): string {
   const trimmed = name.trim();

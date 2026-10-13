@@ -5,10 +5,11 @@
  * change editor chrome (font, colors): index.css .sketch-editor* rules. To add lint/autocomplete: extend here
  * or swap editor — keep onChange contract. Compile, serial, and sim run: IdePanel/SimContext — not SketchEditor.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/SketchEditor.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/SketchEditor.tsx` (tree reorganization)
  */
 import { useCallback, useEffect, useRef } from 'react';
 

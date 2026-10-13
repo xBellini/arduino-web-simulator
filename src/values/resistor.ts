@@ -22,15 +22,17 @@
  * decode rules if digit count changes. Not-here: registry scale, hitboxes, or SPICE value export
  * (ohms come from `resistor.ts`).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/resistance.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/resistorColorCode.ts` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/utils/resistorColorCode.ts] 24-09-2026 — Retuned RESISTOR_BODY / transform for current resistor.svg (~49.5×9.55)
- * - [src/utils/resistorColorCode.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/utils/resistorColorCode.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/utils/resistorColorCode.ts] Changelog creation
+#                     | [src/utils/resistorColorCode.ts] Expanded What with practical how-to notes
+# 24-09-2026 | Cursor | [src/utils/resistorColorCode.ts] Retuned RESISTOR_BODY / transform for current resistor.svg (~49.5×9.55)
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/utils/resistorColorCode.ts` into this file (tree reorganization)
+#                     | Moved from `src/utils/resistance.ts` (tree reorganization)
  */
+
 import type { ResistancePowerRating, ResistanceTolerance, ResistanceUnit } from '../types';
 
 export const RESISTANCE_UNITS: ResistanceUnit[] = ['ohm', 'kohm', 'Mohm'];

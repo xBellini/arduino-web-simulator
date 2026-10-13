@@ -9,19 +9,20 @@
  * ContextMenuItem list or setPropertiesEditor target — reuse existing editor components. New part types still
  * need registry + often ComponentOverlays; netlist/sim in src/circuit + src/avr — not duplicated here.
  *
- * Changelog:
- * - 12-10-2026 — Ds3231PropertiesEditor for RTC I2C address
- * - 09-10-2026 ? Moved from `src/components/SimCanvas.tsx` (tree reorganization)
- * - 07-10-2026 — Stripped wire draft/resize debug instrumentation after confirmed polish
- * - 06-10-2026 — Debug instrumentation: draft bend click (2nd-curve stick)
- * - 06-10-2026 — Debug instrumentation: wire resize start/commit diagonal probes
- * - 06-10-2026 — Draft click on existing wire completes as tee (completeWireOnWire); stripped join debug logs
- * - 06-10-2026 — Draft cursor/bends use wireDraftRubberBandCursor (step-from-anchor, not board grid)
- * - 05-10-2026 — Blur IDE/editor on canvas pointer so Delete works after selecting parts/wires
- * - 05-10-2026 — Wire draft cursor axis-locks to start pin (off-grid pins no longer force grid jogs)
- * - 25-09-2026 — CapacitorValueEditor for ceramic / polarized
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 25-09-2026 | Cursor | CapacitorValueEditor for ceramic / polarized
+# 05-10-2026 | Cursor | Wire draft cursor axis-locks to start pin (off-grid pins no longer force grid jogs)
+#                     | Blur IDE/editor on canvas pointer so Delete works after selecting parts/wires
+# 06-10-2026 | Cursor | Draft cursor/bends use wireDraftRubberBandCursor (step-from-anchor, not board grid)
+#                     | Draft click on existing wire completes as tee (completeWireOnWire); stripped join debug logs
+#                     | Debug instrumentation: wire resize start/commit diagonal probes
+#                     | Debug instrumentation: draft bend click (2nd-curve stick)
+# 07-10-2026 | Cursor | Stripped wire draft/resize debug instrumentation after confirmed polish
+# 09-10-2026 | Cursor | Moved from `src/components/SimCanvas.tsx` (tree reorganization)
+# 12-10-2026 | Cursor | Ds3231PropertiesEditor for RTC I2C address
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';

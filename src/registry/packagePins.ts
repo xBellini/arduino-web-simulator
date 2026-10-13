@@ -10,11 +10,12 @@
  * (every pin 1..2×perRow); missing or extra keys throw.
  * Not-here: package SVG artwork (`public/components/dip*.svg`) or part spiceStamp / evaluate.
  *
- * Changelog:
- * - 08-10-2026 — Restored DIP helpers (`dipPackagePins` / `dipDevicePins`) onto Concord baseline
- * - 07-10-2026 — DIP geometry + dipDevicePins(packageId, pinMap); bare shells share coords
- * - 25-09-2026 — Leaf module; description + optional letter (no pinLetters array)
- * - 24-09-2026 — Changelog creation / TO-92 and TO-220 pin helpers
+# Changelog
+# Date       | Author | Remarks
+# 24-09-2026 | Cursor | Changelog creation / TO-92 and TO-220 pin helpers
+# 25-09-2026 | Cursor | Leaf module; description + optional letter (no pinLetters array)
+# 07-10-2026 | Cursor | DIP geometry + dipDevicePins(packageId, pinMap); bare shells share coords
+# 08-10-2026 | Cursor | Restored DIP helpers (`dipPackagePins` / `dipDevicePins`) onto Concord baseline
  */
 import type { PinDefinition } from '../types';
 

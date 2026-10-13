@@ -8,9 +8,10 @@
  * Adjust `TOP_PIN_LABELS` / `BOTTOM_PIN_LABELS`, `PIN_PITCH`, `TOP_ROW_Y_NUDGE`, or `NANO_SVG_SKIP_PATH_INDEX`
  * if a new SVG changes path order or header layout; tune `IC_LABEL_X` / `IC_LABEL_Y` for the on-chip text overlay.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 
 import fs from 'node:fs';

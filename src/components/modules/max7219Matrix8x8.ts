@@ -6,10 +6,11 @@
  * viewBox is `25 0 199 134`).
  * Not-here: digit/segment driving — add hooks here later, not a second STATIC_REGISTRY entry.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/max7219Matrix8x8.ts` (tree reorganization)
- * - 05-10-2026 — Pin x: footprint space (terminal 32 − viewBox min-x 25 → 7)
- * - 03-10-2026 — Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# Changelog
+# Date       | Author | Remarks
+# 03-10-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# 05-10-2026 | Cursor | Pin x: footprint space (terminal 32 − viewBox min-x 25 → 7)
+# 09-10-2026 | Cursor | Moved from `src/parts/max7219Matrix8x8.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

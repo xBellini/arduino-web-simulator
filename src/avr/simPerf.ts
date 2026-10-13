@@ -6,11 +6,12 @@
  * Conventions: When `SIM_PERF_ENABLED`, AvrRunner / Worker host / solve frames push metrics.
  * Instruction totals use CPU cycle deltas (not per-instruction counting).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/simPerf.ts` (tree reorganization)
- * - 09-10-2026 — Removed `readSimPerfBenchState` (only the deleted bench-sim-perf script used it)
- * - 05-10-2026 — Promoted from debug probe to always-on Run overlay; removed NDJSON ingest
- * - 05-10-2026 — Cycle-delta batches; Worker path support
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Cycle-delta batches; Worker path support
+#                     | Promoted from debug probe to always-on Run overlay; removed NDJSON ingest
+# 09-10-2026 | Cursor | Removed `readSimPerfBenchState` (only the deleted bench-sim-perf script used it)
+#                     | Moved from `src/sim/simPerf.ts` (tree reorganization)
  */
 
 export const SIM_PERF_ENABLED = true;

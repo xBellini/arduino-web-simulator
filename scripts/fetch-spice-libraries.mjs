@@ -11,10 +11,11 @@
  * Hand-maintained models in `public/spice/bundled/` (with `bundled/catalog.json`) are merged into the
  * generated catalog and are never deleted by a fetch.
  *
- * Changelog:
- * - 09-10-2026 — Merge `public/spice/bundled/catalog.json` (TI gate models) into the generated catalog
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merge `public/spice/bundled/catalog.json` (TI gate models) into the generated catalog
  */
 
 import fs from 'node:fs';

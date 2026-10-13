@@ -28,20 +28,21 @@
  * `power`/`ground` pin types). Not here: Branch mA per component or DC voltages — see branchCurrent
  * and circuit/dcSolver.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/branchCurrent.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/sim/wireCurrent.ts` into this file (tree reorganization)
- * - 09-10-2026 — Header: branch currents now come from ngspice.worker (opOutputParse removed)
- * - 17-09-2026 — Deleted leftover per-type claim loops; modules own every pass
- * - 17-09-2026 — Named the claim order `BRANCH_PASS` and dispatch part modules per pass;
- *   `BranchCurrentFlags` now lives in the part module contract
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/sim/wireCurrent.ts] 17-09-2026 — Deleted leftover series/source type arms; modules own pinRole and seriesPins
- * - [src/sim/wireCurrent.ts] 17-09-2026 — Part modules supply `seriesPins` and `pinRole`; `isSinkPin` now takes sim flags
- * - [src/sim/wireCurrent.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/sim/wireCurrent.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/sim/wireCurrent.ts] Changelog creation
+#                     | [src/sim/wireCurrent.ts] Expanded What with practical how-to notes
+#                     | [src/sim/wireCurrent.ts] Part modules supply `seriesPins` and `pinRole`; `isSinkPin` now takes sim flags
+#                     | [src/sim/wireCurrent.ts] Deleted leftover series/source type arms; modules own pinRole and seriesPins
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Named the claim order `BRANCH_PASS` and dispatch part modules per pass; `BranchCurrentFlags` now lives in the part module contract
+#                     | Deleted leftover per-type claim loops; modules own every pass
+# 09-10-2026 | Cursor | Header: branch currents now come from ngspice.worker (opOutputParse removed)
+#                     | Merged `src/sim/wireCurrent.ts` into this file (tree reorganization)
+#                     | Moved from `src/sim/branchCurrent.ts` (tree reorganization)
  */
+
 import type { PlacedComponent, Wire } from '../types';
 import { DEFAULT_RESISTANCE_UNIT, DEFAULT_RESISTANCE_VALUE, resistanceToOhms } from '../values/resistor';
 import { netForPin, type CircuitNetlist, type NetLevel } from './netlist';

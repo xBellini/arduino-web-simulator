@@ -8,9 +8,10 @@
  * To pick a catalog part: set `spiceModelId` on the placed instance (default 1N4148).
  * Not-here: the LED, which has Vf/If properties and a blow model of its own.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/diode.ts` (tree reorganization)
- * - 17-09-2026 — Changelog creation / migrated out of the per-subsystem type switches
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation / migrated out of the per-subsystem type switches
+# 09-10-2026 | Cursor | Moved from `src/parts/diode.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

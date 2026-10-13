@@ -10,10 +10,12 @@
  * To cap memory: adjust max stack depth in `SimContext` if present — stacks live there.
  * Not-here: React hooks or action dispatch — pure data structures only.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
+
 import type { PlacedComponent, Viewport, Wire } from '../types';
 
 /** Circuit data restored by undo/redo (excludes transient UI). */

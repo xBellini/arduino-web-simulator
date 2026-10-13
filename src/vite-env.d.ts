@@ -4,8 +4,9 @@
  * (e.g. VITE_*): extend ImportMetaEnv interface in this file per Vite docs. Application domain types belong in
  * src/types or feature modules — not vite-env.d.ts. Build/plugins: vite.config.ts — not here.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 /// <reference types="vite/client" />

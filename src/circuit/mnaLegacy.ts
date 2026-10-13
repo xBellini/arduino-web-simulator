@@ -20,13 +20,15 @@
  * Not here: Worker-based ngspice or netlist string generation — see spice/client.ts and
  * spice/netlistExport.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/dcCircuitSolverLegacy.ts` (tree reorganization)
- * - 17-09-2026 — Deleted leftover stamp/settle/source arms; modules own MNA and standalone detect
- * - 17-09-2026 — Part module dispatch for fixed voltages, stamping, and conduction settling
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Part module dispatch for fixed voltages, stamping, and conduction settling
+#                     | Deleted leftover stamp/settle/source arms; modules own MNA and standalone detect
+# 09-10-2026 | Cursor | Moved from `src/sim/dcCircuitSolverLegacy.ts` (tree reorganization)
  */
+
 
 import { getDefinition } from '../registry/components';
 import type { PlacedComponent } from '../types';

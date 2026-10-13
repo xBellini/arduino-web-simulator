@@ -6,9 +6,10 @@
  * Conventions: pin coords from TinkerCAD crop (280×390); artwork `/components/keypad_4x4.svg`.
  * Not-here: button matrix scanning — add hooks here later, not a second STATIC_REGISTRY entry.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/parts/keypad4x4.ts` (tree reorganization)
- * - 05-10-2026 — Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | Changelog creation / moved out of STATIC_REGISTRY (definition only)
+# 09-10-2026 | Cursor | Moved from `src/parts/keypad4x4.ts` (tree reorganization)
  */
 import type { PartModule } from '../partModule';
 

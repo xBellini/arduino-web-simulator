@@ -6,14 +6,15 @@
  * pins; no pull-up SPICE. Also links backpack → parallel LCD parts whose RS/E (etc.) share the
  * backpack LCD-header nets.
  *
- * Changelog:
- * - 12-10-2026 — DS3231 rtcAddr from placed rtcI2cAddr (default 0x68)
- * - 09-10-2026 — Discover DS3231 RTC modules on the MCU I2C nets
- * - 09-10-2026 ? Moved from `src/sim/buildLcdWorkerTargets.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/sim/buildTwiWorkerTargets.ts` into this file (tree reorganization)
- * - 05-10-2026 — Worker + WASM AVR path
- * - [src/sim/buildTwiWorkerTargets.ts] 05-10-2026 — pcf8574_lcd_backpack (not lcd_i2c composite); optional parallel LCD link
- * - [src/sim/buildTwiWorkerTargets.ts] 05-10-2026 — Changelog creation / lcd_i2c TWI targets
+# Changelog
+# Date       | Author | Remarks
+# 05-10-2026 | Cursor | [src/sim/buildTwiWorkerTargets.ts] Changelog creation / lcd_i2c TWI targets
+#                     | [src/sim/buildTwiWorkerTargets.ts] pcf8574_lcd_backpack (not lcd_i2c composite); optional parallel LCD link
+#                     | Worker + WASM AVR path
+# 09-10-2026 | Cursor | Merged `src/sim/buildTwiWorkerTargets.ts` into this file (tree reorganization)
+#                     | Moved from `src/sim/buildLcdWorkerTargets.ts` (tree reorganization)
+#                     | Discover DS3231 RTC modules on the MCU I2C nets
+# 12-10-2026 | Cursor | DS3231 rtcAddr from placed rtcI2cAddr (default 0x68)
  */
 import type { PlacedComponent, Wire } from '../types';
 import { isParallelLcdType, parallelLcdGeometry } from '../components/output/lcdParallel';

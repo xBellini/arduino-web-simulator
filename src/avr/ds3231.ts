@@ -14,8 +14,9 @@
  * is GPL-2). Behaviour follows the Analog Devices DS3231 datasheet register map, same
  * datasheet-slave approach as the PCF8574 latch.
  *
- * Changelog:
- * - 09-10-2026 — Datasheet DS3231 I2C slave (timekeeping + alarms + TWI adapter)
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Datasheet DS3231 I2C slave (timekeeping + alarms + TWI adapter)
  */
 import type { TwiSlave } from './twiBus';
 

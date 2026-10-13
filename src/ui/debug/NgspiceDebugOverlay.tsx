@@ -6,10 +6,11 @@
  * NgspiceDcDebug in simLiveStore/sim pipeline first, then add a table section here. User-facing instrument
  * readouts stay on ComponentOverlays; solver/netlist build is src/circuit — not this overlay.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/NgspiceDebugOverlay.tsx` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/components/NgspiceDebugOverlay.tsx` (tree reorganization)
  */
 import { useMemo } from 'react';
 import { getDefinition } from '../../registry/components';

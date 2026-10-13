@@ -2,8 +2,9 @@
  * What: Floating editor for parallel LCD background + character color presets.
  * Role: SimCanvas opens on double-click / context menu when the LCD module is editable.
  *
- * Changelog:
- * - 09-10-2026 — Moved from `src/components/LcdPropertiesEditor.tsx` (tree reorganization); added Changelog
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Moved from `src/components/LcdPropertiesEditor.tsx` (tree reorganization); added Changelog
  */
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';

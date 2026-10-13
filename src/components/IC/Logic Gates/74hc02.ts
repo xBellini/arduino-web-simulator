@@ -10,15 +10,16 @@
  * Artwork is the shared `dip14` package SVG.
  * Not-here: blank DIP14 shells.
  *
- * Changelog:
- * - 09-10-2026 ? Moved to `src/components/IC/Logic Gates/`; fixed relative imports
- * - 09-10-2026 ? Moved from `src/parts/74hc02.ts` (tree reorganization)
- * - 09-10-2026 — Stamp TI SN74HC02 behavioral model (Y A B VCC GND) instead of XSPICE 74HC.LIB
- * - 09-10-2026 — Header: engine is eecircuit-engine (ngspice-45); A-device decks are refused
- * - 09-10-2026 — XSPICE engine removed; documented that 74HC.LIB decks have no working solver
- * - 08-10-2026 — Restored spiceStamp; XSPICE via dual-engine client routing
- * - 07-10-2026 — Inlined spiceStamp (dropped 74hcLogicStamp helper)
- * - 07-10-2026 — Pins via dipDevicePins; Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 07-10-2026 | Cursor | Pins via dipDevicePins; Changelog creation
+#                     | Inlined spiceStamp (dropped 74hcLogicStamp helper)
+# 08-10-2026 | Cursor | Restored spiceStamp; XSPICE via dual-engine client routing
+# 09-10-2026 | Cursor | XSPICE engine removed; documented that 74HC.LIB decks have no working solver
+#                     | Header: engine is eecircuit-engine (ngspice-45); A-device decks are refused
+#                     | Stamp TI SN74HC02 behavioral model (Y A B VCC GND) instead of XSPICE 74HC.LIB
+#                     | Moved from `src/parts/74hc02.ts` (tree reorganization)
+#                     | Moved to `src/components/IC/Logic Gates/`; fixed relative imports
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';

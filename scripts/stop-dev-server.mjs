@@ -8,9 +8,10 @@
  * if you changed `server.port` in `vite.config.js`. Exits 0 with a message when nothing is listening;
  * otherwise prints each stopped PID. Extend by swapping the `netstat`/`taskkill` calls if you need Linux/macOS support.
  *
- * Changelog:
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
  */
 
 import { execSync } from 'node:child_process';

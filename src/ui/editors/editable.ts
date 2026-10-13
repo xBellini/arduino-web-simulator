@@ -9,12 +9,13 @@
  * To show only silkscreen rename: use `marking: 'chip'` and `PlacedComponent.partLabel`.
  * Not-here: actual property form controls — only capability checks.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/componentProperties.ts` (tree reorganization)
- * - 17-09-2026 — Removed LEGACY_EDITABLE; modules and marking cover every editable type
- * - 17-09-2026 — Part modules declare `properties.editable` instead of joining LEGACY_EDITABLE
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Part modules declare `properties.editable` instead of joining LEGACY_EDITABLE
+#                     | Removed LEGACY_EDITABLE; modules and marking cover every editable type
+# 09-10-2026 | Cursor | Moved from `src/utils/componentProperties.ts` (tree reorganization)
  */
 import { getDefinition } from '../../registry/components';
 import { getPartModule } from '../../components';

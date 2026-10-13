@@ -7,7 +7,9 @@ alwaysApply: true
 
 Whenever you **add**, **change**, or **remove** user-facing behavior in this project, update `README.md` in the same task before finishing.
 
-The README is **general-purpose only** (project overview, run/usage, high-level layout). Per-file history and module “what this does” commentary live in each source file’s header — see `file-headers-changelog.mdc`. Do not dump session digests or file-level changelogs into the README.
+The README is **general-purpose** (project overview, run/usage, high-level layout). Per-file history and module “what this does” commentary live in each source file’s header — see `file-headers-changelog.mdc`.
+
+A short **project Changelog** at the bottom of the README is allowed (user-facing highlights only, `# Date | Author | Remarks`, oldest→newest). Do **not** dump session digests or per-file changelogs into the README.
 
 ## Update when changing
 
@@ -23,9 +25,9 @@ The README is **general-purpose only** (project overview, run/usage, high-level 
 | **Usage** | New/changed shortcuts, toolbar actions, interaction model |
 | **Palette / components** | Registry or visible part list changes |
 | **Project file** | JSON schema, pin IDs, migration notes |
-| **Phase 0 status** | Mark items done; add new polish tasks if discovered |
-| **Phase 1** | Only when simulation work begins or plans shift |
+| **Status / roadmap** | When shipped capabilities or near-term goals change |
 | **Project layout** | New top-level modules or renamed paths |
+| **Changelog** | Append a project-level row for notable user-facing releases/rewrites |
 
 ## Do not
 
@@ -33,7 +35,7 @@ The README is **general-purpose only** (project overview, run/usage, high-level 
 - Document pure refactors with no user-visible change
 - Remove the Phase 0 checklist without replacing it with current status
 - Put per-file changelogs or deep module commentary in the README (use file headers instead)
-- Session digests / dated “what we fixed this week” essays
+- Session digests / “what we fixed this week” essays in the body (use the short project Changelog for highlights only)
 - Pin catalogs, footprint coordinates, TinkerCAD IDs, SVG path dumps
 - Snapshot folder inventories (point to `backup-local.ps1` / `local-snapshots.mdc` only)
 

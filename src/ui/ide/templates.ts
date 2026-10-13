@@ -8,14 +8,15 @@
  * To change default blink firmware: edit `DEFAULT_SKETCH` in `compileSketch`, not duplicate here.
  * Not-here: download helpers (`sketchFile.ts`) or project JSON sketch fields beyond copy-in.
  *
- * Changelog:
- * - 12-10-2026 — DS3231 template notes editable RTC address in part properties
- * - 09-10-2026 — DS3231 Wire.h template (RTC 0x68 / EEPROM 0x57)
- * - 09-10-2026 ? Moved from `src/sketch/templates.ts` (tree reorganization)
- * - 05-10-2026 — I2C 20×4 LiquidCrystal_I2C template (PCF8574 backpack @ 0x27)
- * - 05-10-2026 — LCD fake-clock template (LiquidCrystal 4-bit, millis time)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 05-10-2026 | Cursor | LCD fake-clock template (LiquidCrystal 4-bit, millis time)
+#                     | I2C 20×4 LiquidCrystal_I2C template (PCF8574 backpack @ 0x27)
+# 09-10-2026 | Cursor | Moved from `src/sketch/templates.ts` (tree reorganization)
+#                     | DS3231 Wire.h template (RTC 0x68 / EEPROM 0x57)
+# 12-10-2026 | Cursor | DS3231 template notes editable RTC address in part properties
  */
 
 import { DEFAULT_SKETCH } from '../../avr/firmware';

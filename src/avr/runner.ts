@@ -26,21 +26,22 @@
  * `setTimeout`. Worker catch-up: MessageChannel (resists background setTimeout clamping better than
  * `setTimeout(0)` alone).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/avrRunner.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/sim/taskScheduler.ts` into this file (tree reorganization)
- * - 05-10-2026 — Instantiated AVRTWI (Wire / ideal I2C master)
- * - 05-10-2026 — Reverted rate-limit/re-anchor experiment (caused focused drift)
- * - 05-10-2026 — Same wall-clock pacing regardless of focus/visibility (no freerun branch)
- * - 05-10-2026 — Cycle-quanta hot loop; Worker/WASM host preferred
- * - 05-10-2026 — Catch-up execute when cyclesBehind
- * - 17-09-2026 — Idle slice 12 ms; next batch always on rAF (no setTimeout catch-up)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/sim/taskScheduler.ts] 05-10-2026 — Worker catch-up via MessageChannel; idle still timed
- * - [src/sim/taskScheduler.ts] 05-10-2026 — Worker-safe postTask (no rAF in workers)
- * - [src/sim/taskScheduler.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/sim/taskScheduler.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/sim/taskScheduler.ts] Changelog creation
+#                     | [src/sim/taskScheduler.ts] Expanded What with practical how-to notes
+# 05-10-2026 | Cursor | [src/sim/taskScheduler.ts] Worker-safe postTask (no rAF in workers)
+#                     | [src/sim/taskScheduler.ts] Worker catch-up via MessageChannel; idle still timed
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Idle slice 12 ms; next batch always on rAF (no setTimeout catch-up)
+# 05-10-2026 | Cursor | Catch-up execute when cyclesBehind
+#                     | Cycle-quanta hot loop; Worker/WASM host preferred
+#                     | Same wall-clock pacing regardless of focus/visibility (no freerun branch)
+#                     | Reverted rate-limit/re-anchor experiment (caused focused drift)
+#                     | Instantiated AVRTWI (Wire / ideal I2C master)
+# 09-10-2026 | Cursor | Merged `src/sim/taskScheduler.ts` into this file (tree reorganization)
+#                     | Moved from `src/sim/avrRunner.ts` (tree reorganization)
  */
 import { avrInstruction, AVRIOPort, AVRTimer, AVRTWI, AVRUSART, CPU, portBConfig, portCConfig, portDConfig, timer0Config, timer1Config, timer2Config, twiConfig, usart0Config } from 'avr8js';
 import { loadHex } from './firmware';

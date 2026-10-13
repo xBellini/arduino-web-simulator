@@ -10,12 +10,14 @@
  * To debug ngspice: populate `NgspiceDcDebug` from solver, read in meter/debug components.
  * Not-here: placed component persistence, wire topology edits, or compile output strings.
  *
- * Changelog:
- * - 05-10-2026 — `simPerf` overlay snapshot preserved across pin updates
- * - 17-09-2026 — `applySimLivePinStates` no-ops when pins/flags/backend/debug are unchanged
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | `applySimLivePinStates` no-ops when pins/flags/backend/debug are unchanged
+# 05-10-2026 | Cursor | `simPerf` overlay snapshot preserved across pin updates
  */
+
 import type { PinState } from '../types';
 import {
   createComponentSimFlags,

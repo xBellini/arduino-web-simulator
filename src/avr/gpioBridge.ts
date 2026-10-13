@@ -18,10 +18,11 @@
  * Not here: Netlist union-find, DC `.OP`, or AVR instruction stepping — see circuit/netlist.ts,
  * circuit/dcSolver.ts, avr/runner.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/gpioBridge.ts` (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Moved from `src/sim/gpioBridge.ts` (tree reorganization)
  */
 
 import { PinState as AvrPinState, type AVRIOPort } from 'avr8js';

@@ -21,15 +21,17 @@
  * `parseProjectJson`. To disable gracefully: call `isUserProjectsApiAvailable` before showing
  * server UI. Not-here: local download, sketch `.ino` handling, or auth — dev server route only.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/utils/projectFile.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/userProjectsApi.ts` into this file (tree reorganization)
- * - 17-09-2026 — Part modules validate their own persisted fields via `properties.load`
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/utils/userProjectsApi.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/utils/userProjectsApi.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/utils/userProjectsApi.ts] Changelog creation
+#                     | [src/utils/userProjectsApi.ts] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Part modules validate their own persisted fields via `properties.load`
+# 09-10-2026 | Cursor | Merged `src/utils/userProjectsApi.ts` into this file (tree reorganization)
+#                     | Moved from `src/utils/projectFile.ts` (tree reorganization)
  */
+
 import { getDefinition } from '../registry/components';
 import { getPartModule } from '../components';
 import type { PinState, PlacedComponent, Viewport, Wire } from '../types';

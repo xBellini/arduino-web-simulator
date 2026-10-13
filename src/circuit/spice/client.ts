@@ -25,22 +25,23 @@
  *
  * Not here: Deck generation or catalog JSON schema — see netlistExport and spice/models.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spice/ngspiceClient.ts` (tree reorganization)
- * - 09-10-2026 — Engine swap: Concord ngspice-26 → eecircuit-engine module worker, structured
- *   results instead of stdout parsing, persistent worker with kill + lazy restart on timeout/crash
- * - 09-10-2026 — Removed XSPICE worker routing, hybrid 74HC co-sim and xspiceIso debug; Concord only
- * - 08-10-2026 — Hybrid 74HC: XSPICE IC-only OP + Concord analog with forced V (no mixed deck)
- * - 08-10-2026 — Dual-route: XSPICE worker only when deckNeedsXspice (74HC / digital.cm)
- * - 08-10-2026 — A/B: USE_XSPICE_WORKER_AB routes to separate /ngspice/xspice/ worker
- * - 08-10-2026 — Document parked /ngspice/xspice/; client stays Concord-only (no XSPICE worker)
- * - 28-09-2026 — `.tran` tstop from circuit RC (~5τ) so large C can fully charge/discharge in SPICE
- * - 25-09-2026 — Stepped `.tran` + IC when capacitors present; capacitorBlown in cache key
- * - 17-09-2026 — Cache key is module-only (`spiceCacheKey`); leftover type arms deleted
- * - 17-09-2026 — Cache key asks part modules for their own `spiceCacheKey` fragment
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+#                     | Cache key asks part modules for their own `spiceCacheKey` fragment
+#                     | Cache key is module-only (`spiceCacheKey`); leftover type arms deleted
+# 25-09-2026 | Cursor | Stepped `.tran` + IC when capacitors present; capacitorBlown in cache key
+# 28-09-2026 | Cursor | `.tran` tstop from circuit RC (~5τ) so large C can fully charge/discharge in SPICE
+# 08-10-2026 | Cursor | Document parked /ngspice/xspice/; client stays Concord-only (no XSPICE worker)
+#                     | A/B: USE_XSPICE_WORKER_AB routes to separate /ngspice/xspice/ worker
+#                     | Dual-route: XSPICE worker only when deckNeedsXspice (74HC / digital.cm)
+#                     | Hybrid 74HC: XSPICE IC-only OP + Concord analog with forced V (no mixed deck)
+# 09-10-2026 | Cursor | Removed XSPICE worker routing, hybrid 74HC co-sim and xspiceIso debug; Concord only
+#                     | Engine swap: Concord ngspice-26 → eecircuit-engine module worker, structured results instead of stdout parsing, persistent worker with kill + lazy restart on timeout/crash
+#                     | Moved from `src/sim/spice/ngspiceClient.ts` (tree reorganization)
  */
+
 
 import type { PlacedComponent } from '../../types';
 import type { CircuitNetlist, McuSourceMap } from '../netlist';

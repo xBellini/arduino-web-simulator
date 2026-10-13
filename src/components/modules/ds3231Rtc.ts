@@ -12,10 +12,11 @@
  * SQW/32K are not driven. Ideal I2C (no pull-up SPICE).
  * Not-here: IC register maps — `src/avr/ds3231.ts` and `src/avr/at24c32.ts`.
  *
- * Changelog:
- * - 12-10-2026 — properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
- * - 09-10-2026 — Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
- * - 09-10-2026 — DS3231 RTC module (I2C + AT24C32)
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | DS3231 RTC module (I2C + AT24C32)
+#                     | Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
+# 12-10-2026 | Cursor | properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';

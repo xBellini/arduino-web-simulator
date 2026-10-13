@@ -20,11 +20,13 @@
  *
  * Not here: Running the engine (spice/worker.ts) or deck generation (netlistExport).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/spice/pspiceCompat.ts` (tree reorganization)
- * - 09-10-2026 — VSWITCH regex: match spaces/tabs only, so it can't swallow the newline and merge the next `.MODEL` line
- * - 09-10-2026 — Changelog creation (TABLE / VSWITCH / POLY rewrites + unsupported scan)
+# Changelog
+# Date       | Author | Remarks
+# 09-10-2026 | Cursor | Changelog creation (TABLE / VSWITCH / POLY rewrites + unsupported scan)
+#                     | VSWITCH regex: match spaces/tabs only, so it can't swallow the newline and merge the next `.MODEL` line
+#                     | Moved from `src/sim/spice/pspiceCompat.ts` (tree reorganization)
  */
+
 
 const SUFFIX: Record<string, number> = {
   t: 1e12,

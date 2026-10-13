@@ -45,19 +45,20 @@
  * file under `bundled/` plus compileSketch wiring. To verify size, use `validateHex` in a
  * one-off script — not at runtime import. Not here: Compile logic or detection — see compileSketch.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/compileSketch.ts` (tree reorganization)
- * - 09-10-2026 — Merged `src/sim/bundled/blinkDefaultHex.ts` into this file (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/compileApi.ts` into this file (tree reorganization)
- * - 09-10-2026 — Merged `src/sim/intelHex.ts` into this file (tree reorganization)
- * - 24-09-2026 — Prefer local `/api/compile` (arduino-cli) before Hexi
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/sim/intelHex.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/sim/intelHex.ts] 17-09-2026 — Changelog creation
- * - [src/utils/compileApi.ts] 24-09-2026 — Changelog creation / local compile API client
- * - [src/sim/bundled/blinkDefaultHex.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/sim/bundled/blinkDefaultHex.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/sim/bundled/blinkDefaultHex.ts] Changelog creation
+#                     | [src/sim/bundled/blinkDefaultHex.ts] Expanded What with practical how-to notes
+# 24-09-2026 | Cursor | [src/utils/compileApi.ts] Changelog creation / local compile API client
+# 17-09-2026 | Cursor | [src/sim/intelHex.ts] Changelog creation
+#                     | [src/sim/intelHex.ts] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 24-09-2026 | Cursor | Prefer local `/api/compile` (arduino-cli) before Hexi
+# 09-10-2026 | Cursor | Merged `src/sim/intelHex.ts` into this file (tree reorganization)
+#                     | Merged `src/utils/compileApi.ts` into this file (tree reorganization)
+#                     | Merged `src/sim/bundled/blinkDefaultHex.ts` into this file (tree reorganization)
+#                     | Moved from `src/sim/compileSketch.ts` (tree reorganization)
  */
 
 

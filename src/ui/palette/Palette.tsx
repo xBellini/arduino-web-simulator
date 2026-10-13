@@ -25,17 +25,18 @@
  * switch/default branch with the same optional fields `SimContext` sets on place. Not-here:
  * registry pins, hitboxes, or `PALETTE_CATEGORIES` ordering (`components.ts`).
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/Palette.tsx` (tree reorganization)
- * - 09-10-2026 — Merged `src/utils/paletteIcon.ts` into this file (tree reorganization)
- * - 09-10-2026 — Merged `src/components/PaletteIcon.tsx` into this file (tree reorganization)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
- * - [src/components/PaletteIcon.tsx] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/components/PaletteIcon.tsx] 17-09-2026 — Changelog creation
- * - [src/utils/paletteIcon.ts] 17-09-2026 — Stubs seed from the part module's shared `properties.defaults`
- * - [src/utils/paletteIcon.ts] 17-09-2026 — Expanded What with practical how-to notes
- * - [src/utils/paletteIcon.ts] 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | [src/utils/paletteIcon.ts] Changelog creation
+#                     | [src/utils/paletteIcon.ts] Expanded What with practical how-to notes
+#                     | [src/utils/paletteIcon.ts] Stubs seed from the part module's shared `properties.defaults`
+#                     | [src/components/PaletteIcon.tsx] Changelog creation
+#                     | [src/components/PaletteIcon.tsx] Expanded What with practical how-to notes
+#                     | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 09-10-2026 | Cursor | Merged `src/components/PaletteIcon.tsx` into this file (tree reorganization)
+#                     | Merged `src/utils/paletteIcon.ts` into this file (tree reorganization)
+#                     | Moved from `src/components/Palette.tsx` (tree reorganization)
  */
 import { useCallback, useEffect, useMemo, useState, memo } from 'react';
 import { PALETTE_CATEGORIES, getDefinition, type PaletteCategoryId } from '../../registry/components';

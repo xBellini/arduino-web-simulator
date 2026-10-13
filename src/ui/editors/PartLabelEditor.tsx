@@ -7,11 +7,12 @@
  * marking/registry + context action in SimCanvas — not this file. Display of saved text on-canvas is
  * ComponentOverlays BodyMarkingOverlay / partLabel field, not the editor UI.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/components/PartLabelEditor.tsx` (tree reorganization)
- * - 24-09-2026 — Textarea so multi-line TO package markings (`partNumber\\ntype`) survive edits
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 24-09-2026 | Cursor | Textarea so multi-line TO package markings (`partNumber\\ntype`) survive edits
+# 09-10-2026 | Cursor | Moved from `src/components/PartLabelEditor.tsx` (tree reorganization)
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

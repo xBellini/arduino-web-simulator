@@ -15,11 +15,12 @@
  *
  * Not here: Reading/writing `AVRIOPort` or netlist endpoints — see gpioBridge and circuit/netlist.ts.
  *
- * Changelog:
- * - 09-10-2026 ? Moved from `src/sim/pinMap.ts` (tree reorganization)
- * - 05-10-2026 — Uno header sda/scl alias a4/a5 (TWI)
- * - 17-09-2026 — Expanded What with practical how-to notes
- * - 17-09-2026 — Changelog creation
+# Changelog
+# Date       | Author | Remarks
+# 17-09-2026 | Cursor | Changelog creation
+#                     | Expanded What with practical how-to notes
+# 05-10-2026 | Cursor | Uno header sda/scl alias a4/a5 (TWI)
+# 09-10-2026 | Cursor | Moved from `src/sim/pinMap.ts` (tree reorganization)
  */
 
 export type AvrPortName = 'B' | 'C' | 'D';
