@@ -14,8 +14,10 @@
 #                     | No focus/visibility pacing branch; Worker always wall-clock
 #                     | Prime EN high before lcd-bus fall (I2C backpack only posts E low)
 # 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerHost.ts` (tree reorganization)
+# 13-10-2026 | Codex | Apply backpack snapshots before each tick solve; clear them on stop/restart.
  */
 
+import { setPcfBackpackSnapshot, clearPcfBackpackSnapshots } from '../components/modules/pcf8574LcdBackpack';
 import { PinState, type AVRIOPort } from 'avr8js';
 import {
   AVR_WORKER_PROTOCOL,
@@ -186,6 +188,8 @@ export class AvrWorkerHost {
         case 'tick':
           this.cpu.cycles = msg.cycles;
           this.applyPorts(msg.ports);
+          for (const sample of msg.backpackPorts ?? [])
+            setPcfBackpackSnapshot(sample.id, sample.port, sample.sda, sample.scl);
           if (msg.perf && isSimPerfEnabled()) {
             finishAvrBatch(
               msg.cycles,
@@ -240,6 +244,7 @@ export class AvrWorkerHost {
   }
 
   stop(): void {
+    clearPcfBackpackSnapshots();
     this.lastPostedWorkMs = null;
     this.lastPostedSliceMs = null;
     setLcdGpioProbeActive(false);

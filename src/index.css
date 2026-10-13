@@ -12,6 +12,7 @@
 # 17-09-2026 | Cursor | Changelog creation
 #                     | Expanded What with practical how-to notes
 # 13-10-2026 | Codex | Style hints in shared property forms.
+#                     | Add violet breathing highlight for HIGH signal wires; reduced-motion uses a static highlight.
  */
 :root{
 --bg-app: #0f1419;
@@ -1735,6 +1736,20 @@ filter:drop-shadow(0 0 3px rgba(77,208,225,.45))
 }
 .wire-flow-layer{
 pointer-events:none
+}
+.wire-signal-high{
+stroke:#c4a1ff;
+stroke-width:4;
+stroke-linecap:round;
+opacity:.7;
+animation:wire-signal-breathe 1.4s ease-in-out infinite
+}
+@keyframes wire-signal-breathe{
+0%,100%{opacity:.35;stroke-width:3}
+50%{opacity:.95;stroke-width:5}
+}
+@media (prefers-reduced-motion:reduce){
+.wire-signal-high{animation:none}
 }
 .wire-flow-track{
 stroke:#ffd54f33;

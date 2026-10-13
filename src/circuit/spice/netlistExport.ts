@@ -26,6 +26,7 @@
 # 09-10-2026 | Cursor | Removed XSPICE hybrid glue (skip/only/forced-V options, `.param vcc`, gate I/O net helper)
 #                     | Header: results are read by ngspice.worker (opOutputParse removed)
 #                     | Moved from `src/sim/spice/netlistExport.ts` (tree reorganization)
+# 13-10-2026 | Codex | Allow named current-sense branches within a part without overwriting its other branches.
  */
 
 
@@ -134,8 +135,8 @@ export function exportSpiceOpNetlist(
       node: (netId) => nodeName(netId, groundNetId),
       line: (text) => lines.push(text),
       model: (text) => models.push(text),
-      instance: (name) =>
-        trackSpiceInstance(spiceInstanceByComponentId, comp.id, name),
+      instance: (name, branch) =>
+        trackSpiceInstance(spiceInstanceByComponentId, branch ? `${comp.id}:${branch}` : comp.id, name),
       markSourced: (netId) => sourcedNets.add(netId),
       resolveModel: () => resolveSpiceModelForComponent(comp, catalog),
     });

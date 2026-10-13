@@ -10,7 +10,9 @@
  * parallel LCD (SVG silk may still show mirrored pad numbering — wiring uses these ids).
  * This part is the **backpack board only** (no LCD glass). Wire lcd* to a parallel LCD.
  * Addr fixed 0x27 until a properties editor. Ideal I2C (no pull-up SPICE).
- * Not-here: SPICE of pot/jumper/transistor; address jumpers; glass glyphs (on the LCD part).
+ * Worker latch/PINC snapshots drive signal labels. Power paths use an ideal fitted
+ * backlight jumper and P3 switch, feeding the LCD's existing solver loads.
+ * Not-here: pot and PCF quiescent draw, transistor analog behavior, address jumpers, LCD glass.
  *
 # Changelog
 # Date       | Author | Remarks
@@ -19,8 +21,10 @@
 #                     | Remapped lcd1–lcd16 left→right for stacking above LCD (artwork unchanged)
 # 09-10-2026 | Cursor | Moved from `src/parts/pcf8574LcdBackpack.ts` (tree reorganization)
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
+#                     | Add sampled worker signal overlays and solved LCD supply/backlight paths.
  */
 import type { PartModule } from '../partModule';
+import type { NetLevel } from '../../circuit/netlist';
 import type { TwiSlave } from '../../avr/twiBus';
 import type { ParallelPinLevels } from '../../avr/hd44780';
 
@@ -28,6 +32,18 @@ export const PCF8574_LCD_BACKPACK_TYPE = 'pcf8574_lcd_backpack';
 
 /** Fixed backpack address until properties editor (schematic A0–A2 high → 0x27). */
 export const PCF8574_DEFAULT_ADDR = 0x27;
+
+// Per-instance worker state; cleared on stop/restart. TWI remains byte-level:
+// pin samples show AVR state, never synthetic SCL pulses.
+const snapshots = new Map<string, { port: number; sda?: NetLevel; scl?: NetLevel }>();
+export function setPcfBackpackSnapshot(id: string, port: number, sda?: NetLevel, scl?: NetLevel): void {
+  snapshots.set(id, { port: port & 0xff, sda, scl });
+}
+export function clearPcfBackpackSnapshots(): void { snapshots.clear(); }
+const headerBits: Record<string, number> = { lcd4: 0, lcd5: 1, lcd6: 2, lcd11: 4, lcd12: 5, lcd13: 6, lcd14: 7 };
+const backlightOn = (id: string) => ((snapshots.get(id)?.port ?? 0xff) & (1 << PCF_BIT_BT)) !== 0;
+// Numerical connection resistance in legacy MNA, not a rated board load.
+const CONNECTION_OHMS = 0.001;
 
 export function isPcf8574LcdBackpackType(type: string): boolean {
   return type === PCF8574_LCD_BACKPACK_TYPE;
@@ -120,9 +136,11 @@ export function createPcfBackpackTwiSlave(
     lcd: PcfBackpackLinkedLcd,
     pins: ParallelPinLevels,
   ) => void,
+  onPort?: (port: number) => void,
 ): TwiSlave {
   const pcf = createPcf8574(0xff);
   let lastEnHigh = false;
+  onPort?.(pcf.portByte());
 
   return {
     connect() {
@@ -130,6 +148,7 @@ export function createPcfBackpackTwiSlave(
     },
     writeByte(value: number) {
       pcf.writePort(value);
+      onPort?.(pcf.portByte());
       const enHigh = (value & (1 << PCF_BIT_E)) !== 0;
       const falling = lastEnHigh && !enHigh;
       lastEnHigh = enHigh;
@@ -190,6 +209,45 @@ function lcdHeaderPins(): PartModule['definition']['pins'] {
 export const pcf8574LcdBackpackModule: PartModule = {
   palette: { category: 'modules', order: 40 },
   type: PCF8574_LCD_BACKPACK_TYPE,
+
+  // Jumper-fitted board: header VDD/LED+ share supply; P3 switches LED-.
+  // Reference board topology: https://www.handsontec.com/dataspecs/I2C_LCD_Interface.pdf (p. 2).
+  // Supply reading covers attached LCD loads, excluding unmodeled PCF/pot draw.
+  internalPinShorts: [['gnd', 'lcd1'], ['lcd2', 'lcd15']],
+  ensurePins: ['vcc', 'lcd16'],
+  spiceCacheKey: ({ comp }) => backlightOn(comp.id) ? 'backlight:on' : 'backlight:off',
+  spiceStamp(ctx) {
+    const vcc = ctx.pinNet('vcc'), header = ctx.pinNet('lcd2');
+    const gnd = ctx.pinNet('gnd'), cathode = ctx.pinNet('lcd16');
+    if (vcc !== null && header !== null && vcc !== header) {
+      const sense = 'V' + ctx.sid + '_supply';
+      ctx.line(sense + ' ' + ctx.node(vcc) + ' ' + ctx.node(header) + ' 0');
+      ctx.instance(sense, 'supply');
+    }
+    if (gnd !== null && cathode !== null && gnd !== cathode) {
+      if (backlightOn(ctx.comp.id)) ctx.line('V' + ctx.sid + '_switch ' + ctx.node(cathode) + ' ' + ctx.node(gnd) + ' 0');
+      else ctx.line('R' + ctx.sid + '_open ' + ctx.node(cathode) + ' ' + ctx.node(gnd) + ' 1e12');
+    }
+  },
+  legacyStamp(ctx) {
+    const vcc = ctx.pinNet('vcc'), header = ctx.pinNet('lcd2');
+    const gnd = ctx.pinNet('gnd'), cathode = ctx.pinNet('lcd16');
+    if (vcc !== null && header !== null && vcc !== header)
+      ctx.stampResistor(vcc, header, CONNECTION_OHMS, 'supply');
+    if (gnd !== null && cathode !== null && gnd !== cathode)
+      ctx.stampResistor(cathode, gnd, backlightOn(ctx.comp.id) ? CONNECTION_OHMS : 1e12);
+  },
+  wireCurrentPath(pin) {
+    return pin === 'vcc' || pin === 'gnd' ? { branch: 'supply', positive: 'vcc', negative: 'gnd' } : undefined;
+  },
+  wireLogicLevel(pin, level, comp) {
+    if (pin === 'sda' || pin === 'scl') return snapshots.get(comp.id)?.[pin] ?? level(pin);
+    const bit = headerBits[pin];
+    if (bit === undefined) return undefined;
+    if (level('vcc') !== 'high' || level('gnd') !== 'low') return 'floating';
+    const port = snapshots.get(comp.id)?.port;
+    return port === undefined ? 'floating' : (port & (1 << bit)) !== 0 ? 'high' : 'low';
+  },
 
   definition: {
     type: PCF8574_LCD_BACKPACK_TYPE,

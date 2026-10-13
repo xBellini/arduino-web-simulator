@@ -41,8 +41,11 @@
 # 09-10-2026 | Cursor | Header: branch currents now come from ngspice.worker (opOutputParse removed)
 #                     | Merged `src/sim/wireCurrent.ts` into this file (tree reorganization)
 #                     | Moved from `src/sim/branchCurrent.ts` (tree reorganization)
+# 13-10-2026 | Codex | Read direct LCD leaf-wire currents from solver branches; show sampled logic without flow; shared rails retain existing estimates.
+#                     | Prefer known endpoint logic over floating readings on backpack-to-LCD wires.
  */
 
+import { formatCurrentMa } from '../values/electric';
 import type { PlacedComponent, Wire } from '../types';
 import { DEFAULT_RESISTANCE_UNIT, DEFAULT_RESISTANCE_VALUE, resistanceToOhms } from '../values/resistor';
 import { netForPin, type CircuitNetlist, type NetLevel } from './netlist';
@@ -359,11 +362,51 @@ export function updateWireCurrents(
   flags: ComponentSimFlags,
   netVoltages?: Map<number, number>,
   branchByNet?: Map<number, number>,
+  branchCurrentMa?: Record<string, number>,
 ): void {
+  flags.wireReadingLabel = {};
+  const byId = new Map(components.map(comp => [comp.id, comp]));
+  const degree = new Map<string, number>();
+  for (const wire of wires) for (const end of [wire.from, wire.to]) {
+    const key = pinRefKey(end);
+    degree.set(key, (degree.get(key) ?? 0) + 1);
+  }
   const netCache = new Map<number, number>();
   const upstreamDist = buildUpstreamDistance(netlist, components, flags);
 
   for (const wire of wires) {
+    let logic: NetLevel | undefined;
+    for (const end of [wire.from, wire.to]) {
+      const comp = byId.get(end.componentId);
+      const read = comp && getPartModule(comp.type)?.wireLogicLevel;
+      if (!read) continue;
+      const sample = read(end.pinId, pin => netLevel(levels, pinNet(netlist, comp.id, pin)), comp);
+      if (sample !== undefined && (logic === undefined || logic === 'floating')) logic = sample;
+      if (logic !== undefined && logic !== 'floating') break;
+    }
+    if (logic !== undefined) {
+      flags.wireReadingLabel[wire.id] = logic.toUpperCase();
+      flags.wireCurrentMa[wire.id] = 0;
+      flags.wireFlowReverse[wire.id] = false;
+      continue;
+    }
+    let hasCurrentPath = false;
+    for (const [index, end] of [wire.from, wire.to].entries()) {
+      const comp = byId.get(end.componentId);
+      const path = comp && getPartModule(comp.type)?.wireCurrentPath?.(end.pinId);
+      if (!path || degree.get(pinRefKey(end)) !== 1) continue;
+      const a = pinNet(netlist, comp.id, path.positive), b = pinNet(netlist, comp.id, path.negative);
+      const ma = a === null || b === null || a === b ? 0 : branchCurrentMa?.[comp.id + ':' + path.branch];
+      flags.wireCurrentMa[wire.id] = ma ?? 0;
+      flags.wireReadingLabel[wire.id] = ma === undefined ? 'N/A' : formatCurrentMa(ma);
+      const va = a === null ? undefined : netVoltages?.get(a);
+      const vb = b === null ? undefined : netVoltages?.get(b);
+      const intoPart = (end.pinId === path.positive) === (va !== undefined && vb !== undefined && va >= vb);
+      flags.wireFlowReverse[wire.id] = index === 0 ? intoPart : !intoPart;
+      hasCurrentPath = true;
+      break;
+    }
+    if (hasCurrentPath) continue;
     const netFrom = netForPin(netlist, wire.from);
     const netTo = netForPin(netlist, wire.to);
     const netId = netFrom ?? netTo;

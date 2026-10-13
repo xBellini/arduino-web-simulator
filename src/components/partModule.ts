@@ -20,6 +20,8 @@
 # 09-10-2026 | Cursor | Moved from `src/parts/partModule.ts` (tree reorganization)
 #                     | `internalPinShorts` for module PCB copper (DS3231 dual headers)
 # 13-10-2026 | Codex | Add palette metadata, property-field schemas and custom Editor contract; replace editable flag with form capability.
+#                     | Add part-owned signal/current wire hooks and named solver branches for multi-load parts.
+#                     | Pass component identity to signal readings for worker snapshots.
  */
 import type { ReactNode, ComponentType } from 'react';
 import type {
@@ -68,8 +70,8 @@ export interface SpiceStampCtx extends SolveStateMaps {
   line: (text: string) => void;
   /** Append a `.model` line; models are emitted after all elements. */
   model: (text: string) => void;
-  /** Record the instance name so ngspice `#branch` current maps back to this component. */
-  instance: (name: string) => void;
+  /** Map a sensed current to this component, or to `componentId:branch` for named loads. */
+  instance: (name: string, branch?: string) => void;
   /** Mark a net as already driven by this part, so MCU rails do not stamp over it. */
   markSourced: (netId: number) => void;
   /** Catalog model for this component, or null when it should use a synthetic model. */
@@ -103,8 +105,8 @@ export interface LegacyStampCtx extends SolveStateMaps {
   /** Conduction decided by the previous iteration; keyed by component id (or `id:channel`). */
   ledOn: Record<string, boolean>;
   pinNet: PinNetLookup;
-  /** Stamp a conductance of `1/ohms` between two nets. */
-  stampResistor: (na: number, nb: number, ohms: number) => void;
+  /** Stamp conductance; optional branch name requests a solved current readout. */
+  stampResistor: (na: number, nb: number, ohms: number, branch?: string) => void;
   /** Stamp the Norton equivalent of a forward-biased diode (Vf in series with R_on). */
   stampLedOn: (anode: number, cathode: number, vf: number) => void;
 }
@@ -374,6 +376,11 @@ export interface PartModule {
     pinId: string,
     flags: ComponentSimFlags,
   ) => PinRole | undefined;
+
+  /** Named solved current branch and its terminal pair; used only at leaf wires. */
+  wireCurrentPath?: (pinId: string) => { branch: string; positive: string; negative: string } | undefined;
+  /** Sampled logic label for wires directly attached to a part's signal pins. */
+  wireLogicLevel?: (pinId: string, level: (pin: string) => NetLevel, comp: PlacedComponent) => NetLevel | undefined;
 
   properties?: PartProperties;
   overlay?: (props: PartOverlayProps) => ReactNode;

@@ -27,6 +27,7 @@
 #                     | Part module dispatch for fixed voltages, stamping, and conduction settling
 #                     | Deleted leftover stamp/settle/source arms; modules own MNA and standalone detect
 # 09-10-2026 | Cursor | Moved from `src/sim/dcCircuitSolverLegacy.ts` (tree reorganization)
+# 13-10-2026 | Codex | Return named resistor-branch currents calculated by the legacy solve for wire readouts.
  */
 
 
@@ -247,6 +248,7 @@ function solveOnce(
   resistorBlown: Record<string, boolean> = {},
   ledBlown: Record<string, boolean> = {},
   buttonPressed: ButtonPressedState = {},
+  branchCurrents: Record<string, number> = {},
 ): Map<number, number> | null {
   const netIds = [...netlist.nets.keys()];
   const unknowns = netIds.filter((id) => !fixed.has(id));
@@ -254,6 +256,7 @@ function solveOnce(
   const idx = new Map<number, number>();
   unknowns.forEach((id, i) => idx.set(id, i));
 
+  const measured: { key: string; a: number; b: number; ohms: number }[] = [];
   const g = new Float64Array(n * n);
   const rhs = new Float64Array(n);
 
@@ -268,8 +271,10 @@ function solveOnce(
         buttonPressed,
         ledOn,
         pinNet: (pinId) => pinNet(netlist, comp.id, pinId),
-        stampResistor: (na, nb, ohms) =>
-          stampResistor(g, n, idx, fixed, rhs, na, nb, ohms),
+        stampResistor: (na, nb, ohms, branch) => {
+          stampResistor(g, n, idx, fixed, rhs, na, nb, ohms);
+          if (branch) measured.push({ key: comp.id + ':' + branch, a: na, b: nb, ohms });
+        },
         stampLedOn: (anode, cathode, vf) =>
           stampLedOn(g, n, idx, fixed, rhs, anode, cathode, vf),
       });
@@ -282,6 +287,11 @@ function solveOnce(
   const voltages = new Map<number, number>(fixed);
   for (let i = 0; i < unknowns.length; i++) {
     voltages.set(unknowns[i], solution[i]);
+  }
+  for (const load of measured) {
+    const a = voltages.get(load.a), b = voltages.get(load.b);
+    if (a !== undefined && b !== undefined)
+      branchCurrents[load.key] = Math.abs(a - b) * 1000 / load.ohms;
   }
   return voltages;
 }
@@ -301,6 +311,7 @@ export function solveDcCircuitLegacyOnce(
   mcuSources: McuSourceMap = new Map(),
 ): DcSolveResult | null {
   if (findGroundNetId(netlist) === null) return null;
+  const branchCurrentMa: Record<string, number> = {};
 
   const fixed = collectFixedVoltages(
     components,
@@ -321,6 +332,7 @@ export function solveDcCircuitLegacyOnce(
       resistorBlown,
       ledBlown,
       buttonPressed,
+      branchCurrentMa,
     );
     if (!voltages) return null;
 
@@ -344,7 +356,7 @@ export function solveDcCircuitLegacyOnce(
   }
 
   if (!voltages) return null;
-  return { netVoltages: voltages, ledConducting: ledOn };
+  return { netVoltages: voltages, ledConducting: ledOn, branchCurrentMa };
 }
 
 export function solveDcCircuitLegacy(

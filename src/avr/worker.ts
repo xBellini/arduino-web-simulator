@@ -8,6 +8,7 @@
 #                     | Ideal TWI bus + I2C LCD backpack (datasheet PCF8574 slave)
 # 09-10-2026 | Cursor | Moved from `src/sim/avr.worker.ts` (tree reorganization)
 #                     | Register DS3231 + AT24C32 TWI slaves; tick RTC from AVR cycles
+# 13-10-2026 | Codex | Report PCF latches and sampled PINC levels alongside GPIO ticks.
  */
 
 /// <reference lib="webworker" />
@@ -45,6 +46,7 @@ let lcdTargets: Extract<
 >['lcdTargets'] = [];
 let twiSlaves: AvrWorkerTwiSlave[] = [];
 let rtcCores: Ds3231[] = [];
+const backpackPorts = new Map<string, number>();
 
 function post(msg: AvrWorkerOutMessage): void {
   self.postMessage(msg);
@@ -149,6 +151,7 @@ function attachTwiBus(): void {
   twiBus = new TwiSlaveBus(runner.twi);
   runner.twi.eventHandler = twiBus;
   rtcCores = [];
+  backpackPorts.clear();
   for (const s of twiSlaves) {
     if (s.type === 'pcf8574_lcd_backpack') {
       twiBus.register(
@@ -162,7 +165,7 @@ function attachTwiBus(): void {
             rows: lcd.rows,
             pins,
           });
-        }),
+        }, port => backpackPorts.set(s.id, port)),
       );
     } else if (s.type === 'ds3231_rtc') {
       const created = createDs3231ModuleSlaves(new Date());
@@ -214,6 +217,14 @@ function startRunner(hex: string): void {
       cycles: runner.cpu.cycles,
       cyclesBehind: runner.cyclesBehind(tabHidden),
       ports: [portSnapshot('B'), portSnapshot('C'), portSnapshot('D')],
+      backpackPorts: [...backpackPorts].map(([id, port]) => {
+        const sample = (bit: number): 'high' | 'low' | undefined => {
+          // Byte-level TWI: sample PINC, never invent clock edges.
+          if (runner!.portC.pinState(bit) === PinState.Input) return undefined;
+          return (runner!.cpu.data[runner!.portC.portConfig.PIN] & (1 << bit)) !== 0 ? 'high' : 'low';
+        };
+        return { id, port, sda: sample(4), scl: sample(5) };
+      }),
       perf: meta
         ? {
             batchWallMs: meta.batchWallMs,

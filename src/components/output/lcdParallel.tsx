@@ -17,6 +17,7 @@
 # 09-10-2026 | Cursor | Header: EN edges come from avrWorkerHost (unused lcdGpioProbe.ts deleted)
 #                     | Moved from `src/parts/lcdParallel.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Forward variant palette metadata; register custom LCD editor preserving color preview.
+#                     | Show solved HIGH/LOW/FLOATING on directly connected data/control wires; representative source-backed nominal loads supply solved controller/backlight currents.
  */
 import { LcdPropertiesEditor } from '../../ui/editors/LcdPropertiesEditor';
 import type { ReactNode } from 'react';
@@ -216,6 +217,19 @@ function LcdGlassOverlay({
   );
 }
 
+// Representative nominal 5 V loads, shared by the generic 16x2 and 20x4 parts.
+// Source: Newhaven NHD-0216K1Z-NSW-BBW-L, Electrical Characteristics, PDF page 6:
+// https://newhavendisplay.com/content/specs/NHD-0216K1Z-NSW-BBW-L.pdf
+// Typical IDD = 1 mA and ILED = 32 mA at 5 V. These are reference-module
+// ratings, not universal LCD ratings. Equivalent resistors reproduce that
+// operating point only; no claim of a measured I/V curve or damage model.
+// Both SPICE and legacy stamp the loads; overlays read solved branch currents.
+const LCD_LOADS = [
+  { branch: 'logic', positive: 'vcc', negative: 'gnd', ohms: 5 / 0.001 },
+  { branch: 'backlight', positive: 'led_a', negative: 'led_k', ohms: 5 / 0.032 },
+] as const;
+const LCD_SIGNALS = new Set(['rs', 'rw', 'en', ...Array.from({ length: 8 }, (_, i) => 'db' + i)]);
+
 export function createParallelLcdModule(spec: ParallelLcdSpec): PartModule {
   const { type, label, cols, rows, scale, artwork, pins, glass } = spec;
 
@@ -229,6 +243,30 @@ export function createParallelLcdModule(spec: ParallelLcdSpec): PartModule {
       scale,
       artwork,
       pins,
+    },
+
+    spiceStamp(ctx) {
+      for (const load of LCD_LOADS) {
+        const a = ctx.pinNet(load.positive), b = ctx.pinNet(load.negative);
+        if (a === null || b === null || a === b) continue;
+        const sense = 'V' + ctx.sid + '_' + load.branch;
+        const internal = ctx.sid + '_' + load.branch + '_sense';
+        ctx.line(sense + ' ' + ctx.node(a) + ' ' + internal + ' 0');
+        ctx.line('R' + ctx.sid + '_' + load.branch + ' ' + internal + ' ' + ctx.node(b) + ' ' + load.ohms);
+        ctx.instance(sense, load.branch);
+      }
+    },
+    legacyStamp(ctx) {
+      for (const load of LCD_LOADS) {
+        const a = ctx.pinNet(load.positive), b = ctx.pinNet(load.negative);
+        if (a !== null && b !== null) ctx.stampResistor(a, b, load.ohms, load.branch);
+      }
+    },
+    wireCurrentPath(pin) {
+      return LCD_LOADS.find(load => pin === load.positive || pin === load.negative);
+    },
+    wireLogicLevel(pin, level) {
+      return LCD_SIGNALS.has(pin) ? level(pin) : undefined;
     },
 
     evaluate(ctx) {

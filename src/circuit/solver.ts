@@ -26,8 +26,8 @@
 #                     | Deleted leftover per-type arms; every simulating part dispatches via its module
 #                     | Prefer a caller-supplied DC result so the frame loop can skip a second MNA
 # 09-10-2026 | Cursor | Moved from `src/sim/circuitSolver.ts` (tree reorganization)
+# 13-10-2026 | Codex | Calculate wire readings after final MCU logic overrides; add explicit pin-reading labels.
  */
-
 
 import { getDefinition } from '../registry/components';
 import type { PlacedComponent, PinState } from '../types';
@@ -130,6 +130,7 @@ export interface ComponentSimFlags {
   /** Push button pressed while sim runs (for wire-flow tracing). */
   buttonPressed: Record<string, boolean>;
   wireCurrentMa: Record<string, number>;
+  wireReadingLabel: Record<string, string>;
   wireFlowReverse: Record<string, boolean>;
 }
 
@@ -162,6 +163,7 @@ export function createComponentSimFlags(): ComponentSimFlags {
     supplyOutputVoltage: {},
     buttonPressed: {},
     wireCurrentMa: {},
+    wireReadingLabel: {},
     wireFlowReverse: {},
   };
 }
@@ -647,15 +649,6 @@ export function solveCircuit(
     branchByNet,
     activeBranchMa,
   );
-  updateWireCurrents(
-    wires,
-    netlist,
-    levels,
-    components,
-    flags,
-    activeVoltages,
-    branchByNet,
-  );
 
   if (activeVoltages) {
     levels = netLevelsFromDc(netlist, activeVoltages);
@@ -665,6 +658,17 @@ export function solveCircuit(
       levels.set(netId, level);
     }
   }
+
+  updateWireCurrents(
+    wires,
+    netlist,
+    levels,
+    components,
+    flags,
+    activeVoltages,
+    branchByNet,
+    activeBranchMa,
+  );
 
   return levels;
 }

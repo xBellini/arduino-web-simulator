@@ -8,6 +8,7 @@
 #                     | twiSlaves on start (I2C LCD backpack / PCF)
 # 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerProtocol.ts` (tree reorganization)
 #                     | `ds3231_rtc` TWI slave (DS3231 @ 0x68 + AT24C32 @ 0x57)
+# 13-10-2026 | Codex | Batch PCF port latches and observed AVR I2C pin levels with each tick.
  */
 
 import type { AvrPortName } from './pinMap';
@@ -90,6 +91,7 @@ export type AvrWorkerOutMessage =
       cycles: number;
       cyclesBehind: number;
       ports: AvrPortSnapshot[];
+      backpackPorts?: Array<{ id: string; port: number; sda?: 'high' | 'low'; scl?: 'high' | 'low' }>;
       /** Optional Sim perf batch metrics for the overlay. */
       perf?: {
         batchWallMs: number;
