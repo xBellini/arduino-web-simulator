@@ -1,40 +1,37 @@
-# Arduino Simulator (Phase 1)
+# Arduino Simulator
 
-Visual breadboard editor with **AVR firmware simulation** (ATmega328P via avr8js) and **ngspice** DC analysis for passive and instrument circuits — with or without an Arduino on the canvas. MCU sketches and the wired circuit are **digitally co-simulated**: `digitalWrite` pins and board `5V`/`GND` rails are SPICE sources; `digitalRead` follows solved net levels. Board **GND pins** (and same-voltage power taps) are shorted like PCB copper.
+Browser-based breadboard editor with **AVR firmware simulation** (Arduino Uno / Nano, ATmega328P via [avr8js](https://github.com/wokwi/avr8js)) and **ngspice** circuit analysis. Wire parts on the canvas, write or import a sketch, and **Run** — MCU pins and board power rails drive the same netlist the simulator solves. You can also run **circuit-only** setups (bench supply / oscillator, no Arduino).
 
-**No invented results:** voltages, currents, and capacitor charge come from **AVR** and/or **SPICE** (legacy MNA only if ngspice is unavailable). See `.cursor/rules/no-invent-simulation.mdc`.
+## Features
 
-## Stack
+- Visual canvas: place parts, route wires, pan/zoom, undo/redo, save/load
+- Sketch IDE with Serial Monitor; templates (blink, I2C LCD, DS3231 RTC, …)
+- Firmware from in-app compile, **Import .hex** (Arduino IDE), or bundled blink
+- Digital MCU co-sim + passive/instrument DC (and capacitor `.tran` when ngspice is available)
+- Modules on ideal I2C (e.g. PCF8574 LCD backpack, DS3231 RTC)
+- Component palette: boards, breadboard, passives, semiconductors, I/O, modules, ICs, instruments
 
-- **TypeScript** + **React** + **Vite**
-- SVG canvas with pan/zoom
-- **avr8js** — ATmega328P in a dedicated Web Worker (cycle-quanta pacing; optional AssemblyScript WASM helper via `npm run build:avr-wasm`)
-- **ngspice** — [eecircuit-engine](https://github.com/eelab-dev/EEcircuit-engine) (ngspice-45.2 WebAssembly, MIT, installed from npm) in a Web Worker; legacy MNA fallback. Supports the standard SPICE devices (R/C/L/V/I, D, BJT, MOSFET, JFET, switches, E/F/G/H, B). PSpice-style `TABLE`, `VSWITCH` and `POLY` in model files are rewritten automatically. Not supported: XSPICE code models and `LAPLACE`/`FREQ` sources (such decks are refused and fall back to legacy). The first solve after page load waits for the ~20 MB engine to start
-- **Wokwi Hexi** — sketch compile fallback; optional local **arduino-cli** via Vite `/api/compile`
-- Components: simulating modules in `src/components/<category>/`; boards / breadboard / artwork-only in `src/registry/components.ts`
+## Quick start
 
-## Run locally
-
-**One-click:** double-click `Localhost_starter.bat` in the project root.
+**Windows one-click:** double-click `Localhost_starter.bat` in the project root.
 
 ```bash
-cd arduino-simulator
 npm install                 # includes the ngspice engine (eecircuit-engine)
 npm run fetch-spice-models  # ~13 MB, once
 npm run dev
 ```
 
-Open the URL shown in the terminal (usually http://localhost:5173).
+Open the URL printed in the terminal (usually [http://localhost:5173](http://localhost:5173)). A modern Chromium-based browser works best.
 
-### Local sketch compile (`arduino-cli`)
+### Optional: local sketch compile (`arduino-cli`)
 
-With `npm run dev`, **Run** prefers local compile when `arduino-cli` and `arduino:avr` are installed (offline after core install).
+With `npm run dev`, **Run** prefers a local compile when `arduino-cli` and the AVR core are installed (offline after one-time setup):
 
-1. Install [arduino-cli](https://arduino.github.io/arduino-cli/) on `PATH`
+1. Install [arduino-cli](https://arduino.github.io/arduino-cli/) on your `PATH`
 2. Once: `arduino-cli core install arduino:avr`
 3. Restart `npm run dev` if needed
 
-FQBN is `arduino:avr:uno`. Production builds have no `/api/compile` — use Hexi, **Import .hex**, or bundled blink. Missing CLI falls back to Hexi (network).
+FQBN is `arduino:avr:uno`. If the CLI is missing, the app falls back to [Wokwi Hexi](https://hexi.wokwi.com/) (network). Production builds have no `/api/compile` — use Hexi, **Import .hex**, or bundled blink.
 
 ### If `npm install` fails with certificate errors
 
@@ -43,131 +40,121 @@ $env:NODE_OPTIONS = "--use-system-ca"
 npm install
 ```
 
-## Adding parts / artwork
+## How to use the simulator
 
-- **Simulating part:** `public/components/<type>.svg` → `src/components/<category>/<type>.ts(x)` (`PartModule`) → register in `src/components/index.ts` → list in `PALETTE_CATEGORIES`. See `src/components/partModule.ts`.
-- **Artwork-only:** SVG + `STATIC_REGISTRY` entry + palette listing (no `src/components` module).
-- **Package IC:** blank `dip*` / `to92` / `to220` shells in the registry; named chips set `package` and omit `scale` to inherit the shell. Details: `public/components/README.txt`, `docs/PROJECT_MAP.md`.
+### UI layout
 
-## Usage
+| Area | What it’s for |
+|------|----------------|
+| **Left** | Component palette (search + categories) |
+| **Center** | Breadboard canvas |
+| **Right** | Sketch IDE + Serial Monitor |
+| **Top toolbar** | Run / Stop, undo/redo, Save, load project |
+
+### Tutorial A — Blink (MCU + LED)
+
+1. From **Boards**, place an **Arduino Uno**.
+2. From **Output**, place an **LED**; from **Passives**, place a **Resistor** (optional but recommended).
+3. Wire: Uno **pin 13** → resistor → LED anode; LED cathode → Uno **GND**.
+4. In the Sketch IDE, keep the default blink sketch (or **Template ▾ → Blink**).
+5. Click **Run** (or **Ctrl+Enter**). The LED should blink; Serial may print ON/OFF.
+
+Editing the circuit while running **stops** the simulation — click **Run** again after changes.
+
+### Tutorial B — Passive circuit (no Arduino)
+
+1. Place a **Power Supply**, **Resistor**, and **LED**.
+2. Wire: supply **+** → resistor → LED → supply **−**.
+3. Click **Run**. The LED lights from the bench supply (ngspice / legacy DC).
+
+### Tutorial C — Firmware from Arduino IDE
+
+1. In Arduino IDE, set the board to **Uno** (or compatible ATmega328P).
+2. **Sketch → Export compiled Binary** (or take the `.hex` from the build folder).
+3. In this simulator’s Sketch IDE, click **Import .hex** and choose that file.
+4. Place Uno + wiring as needed, then **Run**.
+
+The imported HEX is kept **in memory** (filename only for the label). After you recompile in Arduino IDE, **Import .hex** again to pick up the new binary.
+
+### Tutorial D — I2C module (DS3231)
+
+1. Place **Arduino Uno** and **DS3231 RTC** (Modules).
+2. Wire Uno **SDA/SCL** (or **A4/A5**) and **5V/GND** to the module (either header).
+3. Use **Template ▾ → DS3231 RTC (I2C)**, or your own sketch/library at address **`0x68`**.
+4. To change the RTC address the sim ACKs on: double-click the module (or right-click → **Change properties**) and match that address in your sketch. EEPROM on the module stays at **`0x57`**.
+5. **Run** and watch Serial for the time string.
+
+### Wiring gotchas
+
+- You must **draw every connection** — breadboard rows are **not** auto-shorted yet.
+- Circuits need a **ground return** (− / GND); open loops float and show no current.
+- Crossing wires do not join; use a shared pin or an intentional **tee** (click an existing wire while routing).
+
+## Controls reference
 
 | Action | How |
 |--------|-----|
-| **Place** | Components menu → click part → click canvas (snaps to holes). **R** / **Shift+R** rotate hologram |
-| **Wire** | Click pin/hole → corners (each click sticks at that point) → pin B; Esc/right-click cancels. Near pins, snap + crosshair lock to pin center. Free runs stay on the pin/bend axis; sideways/up moves snap in breadboard-pitch steps from that axis (not the absolute board grid). Routes leave board headers along the exit stub first, then turn. Click an existing wire while routing to tee (junction node + shared net). Crossing/overlapping runs do not join — only shared pins or intentional tees are nodes |
-| **Select / move** | Click body to drag; select wires to drag segments/handles (ortho stays ortho on release; drag snaps in steps from the segment, not the board grid); double-click segment to insert joint |
-| **Part menu** | Right-click part → Copy, Paste, Change properties, Rotate, Delete |
-| **Copy / paste** | Ctrl+C / Ctrl+V; canvas menu paste at cursor |
-| **Properties** | Double-click resistor, LED, LCD (display presets), instruments, DIP/TO marking, capacitor |
-| **Delete / undo** | Click the canvas (or a part/wire) first, then Del; Ctrl+Z / Ctrl+Y |
-| **Save / Load** | Toolbar Save / dropdown / Load file… |
-| **Run / Stop** | Toolbar or Sketch IDE; **Ctrl+Enter** runs. MCU needs Uno/Nano + sketch/HEX; passive needs PSU/oscillator + ground return. Editing the circuit auto-stops sim |
-| **Buttons / pot** | Hold button while running; scroll pot to set wiper |
-| **Pan / zoom** | Right-drag / middle / Space+drag pan; wheel zoom |
+| **Place** | Palette → click part → click canvas (**R** / **Shift+R** rotate before place) |
+| **Wire** | Click pin → optional corners → other pin; **Esc** / right-click cancels; click a wire to **tee** |
+| **Select / move** | Click part or wire; drag bodies or wire handles |
+| **Properties** | Double-click part, or right-click → **Change properties** (R, C, LED, LCD, instruments, DS3231 address, chip marking, …) |
+| **Copy / paste** | **Ctrl+C** / **Ctrl+V** |
+| **Delete / undo** | Focus canvas, then **Del**; **Ctrl+Z** / **Ctrl+Y** |
+| **Pan / zoom** | Right-drag, middle-drag, or **Space+drag**; mouse wheel zooms |
+| **Run / Stop** | Toolbar or Sketch IDE; **Ctrl+Enter** runs |
 
 **Palette categories:** Boards · Prototyping · Passives · Semiconductors · Output · Input · Modules · ICs · Instruments.
 
-**ICs:** NE555 plus 74HC combinational gates (00/02/03/04/08/10/11/20/21/27/32/86). **00/02/03/04/08/10/11/27/32/86 simulate** with TI's SN74HCxx behavioral models (`public/spice/bundled/Texas Instruments/`); wire VCC (pin 14) and GND (pin 7) or the chip does nothing. The 74HC03 is open drain, so its outputs need a pull-up. TI publishes no SN74HC20 / SN74HC21 model, so those two still stamp into `Digital Logic/74HC.LIB` (XSPICE digital devices, which the engine can't run) and **do not simulate yet** — a circuit containing one falls back to legacy MNA.
+## Firmware sources
 
-**Passive example:** Power supply → resistor → LED → supply −; **Run**.
+On **Run**, firmware comes from (in practice):
 
-**Arduino IDE HEX:** Export compiled binary → Sketch IDE **Import .hex** → **Run**.
+1. **Loaded HEX** — if you used **Import .hex**
+2. **In-app sketch** — local `arduino-cli` when available, else Hexi
+3. **Bundled blink** — offline fallback for the default blink sketch
 
-## Circuit simulation
+## Save and load
 
-| Mode | Requires | What runs |
-|------|----------|-----------|
-| **MCU sketch** | Uno or Nano + sketch/HEX | AVR Worker + GPIO bridge; driven pins + rails as DC sources |
-| **Circuit-only** | Power supply or oscillator | ngspice `.OP` / `.tran` + overlay |
+Projects are JSON (`components`, `wires`, `viewport`, optional `sketch` / `sketchName`). Transient UI (sim state, imported HEX body) is not saved with the circuit.
 
-```
-Wires → buildCircuitNetlist()
-     → MCU sources (rails + GPIO) / bench sources
-     → ngspice (.OP or RC-sized .tran)  [legacy MNA fallback]
-     → overlay visuals + simLiveStore
-```
+- **Dev (`npm run dev`):** Save writes under `user_projects/`; the toolbar dropdown reloads those files.
+- **Production build:** Save downloads a file; **Load file…** opens one from disk.
 
-On **Run** with capacitors, the controller prefetches SPICE charge/discharge waveforms before starting the AVR Worker so GPIO edges can replay cached `.tran` samples immediately (compiler panel notes prefetch status).
+## Known limits
 
-| Piece | Role |
-|-------|------|
-| **Math engine** | ngspice (preferred) or legacy MNA — voltages/currents |
-| **Failure rules** | Blow detection; blown parts exported as ~1 GΩ open |
-| **Visuals** | Glow, heat, wire flow, meters — mirror solved values |
+- Digital MCU co-sim only — no ADC / `analogRead` or PWM electrical model yet (GPIO sources are ideal)
+- Breadboard rows are not conductive until you wire them
+- Ideal I2C (TWI) — no pull-up SPICE on SDA/SCL; modules must share the MCU I2C nets to appear on the bus
+- Capacitors need ngspice `.tran` (legacy MNA has no C stamp)
+- First ngspice solve after load waits for the WASM engine (~20 MB) to start
+- Background tabs may throttle the AVR worker; on return the sim may briefly catch up faster than 16 MHz
+- Most 74HC gates simulate with TI behavioral models; **74HC20 / 74HC21** do not simulate yet (falls back to legacy MNA for those circuits)
 
-Solver badge under the Sketch IDE timer: green **ngspice** / yellow **legacy**. Caps use SPICE `C` and RC-sized `.tran` (UI lerps real samples). Stamped parts include R, V, D/LED/RGB, Q, M, C, buttons, ammeter sense, MCU rails/GPIO. While a sketch is running, a **Sim perf** overlay shows sim/wall time, effective MHz (~16 target), and solve cost.
+## Status
 
-### Wiring
+**Working today:** canvas editor; Sketch IDE; Hexi / local arduino-cli / Import .hex / bundled blink; GPIO + rail co-sim; circuit-only mode; ngspice with legacy fallback; core passives/semiconductors/instruments; I2C modules (PCF8574 backpack, DS3231); sketch templates.
 
-- Wire every connection (breadboard rows are **not** auto-shorted yet)
-- Passive circuits need a ground return (− / GND)
-- Open loops → floating nets → no current
-
-### Known limits
-
-- Digital MCU co-sim only (no ADC / PWM electrical model yet; sources are ideal)
-- Wire / TWI master is live (ideal I2C). PCF8574 LCD backpack is the board only (no glass); wire its LCD header to a parallel LCD, or link is detected when RS/E nets match. **DS3231 RTC module** (with AT24C32 EEPROM) sits on the same bus: RTC I2C address defaults to `0x68` (editable in part properties — sketch/library must match); EEPROM fixed at `0x57`; wire SDA/SCL/VCC/GND to the Uno (either header)
-- No breadboard row auto-nets
-- Caps need ngspice `.tran` (legacy MNA has no C stamp)
-- Compile: local arduino-cli in dev, else Hexi / Import .hex / bundled blink
-- Background / unfocused tabs: the browser may throttle the AVR Worker; on return the sim catch-up can briefly run faster than 16 MHz to clear wall-clock debt
-
-## Project file
-
-JSON: `version`, `components`, `wires`, `viewport`, optional `sketch` / `sketchName`. Transient UI is not saved.
-
-**Dev:** Save writes `user_projects/`; dropdown reloads. Production: browser download / file picker.
+**Roadmap:** ADC / `analogRead`; PWM / `analogWrite` electrical model; breadboard row conductivity; optional save of imported HEX with the project; more palette polish.
 
 ## Project layout
 
-See **[docs/PROJECT_MAP.md](docs/PROJECT_MAP.md)**. In short:
+See **[docs/PROJECT_MAP.md](docs/PROJECT_MAP.md)** for a fuller map. In short:
 
-- `src/ui/` — canvas, property editors, palette, sketch IDE, debug overlays
-- `src/components/` — one file per simulating component, in palette-style folders (`IC/Logic Gates/`, `passives/`, `output/`, …)
+- `src/ui/` — canvas, editors, palette, Sketch IDE
+- `src/components/` — simulating parts (`PartModule` files)
 - `src/registry/` — boards, breadboard, artwork-only packages, palette order
-- `src/avr/` — ATmega328P worker, firmware compile/HEX, GPIO/I2C bridges
-- `src/circuit/` — nets, solvers, currents; `src/circuit/spice/` is the ngspice pipeline
-- `src/store/`, `src/project/`, `src/values/` — app state, save/load, component value helpers
-- `public/components/` — component SVG artwork; `public/spice/` — SPICE models (`models/` is downloaded, `bundled/` is ours)
-- `scripts/` — authoring/dev tooling (`scripts/vite/` holds the dev-server plugins)
+- `src/avr/` — ATmega328P worker, firmware/HEX, GPIO/I2C
+- `src/circuit/` — nets and solvers (`spice/` = ngspice pipeline)
+- `public/components/` — SVG artwork; `public/spice/` — SPICE models
 
-Snapshots: `.\backup-local.ps1` (see `.cursor/rules/local-snapshots.mdc`).
+### Adding parts (contributors)
 
-## Phase 1 status
+- **Simulating part:** `public/components/<type>.svg` → `src/components/<category>/<type>.ts(x)` → register in `src/components/index.ts` → list in `PALETTE_CATEGORIES`
+- **Artwork-only:** SVG + `STATIC_REGISTRY` + palette entry
+- Details: `public/components/README.txt`, `docs/PROJECT_MAP.md`
 
-### Done
-
-- avr8js @ 16 MHz in a Web Worker (cycle-quanta pacing; optional WASM pacer); Sketch IDE; Hexi + local arduino-cli + Import .hex + bundled blink
-- Digital co-sim (GPIO + board rails as sources; GND/rail shorts on MCU)
-- Circuit-only mode; ngspice worker + legacy fallback; solver badge
-- Cap SPICE companion (RC-sized `.tran`, waveform cache, Run-time prefetch, smooth fill)
-- Always-on Sim perf overlay during Run
-- Core passives/semiconductors/instruments with blow/heat/wire-flow visuals
-- Multi-board warning
-- Sketch templates (incl. I2C 20×4 LCD)
-
-### Still to tackle
-
-1. Analog ADC / `analogRead`
-2. PWM visualization / `analogWrite` electrical model
-3. Per-pin output impedance
-4. Breadboard row conductivity
-5. Optional save of imported HEX with the circuit
-
-## Phase 0 status
-
-### Done
-
-- Canvas editor: pan/zoom, select, wire, undo/redo, rotate, copy/paste, save/load
-- Breadboard snap grid; package SVGs; context menus; property editors (R, LED, instruments, caps, chip marking)
-- Wire routing polish: step-from-anchor draft snap (off-grid pins stay straight); intentional tee join; pin-only junction nodes; draft corners stick at click; resize/commit keeps ortho (no short-jog diagonals); segment drag snaps relative to the run; exit-stub-first routing after board headers
-
-### Still to tackle
-
-1. Placement hologram alignment (buzzer, micro servo)
-2. LED / potentiometer property follow-ups
-3. Optional extra palette parts
+Local snapshots: `.\backup-local.ps1` (see `.cursor/rules/local-snapshots.mdc`).
 
 ## Documentation
 
-Keep this README aligned with user-facing behavior (`.cursor/rules/readme-updates.mdc`). Per-file history stays in source headers — not here.
+This README is the user-facing overview (run, use, limits). Implementation notes and per-file history live in source file headers and [docs/PROJECT_MAP.md](docs/PROJECT_MAP.md).
