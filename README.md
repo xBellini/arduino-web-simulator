@@ -153,8 +153,6 @@ See **[docs/PROJECT_MAP.md](docs/PROJECT_MAP.md)** for a fuller map. In short:
 - **Artwork-only:** SVG + `STATIC_REGISTRY` + palette entry
 - Details: `public/components/README.txt`, `docs/PROJECT_MAP.md`
 
-Local snapshots: `.\backup-local.ps1` (see `.cursor/rules/local-snapshots.mdc`).
-
 ## Documentation
 
 This README is the user-facing overview (run, use, limits). Implementation notes and per-file history live in source file headers and [docs/PROJECT_MAP.md](docs/PROJECT_MAP.md).
