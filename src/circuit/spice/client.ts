@@ -85,7 +85,7 @@ const TRAN_SETTLE_TAU = 5;
 const LED_CONDUCT_MIN_MA = 0.01;
 /** Last node voltages used as `.ic` for the next capacitor `.tran` step. */
 let lastNodeIc: Map<number, number> = new Map();
-let lastTranWallMs = 0;
+//let lastTranWallMs = 0;
 
 /** SPICE `.tran` samples for UI playback (taken once via takeNgspiceWaveform). */
 let pendingWaveform: { samples: DcSolveResult[]; tstopSec: number } | null = null;
@@ -256,7 +256,7 @@ function tranStepSeconds(components: PlacedComponent[]): {
   );
   // ~20 steps across the window; keep ≥1 ms for ngspice stability.
   const tstep = Math.max(1e-3, Math.min(0.01, tstop / 20));
-  lastTranWallMs = performance.now();
+  //lastTranWallMs = performance.now();
   return { tstep, tstop, maxC, minR, tau };
 }
 
@@ -792,7 +792,7 @@ export function invalidateNgspiceCache(): void {
   cacheByKey = new Map();
   inflightByKey.clear();
   lastNodeIc = new Map();
-  lastTranWallMs = 0;
+  //lastTranWallMs = 0;
   pendingWaveform = null;
   spiceWaveCache.clear();
 }

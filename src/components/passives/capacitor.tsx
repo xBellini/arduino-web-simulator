@@ -34,7 +34,7 @@ import {
   isCapacitanceUnit,
 } from '../../values/capacitor';
 
-const SUPPLY_V = 5;
+//const SUPPLY_V = 5;
 /** Visual full-scale for charge fill — ~LED Vf reads “full”; blow still uses rating. */
 const CHARGE_VISUAL_FULL_V = 2.5;
 const POLARIZED_ESR_OHMS = 0.5;
@@ -67,16 +67,16 @@ function applyCapBranchCurrent(
   spiceBranchMa: number | undefined,
   simState: CircuitSimState,
   branchCurrentMa: Record<string, number> | undefined,
-  source: string,
+  //source: string,
 ): number {
   let rawMa = 0;
   let dV = 0;
   let dtSec = 0;
-  let from = 'none';
+  //let from = 'none';
 
   if (spiceBranchMa !== undefined && Number.isFinite(spiceBranchMa)) {
     rawMa = Math.abs(spiceBranchMa);
-    from = 'spice-branch';
+    //from = 'spice-branch';
   } else {
     const tMs = performance.now();
     const prev = prevSpiceVc.get(id);
@@ -85,7 +85,7 @@ function applyCapBranchCurrent(
       dV = spiceVc - prev.v;
       if (Math.abs(dV) > 1e-4) {
         rawMa = Math.abs(cFarad * (dV / dtSec)) * 1000;
-        from = 'spice-dVdt';
+        //from = 'spice-dVdt';
       }
     }
     prevSpiceVc.set(id, { v: spiceVc, tMs });
@@ -213,14 +213,14 @@ export function syncCapacitorStateFromDc(
     const defs = defaultsFor(comp);
     const cFarad = faradsOf(comp, defs.value, defs.unit);
     const spiceBranch = branchCurrentMa?.[id];
-    const iMa = applyCapBranchCurrent(
+    applyCapBranchCurrent(
       id,
       vc,
       cFarad,
       spiceBranch,
       simState,
       branchCurrentMa,
-      'sync',
+      //'sync',
     );
 
   }
@@ -392,7 +392,7 @@ const capacitorHooks: Pick<
 
   seriesPins(_comp, pinId) {
     if (pinId === 'pos' || pinId === 'neg') return ['pos', 'neg'];
-    return null;
+    return [];
   },
 
   overlay({ component, design, simFlags, simRunning }) {

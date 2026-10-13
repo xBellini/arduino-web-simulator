@@ -613,7 +613,7 @@ export function solveCircuit(
     );
     if (refreshed) {
       activeVoltages = refreshed.netVoltages;
-      activeBranchMa = refreshed.branchCurrentMa;
+      activeBranchMa = refreshed.branchCurrentMa ?? {};
       activeLed = refreshed.ledConducting;
       levels = netLevelsFromDc(netlist, activeVoltages);
       updateComponentVisuals(

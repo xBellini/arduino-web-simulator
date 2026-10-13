@@ -265,12 +265,11 @@ const LED_BODY = {
 
 function LedGlowOverlay({
   component,
-  lit,
   brightness,
   blown,
 }: {
   component: PlacedComponent;
-  lit: boolean;
+  //lit: boolean;
   brightness: number;
   blown: boolean;
 }) {
@@ -607,7 +606,7 @@ export const ledModule: PartModule = {
     return (
       <LedGlowOverlay
         component={component}
-        lit={!!(simFlags?.ledLit[id] ?? false)}
+        //lit={!!(simFlags?.ledLit[id] ?? false)}
         brightness={simFlags?.ledBrightness[id] ?? (simFlags?.ledLit[id] ? 1 : 0)}
         blown={simFlags?.ledBlown[id] ?? false}
       />

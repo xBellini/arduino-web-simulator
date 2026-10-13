@@ -45,7 +45,7 @@ import {
   findPinSnap,
   findWireHandleAt,
   findWireSegmentAt,
-  getPinPosition,
+  //getPinPosition,
   getWireInternalVertices,
   getWireJunctionPoints,
   insertWireJoint,
@@ -2178,7 +2178,7 @@ export function SimCanvas() {
           items={[
             {
               id: 'copy',
-              description: 'Copy',
+              label: 'Copy',
               shortcut: 'Ctrl+C',
               disabled: !canContextCopy,
               onSelect: () =>
@@ -2186,7 +2186,7 @@ export function SimCanvas() {
             },
             {
               id: 'paste',
-              description: 'Paste',
+              label: 'Paste',
               shortcut: 'Ctrl+V',
               disabled: !canPaste,
               onSelect: () => {
@@ -2201,7 +2201,7 @@ export function SimCanvas() {
             },
             {
               id: 'properties',
-              description: 'Change properties',
+              label: 'Change properties',
               disabled:
                 contextMenu.componentIds.length !== 1 ||
                 !componentHasEditableProperties(
@@ -2216,7 +2216,7 @@ export function SimCanvas() {
             },
             {
               id: 'rotate',
-              description: 'Rotate',
+              label: 'Rotate',
               shortcut: 'R',
               disabled: contextMenu.componentIds.length === 0,
               onSelect: () =>
@@ -2224,7 +2224,7 @@ export function SimCanvas() {
             },
             {
               id: 'delete',
-              description: 'Delete',
+              label: 'Delete',
               shortcut: 'Del',
               danger: true,
               disabled: !canContextDelete,
