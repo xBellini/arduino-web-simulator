@@ -20,6 +20,7 @@
 #                     | New components seed from the part module's `properties.defaults`
 # 06-10-2026 | Cursor | COMPLETE_WIRE_ON_WIRE: split target wire + junction pin tee while drafting
 # 14-10-2026 | Codex  | Release recognizable legacy automatic corners before moving/rotating connected parts.
+#                     | Saving preserves session undo/redo stacks; loading a circuit still starts fresh history.
  */
 
 import {
@@ -1167,10 +1168,9 @@ export function SimProvider({ children }: { children: ReactNode }) {
         where = 'download';
       }
 
-      resetUndoHistory();
       return where;
     },
-    [state.components, state.wires, state.viewport, state.sketchSource, state.sketchName, resetUndoHistory],
+    [state.components, state.wires, state.viewport, state.sketchSource, state.sketchName],
   );
 
   const loadProject = useCallback(
