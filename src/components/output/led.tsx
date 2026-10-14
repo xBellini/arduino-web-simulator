@@ -6,8 +6,8 @@
  * Owns/exports: `ledModule`, plus `LED_ON_RESISTANCE_OHMS` and `ledForwardVoltage`, which the
  * supply current-limit model and other diode-like parts reuse.
  * Conventions: the LED is solved as a real diode by ngspice and as Vf-plus-R_on by the legacy
- * MNA, so brightness must read the *solved* conduction (`ledConducting`) rather than re-deciding
- * it. Overcurrent only blows the part when a physical series resistor exists — driving an LED
+ * MNA. Brightness is solved forward current divided by configured rated current, clamped to
+ * 0–1 as a visual scale. Overcurrent only blows the part when a physical series resistor exists — driving an LED
  * straight off a supply makes ngspice report an enormous current, and instantly destroying the
  * part on the first frame reads as a bug rather than a lesson.
  * To retune the failure model: the `BLOW_*` constants below.
@@ -21,6 +21,7 @@
 #                     | Glow uses LED body silhouette path (not a small oval); blown-X on dome
 # 09-10-2026 | Cursor | Moved from `src/parts/led.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Own palette placement and color/Vf/If form schema; retain presets and numeric parsers.
+# 14-10-2026 | Codex | Normalize static glow by solved current/rated current; respect zero/unavailable samples and remove cross-run current smoothing. Declare terminals for leaf-wire flow.
  */
 import type { CSSProperties } from 'react';
 import type { PlacedComponent } from '../../types';
@@ -50,10 +51,8 @@ const BLOW_HOLD_MS = 80;
 
 const MIN_WIRE_CURRENT_MA = 0.05;
 
-/** Eased LED sense voltage so glow tracks cap discharge, not SPICE stair-steps. */
+/** Eased solved voltage for the existing conduction/failure policy. Glow uses current directly. */
 const ledSenseSmoothV = new Map<string, number>();
-/** Wire-current LPF — matches cap overlay responsiveness without SPICE stairs. */
-const ledWireCurrentFilt = new Map<string, number>();
 
 function netTouchesGround(
   components: PlacedComponent[],
@@ -218,7 +217,7 @@ export function ledBranchCurrentMa(
       }
     }
     // Supply path via R — use it when conducting from the pin.
-    if (rMa >= MIN_WIRE_CURRENT_MA) return rMa;
+    if (rMa > 0) return rMa;
     // Cap discharge (GPIO low / R idle): don't zero — sense still forward (logs: LED
     // wire stair-dropped while glow + cap |C·dV/dt| continued).
     if (sawSeriesR && vDrop >= vf - VF_CONDUCT_SLACK_V) {
@@ -490,39 +489,27 @@ export const ledModule: PartModule = {
     const seriesOhms = seriesResistanceOhms(components, ctx.netOfPin, nA, nK);
     const seriesResistorPresent = hasSeriesResistor(components, ctx.netOfPin, nA, nK);
     const spiceMa = branchCurrentMa?.[id];
-    let currentMa: number;
+    let currentMa = 0;
     // Prefer SPICE branch current whenever present — do not invent a GPIO "predicted" mA.
-    if (spiceMa !== undefined && spiceMa >= MIN_WIRE_CURRENT_MA) {
-      currentMa = spiceMa;
-    } else {
+    if (spiceMa !== undefined) {
+      currentMa = Math.max(0, spiceMa);
+    } else if (nA !== null && nK !== null && ctx.netVoltages?.has(nA) && ctx.netVoltages.has(nK)) {
       currentMa = ledBranchCurrentMa(
         components,
         ctx.netOfPin,
         ctx.resistorMa,
         nA,
         nK,
-        sense,
+        rawSense,
         vf,
         seriesOhms,
       );
-      const dtWire = dt;
-      let filt = ledWireCurrentFilt.get(id) ?? currentMa;
-      const attack = 1 - Math.exp(-dtWire / 0.04);
-      const release = 1 - Math.exp(-dtWire / 0.12);
-      filt += (currentMa - filt) * (currentMa > filt ? attack : release);
-      ledWireCurrentFilt.set(id, filt);
-      currentMa = filt;
     }
     flags.ledCurrentMa[id] = currentMa;
 
-    const targetBrightness = Math.max(
-      0,
-      Math.min(1, Math.pow(Math.max(0, sense) / Math.max(vf, 0.1), 1.15) * 0.95),
-    );
-    {
-      const prevB = flags.ledBrightness[id] ?? targetBrightness;
-      flags.ledBrightness[id] = prevB + (targetBrightness - prevB) * (1 - Math.exp(-dt / 0.05));
-    }
+    // Normalized visual intensity, not a luminous-flux measurement. Apply the current
+    // sample directly: static circuits may not receive another visual tick to ease it.
+    flags.ledBrightness[id] = Math.max(0, Math.min(1, currentMa / Math.max(ratedMa, Number.EPSILON)));
     flags.ledLit[id] = flags.ledBrightness[id] >= 0.06;
 
 
@@ -565,7 +552,7 @@ export const ledModule: PartModule = {
     const visualMa = flags.ledCurrentMa[comp.id] ?? 0;
     // Never invent rated If (logs: visualMa=0 + lit → branchMa=50 spike before off).
     const branchMa =
-      spiceMa !== undefined && spiceMa >= MIN_WIRE_CURRENT_MA ? spiceMa : visualMa;
+      spiceMa !== undefined ? Math.max(0, spiceMa) : visualMa;
     if (branchMa < MIN_WIRE_CURRENT_MA) return;
     if (nA !== null) {
       const prev = ctx.netMa(nA);
@@ -575,6 +562,10 @@ export const ledModule: PartModule = {
       const prev = ctx.netMa(nK);
       if (prev === undefined || branchMa > prev) ctx.setNetMa(nK, branchMa);
     }
+  },
+
+  wireCurrentPath(pinId) {
+    if (pinId === 'anode' || pinId === 'cathode') return { positive: 'anode', negative: 'cathode' };
   },
 
   seriesPins(comp, pinId, flags) {

@@ -43,6 +43,7 @@
 #                     | Moved from `src/sim/branchCurrent.ts` (tree reorganization)
 # 13-10-2026 | Codex | Read direct LCD leaf-wire currents from solver branches; show sampled logic without flow; shared rails retain existing estimates.
 #                     | Prefer known endpoint logic over floating readings on backpack-to-LCD wires.
+# 14-10-2026 | Codex | Resolve LED/resistor leaf-wire direction from declared terminals and solved voltage; whole-part paths retain solved-net legacy fallback.
  */
 
 import { formatCurrentMa } from '../values/electric';
@@ -396,7 +397,9 @@ export function updateWireCurrents(
       const path = comp && getPartModule(comp.type)?.wireCurrentPath?.(end.pinId);
       if (!path || degree.get(pinRefKey(end)) !== 1) continue;
       const a = pinNet(netlist, comp.id, path.positive), b = pinNet(netlist, comp.id, path.negative);
-      const ma = a === null || b === null || a === b ? 0 : branchCurrentMa?.[comp.id + ':' + path.branch];
+      const branchKey = path.branch === undefined ? comp.id : comp.id + ':' + path.branch;
+      const ma = a === null || b === null || a === b ? 0
+        : branchCurrentMa?.[branchKey] ?? (path.branch === undefined ? branchByNet?.get(a) : undefined);
       flags.wireCurrentMa[wire.id] = ma ?? 0;
       flags.wireReadingLabel[wire.id] = ma === undefined ? 'N/A' : formatCurrentMa(ma);
       const va = a === null ? undefined : netVoltages?.get(a);

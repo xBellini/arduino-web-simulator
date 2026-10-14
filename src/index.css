@@ -14,6 +14,7 @@
 # 13-10-2026 | Codex | Style hints in shared property forms.
 #                     | Add violet breathing highlight for HIGH signal wires; reduced-motion uses a static highlight.
 # 14-10-2026 | Codex | Reserve toolbar hint space so wiring/selection text cannot move the canvas mid-gesture.
+#                     | Use the requested static single-LED glow: retain solved brightness/color, remove animated blur that stalled Firefox.
  */
 :root{
 --bg-app: #0f1419;
@@ -888,8 +889,7 @@ box-shadow:inset 0 0 0 1px #81c78440
 }
 .led-package.is-lit .led-glow-layer{
 opacity:calc(.55 + .45 * var(--led-brightness, 1));
-filter:drop-shadow(0 0 calc(4px + 14px * var(--led-brightness, 1)) color-mix(in srgb,var(--led-glow, #ffeb3b) 85%,transparent)) drop-shadow(0 0 calc(8px + 20px * var(--led-brightness, 1)) color-mix(in srgb,var(--led-glow, #ffc107) 45%,transparent));
-animation:led-glow-pulse 1.8s ease-in-out infinite
+filter:drop-shadow(0 0 calc(4px + 14px * var(--led-brightness, 1)) color-mix(in srgb,var(--led-glow, #ffeb3b) 85%,transparent)) drop-shadow(0 0 calc(8px + 20px * var(--led-brightness, 1)) color-mix(in srgb,var(--led-glow, #ffc107) 45%,transparent))
 }
 .led-package.is-dim .led-glow-layer{
 opacity:calc(.35 + .55 * var(--led-brightness, .3));

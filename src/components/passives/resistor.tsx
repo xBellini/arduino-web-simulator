@@ -18,6 +18,8 @@
 # 24-09-2026 | Cursor | Pin B x aligned to resistor.svg viewBox width (~49.5)
 # 09-10-2026 | Cursor | Moved from `src/parts/resistor.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Own palette placement and resistance/unit/rating/tolerance form schema; retain defaults and validation.
+# 14-10-2026 | Codex | Clear the overload timer on burnout so static circuits stop updating every frame; failure thresholds and effects are unchanged.
+#                     | Declare resistor terminals so leaf-wire direction follows solved voltage drop, independent of drawing direction.
  */
 import type { PlacedComponent, ResistancePowerRating } from '../../types';
 import {
@@ -156,6 +158,7 @@ export const resistorModule: PartModule = {
 
     const blowOut = (): void => {
       simState.resistorBlown[id] = true;
+      simState.resistorOverPowerMs[id] = 0;
       flags.resistorBlown[id] = true;
       flags.resistorHeatLevel[id] = 0;
       flags.resistorOverrated[id] = false;
@@ -223,6 +226,10 @@ export const resistorModule: PartModule = {
     const nb = ctx.pinNet('b');
     if (na !== null) ctx.setNetMa(na, iMa);
     if (nb !== null) ctx.setNetMa(nb, iMa);
+  },
+
+  wireCurrentPath(pinId) {
+    if (pinId === 'a' || pinId === 'b') return { positive: 'a', negative: 'b' };
   },
 
   seriesPins(comp, pinId, flags) {

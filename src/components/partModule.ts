@@ -22,6 +22,7 @@
 # 13-10-2026 | Codex | Add palette metadata, property-field schemas and custom Editor contract; replace editable flag with form capability.
 #                     | Add part-owned signal/current wire hooks and named solver branches for multi-load parts.
 #                     | Pass component identity to signal readings for worker snapshots.
+# 14-10-2026 | Codex | Allow wire-current terminals to reference whole-part solver current as well as named sub-branches.
  */
 import type { ReactNode, ComponentType } from 'react';
 import type {
@@ -377,8 +378,9 @@ export interface PartModule {
     flags: ComponentSimFlags,
   ) => PinRole | undefined;
 
-  /** Named solved current branch and its terminal pair; used only at leaf wires. */
-  wireCurrentPath?: (pinId: string) => { branch: string; positive: string; negative: string } | undefined;
+  /** Solved current terminals for leaf wires. Omit branch for whole-part current;
+   * named sub-branches use componentId:branch and require a solver sample. */
+  wireCurrentPath?: (pinId: string) => { branch?: string; positive: string; negative: string } | undefined;
   /** Sampled logic label for wires directly attached to a part's signal pins. */
   wireLogicLevel?: (pinId: string, level: (pin: string) => NetLevel, comp: PlacedComponent) => NetLevel | undefined;
 
