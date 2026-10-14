@@ -16,6 +16,7 @@
 # 14-10-2026 | Codex | Reserve toolbar hint space so wiring/selection text cannot move the canvas mid-gesture.
 #                     | Use the requested static single-LED glow: retain solved brightness/color, remove animated blur that stalled Firefox.
 #                     | Restore resistor smoke with filter-free transform/opacity animation; reduced-motion uses static wisps.
+#                     | Style a single text-only hover measurement panel without animated or blurred effects.
  */
 :root{
 --bg-app: #0f1419;
@@ -2243,3 +2244,9 @@ font-weight:500
   font-size: 0.75rem;
   opacity: 0.75;
 }
+
+.measurement-tooltip{position:absolute;z-index:30;pointer-events:none;width:264px;max-width:calc(100% - 32px);padding:10px 12px;border:1px solid #536271;border-radius:6px;background:#18212b;color:#e7edf3;font-size:12px;line-height:1.4}
+.measurement-tooltip dl{margin:8px 0 0}
+.measurement-tooltip dl>div{display:flex;justify-content:space-between;gap:12px;margin-top:5px}
+.measurement-tooltip dt{color:#b9c5d1}
+.measurement-tooltip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}

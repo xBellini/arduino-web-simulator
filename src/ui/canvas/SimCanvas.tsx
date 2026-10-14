@@ -27,6 +27,7 @@
 #                     | Property saves still use updateComponent, preserving undo and stopping active simulation.
 # 14-10-2026 | Codex | Render GPIO warning badges above hit layers so their measured-current tooltips receive hover.
 #                    | Keep automatic routes automatic until edited; choose the drag target at pointer-down.
+#                     | Attach shared delayed measurement tooltip to part, pin and wire hit targets while running.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -81,6 +82,7 @@ import { PartLabelEditor } from '../editors/PartLabelEditor';
 import { PinLabel } from './ComponentShape';
 import { WireFlowOverlay } from './WireFlowOverlay';
 import { NgspiceDebugOverlay } from '../debug/NgspiceDebugOverlay';
+import { MeasurementTooltip } from './MeasurementTooltip';
 import { SimPerfOverlay } from '../debug/SimPerfOverlay';
 import { isSimPerfEnabled } from '../../avr/simPerf';
 import { wireShowsCurrent } from '../../circuit/currents';
@@ -1730,6 +1732,7 @@ export function SimCanvas() {
           width={bodyHit.width}
           height={bodyHit.height}
           className="component-hit"
+          data-measure-component={comp.id}
           fill="rgba(0,0,0,0.001)"
           onPointerDown={(e) => handleComponentBodyPointerDown(e, comp)}
           onDoubleClick={(e) => handleComponentBodyDoubleClick(e, comp)}
@@ -1769,6 +1772,8 @@ export function SimCanvas() {
           <g
             key={pin.id}
             transform={`translate(${pin.x}, ${pin.y})`}
+            data-measure-component={comp.id}
+            data-measure-pin={pin.id}
             className={`breadboard-hole-hit${isSnapHovered ? ' is-snap-hovered' : ''}`}
             onContextMenu={(e) => {
               e.preventDefault();
@@ -1796,6 +1801,8 @@ export function SimCanvas() {
         <g
           key={pin.id}
           transform={`translate(${pin.x}, ${pin.y})`}
+          data-measure-component={comp.id}
+          data-measure-pin={pin.id}
           className={`pin-interactive${isSnapHovered ? ' is-snap-hovered' : ''}`}
           onContextMenu={(e) => {
             e.preventDefault();
@@ -1895,6 +1902,7 @@ export function SimCanvas() {
           <path
             d={d}
             className="wire-hit"
+            data-measure-wire={wire.id}
             fill="none"
             onPointerDown={(e) => handleWirePointerDown(e, wire.id)}
             onDoubleClick={(e) => handleWireDoubleClick(e, wire.id)}
@@ -2015,6 +2023,9 @@ export function SimCanvas() {
       onPointerCancel={onPointerUp}
       onPointerLeave={() => scheduleHoveredPinUpdate(null)}
     >
+      {simStatus === 'running' && !wireDraft && !placementType && !spacePan && !contextMenu && !propertiesEditor && (
+        <MeasurementTooltip container={wrapRef} components={components} wires={wires} />
+      )}
       {ngspiceDebug && (
         <NgspiceDebugOverlay components={components} debug={ngspiceDebug} />
       )}

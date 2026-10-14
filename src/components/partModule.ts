@@ -23,6 +23,7 @@
 #                     | Add part-owned signal/current wire hooks and named solver branches for multi-load parts.
 #                     | Pass component identity to signal readings for worker snapshots.
 # 14-10-2026 | Codex | Allow wire-current terminals to reference whole-part solver current as well as named sub-branches.
+#                     | Add part-owned hover measurements; missing solver samples remain unavailable.
  */
 import type { ReactNode, ComponentType } from 'react';
 import type {
@@ -332,9 +333,20 @@ export interface PartOverlayProps {
   simRunning?: boolean;
 }
 
+export type PartMeasurement = { label: string; value: number | string | undefined; unit?: string };
+export interface PartMeasurementContext {
+  component: PlacedComponent;
+  flags: ComponentSimFlags;
+  /** Strict solved voltage difference; no digital-level fallback. */
+  voltage: (positive: string, negative: string) => number | undefined;
+  /** Magnitude in mA, undefined when no solver branch sample exists. */
+  currentMa: number | undefined;
+}
+
 // ---------------------------------------------------------------------------
 
 export interface PartModule {
+  measurements?: (ctx: PartMeasurementContext) => PartMeasurement[];
   palette?: import('../types').PaletteMetadata;
   /** Must equal the key this module is registered under and `definition.type`. */
   type: string;

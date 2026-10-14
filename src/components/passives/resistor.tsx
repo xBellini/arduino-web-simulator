@@ -21,6 +21,7 @@
 # 14-10-2026 | Codex | Clear the overload timer on burnout so static circuits stop updating every frame; failure thresholds and effects are unchanged.
 #                     | Declare resistor terminals so leaf-wire direction follows solved voltage drop, independent of drawing direction.
 #                     | Restore solved-power heat tint, rising smoke and a static burnout mark; no filter effects or new simulation timers.
+#                     | Own hover readings using solved samples and existing simulation flags.
  */
 import type { CSSProperties } from 'react';
 import type { PlacedComponent, ResistancePowerRating } from '../../types';
@@ -141,6 +142,13 @@ function ResistorOverlay({ component, simFlags, simRunning }: PartOverlayProps) 
 }
 
 export const resistorModule: PartModule = {
+  measurements: ({ component, flags, voltage, currentMa }) => [
+    { label: 'Voltage across (A - B)', value: voltage('a', 'b'), unit: 'V' },
+    { label: 'Current', value: currentMa, unit: 'mA' },
+    { label: 'Dissipated power', value: flags.resistorPowerMw[component.id], unit: 'mW' },
+    { label: 'Power rating', value: component.resistancePowerRating ?? '1/4W' },
+    { label: 'State', value: flags.resistorBlown[component.id] ? 'Blown' : flags.resistorOverrated[component.id] ? 'Overloaded' : flags.resistorPowerMw[component.id] !== undefined ? 'Within rating' : undefined },
+  ],
   palette: { category: 'passives', order: 0 },
   type: 'resistor',
 

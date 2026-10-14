@@ -22,6 +22,7 @@
 # 09-10-2026 | Cursor | Moved from `src/parts/led.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Own palette placement and color/Vf/If form schema; retain presets and numeric parsers.
 # 14-10-2026 | Codex | Normalize static glow by solved current/rated current; respect zero/unavailable samples and remove cross-run current smoothing. Declare terminals for leaf-wire flow.
+#                     | Own hover readings using solved samples and existing simulation flags.
  */
 import type { CSSProperties } from 'react';
 import type { PlacedComponent } from '../../types';
@@ -347,6 +348,11 @@ function LedGlowOverlay({
 }
 
 export const ledModule: PartModule = {
+  measurements: ({ component, flags, voltage, currentMa }) => [
+    { label: 'Forward voltage (A - K)', value: voltage('anode', 'cathode'), unit: 'V' },
+    { label: 'Current', value: currentMa, unit: 'mA' },
+    { label: 'State', value: flags.ledBlown[component.id] ? 'Blown' : flags.ledLit[component.id] === undefined ? undefined : flags.ledLit[component.id] ? 'Conducting' : 'Off' },
+  ],
   palette: { category: 'output', order: 0 },
   type: 'led',
 

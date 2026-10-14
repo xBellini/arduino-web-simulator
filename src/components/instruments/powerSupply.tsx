@@ -17,6 +17,7 @@
 # 30-09-2026 | Cursor | Corrected pin coordinates
 # 09-10-2026 | Cursor | Moved from `src/parts/powerSupply.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Own palette placement and custom editor registration; retain unit conversion, steppers and legacy current limits.
+# 14-10-2026 | Codex | Own hover readings using solved samples and existing simulation flags.
  */
 import { InstrumentPropertiesEditor } from '../../ui/editors/InstrumentPropertiesEditor';
 import { isCurrentUnit, isVoltageUnit, supplyVoltageVolts } from '../../values/electric';
@@ -28,6 +29,11 @@ function isFiniteNumber(value: unknown): value is number {
 }
 
 export const powerSupplyModule: PartModule = {
+  measurements: ({ component, flags, voltage, currentMa }) => [
+    { label: 'Output voltage', value: voltage('pos', 'neg'), unit: 'V' },
+    { label: 'Delivered current', value: currentMa, unit: 'mA' },
+    { label: 'Current limit', value: flags.supplyCurrentLimited[component.id] === undefined ? undefined : flags.supplyCurrentLimited[component.id] ? 'Active' : 'Inactive' },
+  ],
   palette: { category: 'instruments', order: 0 },
   type: 'power_supply',
   standaloneSource: true,
