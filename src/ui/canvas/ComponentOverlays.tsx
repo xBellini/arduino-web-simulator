@@ -24,6 +24,7 @@
 # 25-09-2026 | Cursor | Casing from pin.letter ?? description; drop pinLetters
 #                     | Drop capacitor body value marking (value only in properties editor)
 # 09-10-2026 | Cursor | Moved from `src/components/ComponentOverlays.tsx` (tree reorganization)
+# 14-10-2026 | Codex | Add yellow GPIO overload warning with measured pin currents in a hover tooltip; simulation only.
  */
 import type { ReactNode } from 'react';
 import type { ComponentDefinition, PlacedComponent } from '../../types';
@@ -186,6 +187,7 @@ export function ComponentOverlays({
   const partOverlay = getPartModule(component.type)?.overlay;
   const packageId = packageIdOf(design);
 
+
   return (
     <>
       {design.marking && (
@@ -199,6 +201,26 @@ export function ComponentOverlays({
       )}
       <PinLettersOverlay design={design} />
       {partOverlay?.({ component, design, simFlags, simRunning })}
+
     </>
   );
+}
+
+/** Render above the canvas body hit layer so the native SVG tooltip receives hover. */
+export function GpioOvercurrentOverlay({ component, design, simFlags, simRunning }: OverlayProps) {
+  const overloaded = simRunning ? Object.entries(simFlags?.gpioOvercurrentMa?.[component.id] ?? {}) : [];
+  const warning = overloaded.length ? 'GPIO current exceeds 20 mA: ' + overloaded.map(([id, ma]) => {
+    const name = design.pins.find(pin => pin.id === id)?.description ?? id.toUpperCase();
+    return name + ' (' + ma.toFixed(2) + ' mA)';
+  }).join(', ') + '. Reduce the load or use an external driver. This is a warning, not a current limiter.' : '';
+  return <>
+      {warning && (
+        <g className="gpio-overcurrent-warning" transform={`translate(${design.width * 0.85}, ${design.height * 0.35})`}
+          role="img" aria-label={warning} tabIndex={0} style={{ pointerEvents: 'all', cursor: 'help' }}>
+          <title>{warning}</title>
+          <path d="M 0 -11 L 11 9 L -11 9 Z" fill="#ffd54f" stroke="#372b00" strokeWidth="1.2" strokeLinejoin="round" />
+          <text y="5" textAnchor="middle" fill="#211900" fontSize="16" fontWeight="bold" pointerEvents="none">!</text>
+        </g>
+      )}
+  </>;
 }

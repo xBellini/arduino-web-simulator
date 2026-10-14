@@ -27,6 +27,7 @@
 #                     | Prefer a caller-supplied DC result so the frame loop can skip a second MNA
 # 09-10-2026 | Cursor | Moved from `src/sim/circuitSolver.ts` (tree reorganization)
 # 13-10-2026 | Codex | Calculate wire readings after final MCU logic overrides; add explicit pin-reading labels.
+# 14-10-2026 | Codex | Flag solved GPIO current above 20 mA; clear on recovery or unavailable samples.
  */
 
 import { getDefinition } from '../registry/components';
@@ -129,6 +130,8 @@ export interface ComponentSimFlags {
   supplyOutputVoltage: Record<string, number>;
   /** Push button pressed while sim runs (for wire-flow tracing). */
   buttonPressed: Record<string, boolean>;
+  /** Measured GPIO |I| above 20 mA, by board and pin; unavailable samples omitted. */
+  gpioOvercurrentMa: Record<string, Record<string, number>>;
   wireCurrentMa: Record<string, number>;
   wireReadingLabel: Record<string, string>;
   wireFlowReverse: Record<string, boolean>;
@@ -162,6 +165,7 @@ export function createComponentSimFlags(): ComponentSimFlags {
     supplyCurrentLimited: {},
     supplyOutputVoltage: {},
     buttonPressed: {},
+    gpioOvercurrentMa: {},
     wireCurrentMa: {},
     wireReadingLabel: {},
     wireFlowReverse: {},
@@ -656,6 +660,16 @@ export function solveCircuit(
     // the threshold band, so pin colors, wire flow, and digitalRead stay correct.
     for (const [netId, level] of mcuDrives) {
       levels.set(netId, level);
+    }
+  }
+
+  flags.gpioOvercurrentMa = {};
+  for (const pins of mcuSources.gpioPins?.values() ?? []) {
+    if (pins.length !== 1) continue;
+    const pin = pins[0];
+    const ma = activeBranchMa?.[pin.componentId + ':gpio:' + pin.pinId];
+    if (ma !== undefined && Number.isFinite(ma) && Math.abs(ma) > 20) {
+      (flags.gpioOvercurrentMa[pin.componentId] ??= {})[pin.pinId] = Math.abs(ma);
     }
   }
 

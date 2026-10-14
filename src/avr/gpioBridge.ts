@@ -23,6 +23,7 @@
 # 17-09-2026 | Cursor | Changelog creation
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Moved from `src/sim/gpioBridge.ts` (tree reorganization)
+# 14-10-2026 | Codex | Identify active GPIO outputs from AVR; deduplicate aliases and exclude supply rails.
  */
 
 import { PinState as AvrPinState, type AVRIOPort } from 'avr8js';
@@ -127,11 +128,27 @@ function mcuOutputDrives(
  * rare overlap so a pin configured as output on a power pin can't fight a rail.
  */
 function combineMcuSources(
-  netlist: CircuitNetlist,
+  bridge: GpioBridge,
   mcu: PlacedComponent,
   drives: Map<number, NetLevel>,
 ): McuSourceMap {
+  const { netlist, ports } = bridge;
   const sources = boardPowerSources([mcu], netlist);
+  const railNets = new Set(sources.keys());
+  sources.gpioPins = new Map();
+  const seen = new Set<string>();
+  for (const [pinId, mapping] of Object.entries(ARDUINO_DIGITAL_PIN_MAP)) {
+    const net = netForPin(netlist, { componentId: mcu.id, pinId });
+    if (net === null || railNets.has(net)) continue;
+    const state = ports[mapping.port].pinState(mapping.bit);
+    if (state !== AvrPinState.High && state !== AvrPinState.Low) continue;
+    const physical = mapping.port + ':' + mapping.bit;
+    if (seen.has(physical)) continue;
+    seen.add(physical);
+    const pins = sources.gpioPins.get(net) ?? [];
+    pins.push({ componentId: mcu.id, pinId });
+    sources.gpioPins.set(net, pins);
+  }
   for (const [netId, level] of drives) {
     if (!sources.has(netId)) sources.set(netId, netLevelToSourceVolts(level));
   }
@@ -143,7 +160,7 @@ export function computeMcuSources(
   bridge: GpioBridge,
   mcu: PlacedComponent,
 ): McuSourceMap {
-  return combineMcuSources(bridge.netlist, mcu, mcuOutputDrives(bridge, mcu));
+  return combineMcuSources(bridge, mcu, mcuOutputDrives(bridge, mcu));
 }
 
 /** Run circuit solver and sync MCU inputs from resolved nets. */
@@ -159,7 +176,7 @@ export function syncMcuWithNets(
   bridge.simFlags = createComponentSimFlags();
 
   const mcuDrives = mcuOutputDrives(bridge, mcu);
-  const mcuSources = combineMcuSources(netlist, mcu, mcuDrives);
+  const mcuSources = combineMcuSources(bridge, mcu, mcuDrives);
   bridge.lastMcuSources = mcuSources;
   const levels = solveCircuit(
     components,

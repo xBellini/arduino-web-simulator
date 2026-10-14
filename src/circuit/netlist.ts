@@ -27,6 +27,7 @@
 # 28-09-2026 | Cursor | MCU board copper: short all GND pins together and identical power rails (5V/3.3V)
 # 09-10-2026 | Cursor | Moved from `src/sim/circuitNetlist.ts` (tree reorganization)
 #                     | Apply `PartModule.internalPinShorts` (duplicate module headers)
+# 14-10-2026 | Codex | Carry active GPIO identities for measured per-pin warnings.
  */
 
 
@@ -47,7 +48,10 @@ export type NetLevel = 'low' | 'high' | 'floating';
 export const LOGIC_HIGH_VOLTS = 5;
 
 /** Net id → forced voltage (V) for ideal MCU sources (board rails + GPIO outputs). */
-export type McuSourceMap = Map<number, number>;
+export type McuSourceMap = Map<number, number> & {
+  /** Active physical output pins; aliases deduplicated, power rails excluded. */
+  gpioPins?: Map<number, Array<{ componentId: string; pinId: string }>>;
+};
 
 export interface PinEndpoint {
   componentId: string;

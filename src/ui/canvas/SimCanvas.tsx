@@ -25,10 +25,12 @@
 # 13-10-2026 | Codex | Replace type-specific editor branches with registered forms; chip-name editor becomes fallback only.
 #                     | Custom Editor takes precedence over fields; chip-name editing is the fallback, never a stacked second dialog.
 #                     | Property saves still use updateComponent, preserving undo and stopping active simulation.
+# 14-10-2026 | Codex | Render GPIO warning badges above hit layers so their measured-current tooltips receive hover.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { getDefinition } from '../../registry/components';
+import { GpioOvercurrentOverlay } from './ComponentOverlays';
 import { getComponentBodyHitbox, pointInComponentHitbox, componentPlacementPivot } from '../../registry/componentHitbox';
 import { useSim } from '../../store/SimContext';
 import {
@@ -2075,6 +2077,12 @@ export function SimCanvas() {
           {wireDraftBends()}
 
           {wires.map((wire) => renderWire(wire, 'hit'))}
+          {simStatus === 'running' && partComponents.map(comp => (
+            <g key={`gpio-warning-${comp.id}`} transform={componentTransform(comp)}>
+              <GpioOvercurrentOverlay component={comp} design={getDefinition(comp.type)}
+                simFlags={simFlags} simRunning />
+            </g>
+          ))}
 
           {breadboardComponents.map((comp) => (
             <g key={`pins-${comp.id}`} transform={componentTransform(comp)}>

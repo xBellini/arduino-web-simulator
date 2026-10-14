@@ -28,6 +28,7 @@
 #                     | Prefetch SPICE charge/discharge waves before AVR start
 # 08-10-2026 | Cursor | Debug F4: sample avgRafDtMs while Concord runs with XSPICE parked on disk
 # 09-10-2026 | Cursor | Removed XSPICE-era F4 rAF debug instrumentation
+# 14-10-2026 | Codex | Invalidate cached measurements when GPIO ownership changes at unchanged voltage.
  */
 
 import type { PinState, PlacedComponent, Wire } from '../types';
@@ -1177,7 +1178,7 @@ function runtimeSolveSignature(
   capacitorBlown: Record<string, boolean> = {},
 ): string {
   const sources = [...mcuSources.entries()]
-    .map(([net, volts]) => `${net}=${volts}`)
+    .map(([net, volts]) => net + '=' + volts + ':' + JSON.stringify(mcuSources.gpioPins?.get(net) ?? []))
     .sort()
     .join(',');
   const parts = components

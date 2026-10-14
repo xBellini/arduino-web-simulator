@@ -27,6 +27,7 @@
 #                     | Header: results are read by ngspice.worker (opOutputParse removed)
 #                     | Moved from `src/sim/spice/netlistExport.ts` (tree reorganization)
 # 13-10-2026 | Codex | Allow named current-sense branches within a part without overwriting its other branches.
+# 14-10-2026 | Codex | Map unambiguous GPIO source currents back to physical output pins.
  */
 
 
@@ -146,7 +147,14 @@ export function exportSpiceOpNetlist(
   let mcuSourceIndex = 0;
   for (const [netId, volts] of mcuSources) {
     if (netId === groundNetId || sourcedNets.has(netId)) continue;
-    lines.push(`Vmcu${mcuSourceIndex} ${nodeName(netId, groundNetId)} 0 DC ${volts}`);
+    const instance = 'Vmcu' + mcuSourceIndex;
+    lines.push(instance + ' ' + nodeName(netId, groundNetId) + ' 0 DC ' + volts);
+    const pins = mcuSources.gpioPins?.get(netId);
+    // A shared ideal source cannot separate individual output-pin currents.
+    if (pins?.length === 1) {
+      const pin = pins[0];
+      trackSpiceInstance(spiceInstanceByComponentId, pin.componentId + ':gpio:' + pin.pinId, instance);
+    }
     sourcedNets.add(netId);
     mcuSourceIndex += 1;
   }

@@ -40,6 +40,7 @@
 # 09-10-2026 | Cursor | Removed XSPICE worker routing, hybrid 74HC co-sim and xspiceIso debug; Concord only
 #                     | Engine swap: Concord ngspice-26 → eecircuit-engine module worker, structured results instead of stdout parsing, persistent worker with kill + lazy restart on timeout/crash
 #                     | Moved from `src/sim/spice/ngspiceClient.ts` (tree reorganization)
+# 14-10-2026 | Codex | Invalidate cached measurements when GPIO ownership changes at unchanged voltage.
  */
 
 
@@ -445,7 +446,7 @@ function buildCacheKey(
 
   const wireSig = [...netlist.pinToNet.entries()].sort().join('|');
   const mcuSig = [...mcuSources.entries()]
-    .map(([net, volts]) => `${net}=${volts}`)
+    .map(([net, volts]) => net + '=' + volts + ':' + JSON.stringify(mcuSources.gpioPins?.get(net) ?? []))
     .sort()
     .join(',');
   const capBlow = Object.entries(capacitorBlown)
