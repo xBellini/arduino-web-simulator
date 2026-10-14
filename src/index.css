@@ -15,6 +15,7 @@
 #                     | Add violet breathing highlight for HIGH signal wires; reduced-motion uses a static highlight.
 # 14-10-2026 | Codex | Reserve toolbar hint space so wiring/selection text cannot move the canvas mid-gesture.
 #                     | Use the requested static single-LED glow: retain solved brightness/color, remove animated blur that stalled Firefox.
+#                     | Restore resistor smoke with filter-free transform/opacity animation; reduced-motion uses static wisps.
  */
 :root{
 --bg-app: #0f1419;
@@ -1110,6 +1111,21 @@ opacity:0;
 filter:drop-shadow(0 0 2px rgba(255,87,34,.9));
 animation:resistor-ember calc(.55s - min(.15s,var(--over-power,0) * .1s)) ease-out infinite;
 animation-delay:var(--ember-delay,0s)
+}
+.resistor-state-overlay .resistor-smoke-wisp{
+fill:none;
+stroke:#b0b0b0;
+stroke-width:1.5;
+stroke-linecap:round;
+filter:none;
+transform-box:fill-box;
+transform-origin:center bottom
+}
+@media (prefers-reduced-motion:reduce){
+.resistor-state-overlay .resistor-smoke-wisp{
+animation:none;
+opacity:.45
+}
 }
 .resistor-fire-glow{
 fill:#ff6f0047;

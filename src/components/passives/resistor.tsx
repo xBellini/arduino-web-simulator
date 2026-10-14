@@ -20,7 +20,9 @@
 # 13-10-2026 | Codex | Own palette placement and resistance/unit/rating/tolerance form schema; retain defaults and validation.
 # 14-10-2026 | Codex | Clear the overload timer on burnout so static circuits stop updating every frame; failure thresholds and effects are unchanged.
 #                     | Declare resistor terminals so leaf-wire direction follows solved voltage drop, independent of drawing direction.
+#                     | Restore solved-power heat tint, rising smoke and a static burnout mark; no filter effects or new simulation timers.
  */
+import type { CSSProperties } from 'react';
 import type { PlacedComponent, ResistancePowerRating } from '../../types';
 import {
   parseResistanceValue, RESISTANCE_UNITS, UNIT_LABELS,
@@ -41,7 +43,7 @@ import {
   layoutResistorBands,
   RESISTOR_GRAPHIC,
 } from '../../values/resistor';
-import type { PartModule } from '../partModule';
+import type { PartModule, PartOverlayProps } from '../partModule';
 
 /** Open-circuit stand-in for a burned-out part or an open contact (SPICE + legacy MNA). */
 export const BLOWN_RESISTOR_OHMS = 1e9;
@@ -101,6 +103,39 @@ function ResistorBandOverlay({ component }: { component: PlacedComponent }) {
           />
         );
       })}
+    </g>
+  );
+}
+
+// Exact two body silhouettes from public/components/resistor.svg, in footprint units.
+const RESISTOR_SHELL_PATH =
+  'm 5.5411295,4.3169904 -0.1573839,1.018392 c 0,0 0.8766471,0.1002221 0.9703971,0.3502221 0,0 -0.098384,3.690985 4.7297403,3.730047 3.71875,-0.02344 4.777752,-0.155817 6.678696,-1.3650911 l 12.550819,-0.068629 0.01774,-6.2711899 -12.712792,0.09147 C 15.955756,0.06028192 15.959774,0.2266828 11.369105,0.2432556 5.9720077,0.2453156 6.2980927,3.9092703 6.2980927,3.9092703 c 0,0.140625 -0.4054007,0.4545951 -0.7569632,0.4077201 z ' +
+  'M 43.699666,5.4227659 43.334059,4.4378017 c 0,0 -0.649972,-0.074163 -0.743276,-0.3243299 0,0 -0.48879,-4.065804 -5.316835,-4.1134718 -3.718786,0.016811 -4.306314,0.1072903 -6.11566,1.688174 l -12.522623,0.1067175 -0.02893,6.2507001 12.712935,-0.06881 c 1.659482,1.7448909 1.655761,1.5784829 6.246452,1.5700929 5.397093,0.0076 5.077539,-3.6569709 5.077539,-3.6569709 2.5e-4,-0.1406248 0.350967,-0.5035902 0.702446,-0.4560886 z';
+
+function ResistorOverlay({ component, simFlags, simRunning }: PartOverlayProps) {
+  const id = component.id;
+  const blown = !!simRunning && !!simFlags?.resistorBlown[id];
+  const heat = simRunning && !blown ? Math.max(0, simFlags?.resistorHeatLevel[id] ?? 0) : 0;
+  const smoking = !!simRunning && !blown && !!simFlags?.resistorOverrated[id];
+  return (
+    <g className="resistor-state-overlay" pointerEvents="none" aria-hidden="true">
+      {heat > 0 && <path className="resistor-heat-tint" d={RESISTOR_SHELL_PATH}
+        fill={smoking ? '#ff6f00' : '#ffb74d'} opacity={Math.min(0.65, heat * 0.3)} />}
+      <ResistorBandOverlay component={component} />
+      {blown && <g className="resistor-burnout">
+        <path d={RESISTOR_SHELL_PATH} fill="#212121" opacity={0.88} />
+        <path d="M 21 1.4 L 28.5 8.1 M 28.5 1.4 L 21 8.1" fill="none"
+          stroke="#ef5350" strokeWidth={1.1} strokeLinecap="round" />
+      </g>}
+      {smoking && <g className="resistor-smoke"
+        transform={`rotate(${-component.rotation} 24.745014 4.777354)`}>
+        {/* Counter-rotate so smoke rises on screen even for a vertical resistor.
+            Only three lightweight paths; CSS animates transform/opacity, never filters. */}
+        {[-1, 0, 1].map((drift, i) => <g key={i} transform={`translate(${24.745014 + drift * 2}, 4.777354)`}>
+          <path className="resistor-smoke-wisp" d="M 0 0 C -3 -2, 3 -4, 0 -6 S -2 -9, 1 -11"
+            style={{ '--smoke-drift': `${drift * 3}px`, '--smoke-delay': `${-i * 0.45}s` } as CSSProperties} />
+        </g>)}
+      </g>}
     </g>
   );
 }
@@ -269,5 +304,5 @@ export const resistorModule: PartModule = {
     },
   },
 
-  overlay: ({ component }) => <ResistorBandOverlay component={component} />,
+  overlay: ResistorOverlay,
 };
