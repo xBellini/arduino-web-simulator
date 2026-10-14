@@ -15,6 +15,7 @@
 #                     | Prime EN high before lcd-bus fall (I2C backpack only posts E low)
 # 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerHost.ts` (tree reorganization)
 # 13-10-2026 | Codex | Apply backpack snapshots before each tick solve; clear them on stop/restart.
+# 14-10-2026 | Codex | Ignore retired worker messages and detach callbacks on stop so old LCD writes and cycle counts cannot enter a new run.
  */
 
 import { setPcfBackpackSnapshot, clearPcfBackpackSnapshots } from '../components/modules/pcf8574LcdBackpack';
@@ -170,8 +171,10 @@ export class AvrWorkerHost {
       type: 'module',
       name: 'avr-core',
     });
+    const worker = this.worker;
 
     this.worker.onmessage = (ev: MessageEvent<AvrWorkerOutMessage>) => {
+      if (this.worker !== worker) return;
       const msg = ev.data;
       if (!msg || msg.v !== AVR_WORKER_PROTOCOL) return;
 
@@ -223,6 +226,7 @@ export class AvrWorkerHost {
     };
 
     this.worker.onerror = (err) => {
+      if (this.worker !== worker) return;
       this.callbacks?.onError?.(String(err.message ?? err));
     };
 
@@ -250,6 +254,8 @@ export class AvrWorkerHost {
     setLcdGpioProbeActive(false);
     if (this.worker) {
       this.post({ v: AVR_WORKER_PROTOCOL, type: 'stop' });
+      this.worker.onmessage = null;
+      this.worker.onerror = null;
       this.worker.terminate();
       this.worker = null;
     }

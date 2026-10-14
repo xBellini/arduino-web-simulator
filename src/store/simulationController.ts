@@ -29,6 +29,7 @@
 # 08-10-2026 | Cursor | Debug F4: sample avgRafDtMs while Concord runs with XSPICE parked on disk
 # 09-10-2026 | Cursor | Removed XSPICE-era F4 rAF debug instrumentation
 # 14-10-2026 | Codex | Invalidate cached measurements when GPIO ownership changes at unchanged voltage.
+#                     | Cancel superseded compile/start continuations so Stop/restart cannot leave multiple AVR workers writing LCD/time state.
  */
 
 import type { PinState, PlacedComponent, Wire } from '../types';
@@ -148,6 +149,8 @@ export interface RunFirmwareOptions {
 }
 
 export class SimulationController {
+  /** Invalidates pending compiles and scheduled callbacks on every stop/new run. */
+  private runGeneration = 0;
   private runner: AvrWorkerHost | null = null;
   private bridge: GpioBridge | null = null;
   /** Detach HD44780 GPIO EN-edge probe (set in startHex). */
@@ -245,6 +248,7 @@ export class SimulationController {
 
   async runFirmware(options: RunFirmwareOptions): Promise<void> {
     this.haltRunner();
+    const generation = this.runGeneration;
     const { components, wires } = options;
     const mcus = components.filter((c) => isMcuBoard(c.type));
     if (mcus.length === 0) {
@@ -290,6 +294,7 @@ export class SimulationController {
         } else {
           this.callbacks.onStatus('compiling');
           const result = await compileSketch(options.sketch);
+          if (generation !== this.runGeneration) return;
           compilerOutput = [result.stderr, result.stdout].filter(Boolean).join('\n').trim();
           if (!result.hex) {
             this.callbacks.onCompilerOutput(compilerOutput);
@@ -306,6 +311,7 @@ export class SimulationController {
       this.callbacks.onCompilerOutput(compilerOutput);
       await this.startHex(hex, mcu, components, wires);
     } catch (err) {
+      if (generation !== this.runGeneration) return;
       const msg = err instanceof Error ? err.message : 'Run failed';
       this.callbacks.onCompilerOutput(msg);
       this.callbacks.onStatus('error', msg);
@@ -377,7 +383,7 @@ export class SimulationController {
         capacitorBlown,
         buttonPressed: this.buttonPressed,
       });
-      if (!this.runner) return; // halted during prefetch
+      if (this.runner !== host) return; // halted or replaced during prefetch
       const parts: string[] = [];
       if (prefetch.skipped) {
         parts.push(
@@ -394,20 +400,25 @@ export class SimulationController {
     this.callbacks.onStatus('running');
     syncPorts();
     requestAnimationFrame(() => {
-      if (!this.runner) return;
+      // A new run can exist when this old callback fires. Checking only for
+      // non-null resurrects the stopped host and leaks a second AVR worker.
+      if (this.runner !== host) return;
       this.scheduleFrameSync();
       void host.start(
         hex,
         buildLcdWorkerTargets(components, wires),
         {
           onSerialByte: (value) => {
+            if (this.runner !== host) return;
             this.callbacks.onSerialOutput(String.fromCharCode(value));
           },
           onTick: () => {
+            if (this.runner !== host) return;
             host.refreshOptions();
             this.scheduleFrameSync();
           },
           onError: (message) => {
+            if (this.runner !== host) return;
             this.callbacks.onCompilerOutput(message);
             this.callbacks.onStatus('error', message);
           },
@@ -1028,7 +1039,9 @@ export class SimulationController {
   private scheduleFrameSync(): void {
     if (this.frameSyncScheduled) return;
     this.frameSyncScheduled = true;
+    const generation = this.runGeneration;
     requestAnimationFrame(() => {
+      if (generation !== this.runGeneration) return;
       this.frameSyncScheduled = false;
       if (!this.runner) return;
       if (this.isCanvasInteracting()) {
@@ -1111,6 +1124,7 @@ export class SimulationController {
 
   /** Stop AVR + bridge without changing UI status (used before a new run). */
   private haltRunner(): void {
+    this.runGeneration++;
     this.syncScheduled = false;
     this.frameSyncScheduled = false;
     this.pendingPinStates = null;

@@ -43,6 +43,8 @@
 #                     | Trim self-intersections after moves; tight endpoint envelopes may reduce clearance
 #                     | Physically enclosed pins retain a finite fallback when no body-safe route exists
 #                     | Align endpoint runs within half a grid to exact pin axes, removing off-grid LCD/header grooves
+#                     | Keep pin exits outside their own bodies in tight gaps; construct exact orthogonal legs and allow straight-segment dragging
+#                     | Apply obstacle routing to free drafts from breadboard holes and junctions as well as component pins
  */
 import type {
   ComponentDefinition,
@@ -363,7 +365,7 @@ export function orthogonalSegment(
   to: Point,
   segmentIndex: number,
 ): Point[] {
-  if (sameAxisCoord(from.x, to.x) || sameAxisCoord(from.y, to.y)) {
+  if (from.x === to.x || from.y === to.y) {
     return [from, to];
   }
   const hFirst = segmentIndex % 2 === 0;
@@ -384,7 +386,7 @@ function orthogonalSegmentNoReverse(
   segmentIndex: number,
   inbound: Point | null,
 ): Point[] {
-  if (sameAxisCoord(from.x, to.x) || sameAxisCoord(from.y, to.y)) {
+  if (from.x === to.x || from.y === to.y) {
     return [from, to];
   }
   const hFirst = segmentIndex % 2 === 0;
@@ -796,6 +798,12 @@ export function wireRouteHintsFromPin(
     const horizontal = sameAxisCoord(stub.y, pinWorld.y);
     const sign = Math.sign(horizontal ? stub.x - pinWorld.x : stub.y - pinWorld.y);
     let length = distance(pinWorld, stub);
+    const ownBody = componentBodyWorldAabb(comp);
+    const origin = horizontal ? pinWorld.x : pinWorld.y;
+    const ownEdge = ownBody ? horizontal
+      ? (sign > 0 ? ownBody.maxX : ownBody.minX)
+      : (sign > 0 ? ownBody.maxY : ownBody.minY) : origin;
+    const bodyExit = Math.max(0, (ownEdge - origin) * sign);
     for (const other of components) {
       if (other.id === comp.id || other.type === 'breadboard' || other.type === WIRE_JUNCTION_TYPE) continue;
       const body = componentBodyWorldAabb(other);
@@ -804,8 +812,16 @@ export function wireRouteHintsFromPin(
       if (!segmentIntersectsAabb(pinWorld, stub, body, pad)) continue;
       const box = expandAabb(body, pad + 1);
       const edge = horizontal ? (sign > 0 ? box.minX : box.maxX) : (sign > 0 ? box.minY : box.maxY);
-      const available = (edge - (horizontal ? pinWorld.x : pinWorld.y)) * sign;
-      if (available > 0) length = Math.min(length, available);
+      let available = (edge - origin) * sign;
+      if (available <= bodyExit) {
+        // Padding may overlap even when the bodies do not. Reduce clearance,
+        // never shorten the protected lead back inside its own body.
+        const actualEdge = horizontal ? (sign > 0 ? body.minX : body.maxX)
+          : (sign > 0 ? body.minY : body.maxY);
+        const gap = (actualEdge - origin) * sign - bodyExit;
+        if (gap > 0) available = bodyExit + gap / 2;
+      }
+      if (available > bodyExit) length = Math.min(length, available);
     }
     stub = horizontal ? { x: pinWorld.x + sign * length, y: pinWorld.y }
       : { x: pinWorld.x, y: pinWorld.y + sign * length };
@@ -1333,12 +1349,15 @@ function alignEndpointRuns(from: Point, to: Point, bends: Point[], options?: Wir
     const coordinate = result[index][axis];
     if (Math.abs(coordinate - pin[axis]) > GRID_SIZE / 2) return;
     const direction = Math.sign(portal[along] - pin[along]);
-    // Preserve waypoints behind the portal rather than pulling them through the body.
-    if ((result[index][along] - portal[along]) * direction < -AXIS_EPS) return;
+    // A legacy terminal run can end inside the clearance envelope. Align the
+    // whole run when it also has a point outside; clearing drops the inside point.
+    const run: number[] = [];
     for (let i = index; i >= 0 && i < result.length; i += reverse ? -1 : 1) {
       if (result[i][axis] !== coordinate) break;
-      result[i][axis] = pin[axis];
+      run.push(i);
     }
+    if (!run.some(i => (result[i][along] - portal[along]) * direction >= -AXIS_EPS)) return;
+    for (const i of run) result[i][axis] = pin[axis];
   };
   align(from, options?.exitStub, false);
   align(to, options?.approachStub, true);
@@ -1569,6 +1588,17 @@ function applyWireSegmentEdit(
     sameAxisCoord(a.y, b.y) && !sameAxisCoord(a.x, b.x);
   const isVertical =
     sameAxisCoord(a.x, b.x) && !sameAxisCoord(a.y, b.y);
+
+  if (anchor.length === 2 && (isHorizontal || isVertical)) {
+    // A straight wire has no internal vertices for the run movers to displace.
+    // Create a pair of elbows while preserving both pins and their exit axes.
+    const opts = wireRouteOptionsForWire(wire.from, wire.to, components);
+    const start = opts.exitStub ?? from;
+    const end = opts.approachStub ?? to;
+    out.splice(1, 0, isHorizontal ? { x: start.x, y: snapped.y } : { x: snapped.x, y: start.y },
+      isHorizontal ? { x: end.x, y: snapped.y } : { x: snapped.x, y: end.y });
+    return resolveWireEditPreview(wire, components, anchor, out);
+  }
 
   if (isHorizontal) {
     moveHorizontalRunAtSegment(out, segmentIndex, snapped.y);
@@ -2149,7 +2179,9 @@ export function resolveWireDraftPoints(
       : {
           startSegmentIndex: 0,
           endVerticalFirst: false,
-          skipObstacleClearing: true,
+          // With no protected pin lead (breadboard/junction), the entire
+          // rubber band is free space and must still avoid component bodies.
+          skipObstacleClearing: !!exit,
         };
   return buildOrthogonalPath(from, draft.bends, cursor, opts, components);
 }

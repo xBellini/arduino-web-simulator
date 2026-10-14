@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:stop": "node scripts/stop-dev-server.mjs",
     "build": "tsc -b && vite build",
+    "check:wires": "node scripts/check-wire-routing.mjs",
     "preview": "vite preview",
     "fetch-spice-models": "node scripts/fetch-spice-libraries.mjs",
     "fetch-bundled-blink": "node scripts/fetch-bundled-blink-hex.mjs",
