@@ -37,6 +37,12 @@
 #                     | After vertical/horizontal exit portal, continue along exit axis first (stops column rubberband reverse)
 # 07-10-2026 | Cursor | Stripped wire draft/resize debug instrumentation after confirmed polish
 # 09-10-2026 | Cursor | Moved from `src/utils/geometry.ts` (tree reorganization)
+# 14-10-2026 | Codex  | Store creation waypoints, not generated corners; reroute around moved bodies
+#                     | Replace repeated detours with bounded visibility search; unify resize preview/commit
+#                     | Preserve pin leads symmetrically while dragging; discard obstructed waypoints
+#                     | Trim self-intersections after moves; tight endpoint envelopes may reduce clearance
+#                     | Physically enclosed pins retain a finite fallback when no body-safe route exists
+#                     | Align endpoint runs within half a grid to exact pin axes, removing off-grid LCD/header grooves
  */
 import type {
   ComponentDefinition,
@@ -530,104 +536,93 @@ function pointInsideExpandedAabb(p: Point, box: WorldAabb, pad: number): boolean
   return p.x >= hit.minX && p.x <= hit.maxX && p.y >= hit.minY && p.y <= hit.maxY;
 }
 
-function detourSegmentAroundObstacles(
-  a: Point,
-  b: Point,
-  obstacles: WorldAabb[],
-): Point[] | null {
-  if (sameAxisCoord(a.y, b.y)) {
-    const y = (a.y + b.y) / 2;
-    let blockMinY = Infinity;
-    let blockMaxY = -Infinity;
-    for (const box of obstacles) {
-      blockMinY = Math.min(blockMinY, box.minY);
-      blockMaxY = Math.max(blockMaxY, box.maxY);
+/** Shortest rectilinear route on obstacle-edge visibility coordinates. */
+function routeAroundObstacles(from: Point, to: Point, boxes: WorldAabb[], clearance = WIRE_OBSTACLE_CLEARANCE): Point[] {
+  const equal = (a: Point, b: Point) => a.x === b.x && a.y === b.y;
+  const blocked = (a: Point, b: Point) => boxes.some(box => {
+    if (!segmentIntersectsAabb(a, b, box, clearance)) return false;
+    // Close parts can cover the pin's clearance envelope. Only the endpoint
+    // escape/approach may cross that envelope, never the actual body.
+    if (segmentIntersectsAabb(a, b, box, 0)) return true;
+    const escape = (p: Point, q: Point) =>
+      (equal(p, from) || equal(p, to)) && pointInsideExpandedAabb(p, box, clearance) &&
+      !pointInsideExpandedAabb(q, box, clearance);
+    return !escape(a, b) && !escape(b, a);
+  });
+  const direct = orthogonalSegment(from, to, 0);
+  if (direct.slice(1).every((p, i) => !blocked(direct[i], p))) return direct;
+  const alternate = orthogonalSegment(from, to, 1);
+  if (alternate.slice(1).every((p, i) => !blocked(alternate[i], p))) return alternate;
+  // Search outside padded boundaries; rounding inward can re-enter the obstacle.
+  const margin = clearance + 1;
+  const xs = [...new Set([from.x, to.x, ...boxes.flatMap(b => [b.minX - margin, b.maxX + margin])])].sort((a,b) => a-b);
+  const ys = [...new Set([from.y, to.y, ...boxes.flatMap(b => [b.minY - margin, b.maxY + margin])])].sort((a,b) => a-b);
+  const width = xs.length;
+  const start = ys.indexOf(from.y) * width + xs.indexOf(from.x);
+  const goal = ys.indexOf(to.y) * width + xs.indexOf(to.x);
+  const point = (id: number): Point => ({ x: xs[id % width], y: ys[Math.floor(id / width)] });
+  const costs = new Map<number, number>([[start, 0]]);
+  const parent = new Map<number, number>();
+  const open = new Set([start]);
+  const closed = new Set<number>();
+  while (open.size) {
+    let current = -1;
+    let best = Infinity;
+    for (const id of open) {
+      const p = point(id);
+      const score = costs.get(id)! + Math.abs(p.x - to.x) + Math.abs(p.y - to.y);
+      if (score < best) { current = id; best = score; }
     }
-    const above = snapToGrid({ x: 0, y: blockMinY - WIRE_OBSTACLE_CLEARANCE }).y;
-    const below = snapToGrid({ x: 0, y: blockMaxY + WIRE_OBSTACLE_CLEARANCE }).y;
-    // Stay on the same side of the obstacle as the segment start (portal / free-space point).
-    let bypassY = above;
-    if (a.y > blockMaxY) bypassY = below;
-    else if (a.y < blockMinY) bypassY = above;
-    else if (b.y < a.y) bypassY = above;
-    else if (b.y > a.y) bypassY = below;
-    else {
-      bypassY =
-        Math.abs(above - a.y) <= Math.abs(below - a.y) ? above : below;
+    if (current === goal) {
+      const result = [point(current)];
+      while (parent.has(current)) { current = parent.get(current)!; result.push(point(current)); }
+      return dedupeCollinear(result.reverse());
     }
-    if (sameAxisCoord(bypassY, y)) return null;
-    return [a, { x: a.x, y: bypassY }, { x: b.x, y: bypassY }, b];
+    open.delete(current);
+    closed.add(current);
+    const x = current % width;
+    const y = Math.floor(current / width);
+    const neighbors = [x > 0 ? current - 1 : -1, x + 1 < width ? current + 1 : -1,
+      y > 0 ? current - width : -1, y + 1 < ys.length ? current + width : -1];
+    // Endpoint escapes may need to jump over visibility coordinates inside padding.
+    if (current === start) {
+      for (let col = 0; col < width; col++) neighbors.push(y * width + col);
+      for (let row = 0; row < ys.length; row++) neighbors.push(row * width + x);
+    }
+    if (x === goal % width || y === Math.floor(goal / width)) neighbors.push(goal);
+    const a = point(current);
+    for (const next of neighbors) {
+      if (next < 0 || closed.has(next)) continue;
+      const b = point(next);
+      if (blocked(a, b)) continue;
+      const cost = costs.get(current)! + Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+      if (cost >= (costs.get(next) ?? Infinity)) continue;
+      costs.set(next, cost); parent.set(next, current); open.add(next);
+    }
   }
-  if (sameAxisCoord(a.x, b.x)) {
-    const x = (a.x + b.x) / 2;
-    let blockMinX = Infinity;
-    let blockMaxX = -Infinity;
-    for (const box of obstacles) {
-      blockMinX = Math.min(blockMinX, box.minX);
-      blockMaxX = Math.max(blockMaxX, box.maxX);
-    }
-    const left = snapToGrid({ x: blockMinX - WIRE_OBSTACLE_CLEARANCE, y: 0 }).x;
-    const right = snapToGrid({ x: blockMaxX + WIRE_OBSTACLE_CLEARANCE, y: 0 }).x;
-    let bypassX = left;
-    if (a.x > blockMaxX) bypassX = right;
-    else if (a.x < blockMinX) bypassX = left;
-    else if (b.x < a.x) bypassX = left;
-    else if (b.x > a.x) bypassX = right;
-    else {
-      bypassX =
-        Math.abs(left - a.x) <= Math.abs(right - a.x) ? left : right;
-    }
-    if (sameAxisCoord(bypassX, x)) return null;
-    return [a, { x: bypassX, y: a.y }, { x: bypassX, y: b.y }, b];
-  }
-  return null;
+  // If envelopes overlap, prefer a body-safe route with reduced clearance.
+  // Actual overlapping bodies may make any route impossible; keep the fallback finite.
+  return clearance > 0 ? routeAroundObstacles(from, to, boxes, 0) : direct;
 }
 
-/** Obstacle avoidance for the free-space portion of a wire (never the pin→portal legs). */
+/** Route between intentional waypoints, never feed generated detours back into the search. */
 export function clearFreeSpaceWirePath(
   points: Point[],
   components: PlacedComponent[],
   skipComponentIds?: ReadonlySet<string>,
   mandatory: Point[] = [],
 ): Point[] {
-  if (points.length < 2 || components.length === 0) return points;
-
-  const aabbs = components
-    .filter(
-      (comp) =>
-        comp.type !== 'breadboard' &&
-        comp.type !== 'wire_junction' &&
-        !skipComponentIds?.has(comp.id),
-    )
-    .map((comp) => componentBodyWorldAabb(comp))
-    .filter((box): box is WorldAabb => box !== null);
-  if (aabbs.length === 0) return points;
-
-  // Keep portal/cursor endpoints exact. Blanket snapToGrid here used to yank an
-  // off-grid exit stub (e.g. x=274) onto the nearest grid (x=270), inserting a
-  // horizontal jog on an otherwise straight pin-column route. Detour corners
-  // still land on grid via detourSegmentAroundObstacles.
-  let path = points.map((p) => ({ ...p }));
-  for (let iter = 0; iter < 48; iter++) {
-    let changed = false;
-    for (let i = 0; i < path.length - 1; i++) {
-      const a = path[i];
-      const b = path[i + 1];
-      const hits = aabbs.filter((box) =>
-        segmentIntersectsAabb(a, b, box, WIRE_OBSTACLE_CLEARANCE),
-      );
-      if (hits.length === 0) continue;
-      const detour = detourSegmentAroundObstacles(a, b, hits);
-      if (!detour) continue;
-      path = [...path.slice(0, i + 1), ...detour.slice(1, -1), ...path.slice(i + 1)];
-      changed = true;
-      break;
-    }
-    if (!changed) break;
+  if (points.length < 2) return points;
+  const boxes = components
+    .filter(c => c.type !== 'breadboard' && c.type !== 'wire_junction' && !skipComponentIds?.has(c.id))
+    .map(componentBodyWorldAabb).filter((b): b is WorldAabb => b !== null);
+  const anchors = [points[0], ...mandatory.filter(p => !boxes.some(b =>
+    pointInsideExpandedAabb(p, b, WIRE_OBSTACLE_CLEARANCE))), points[points.length - 1]];
+  const result: Point[] = [anchors[0]];
+  for (let i = 1; i < anchors.length; i++) {
+    result.push(...routeAroundObstacles(anchors[i - 1], anchors[i], boxes).slice(1));
   }
-  return mandatory.length > 0
-    ? dedupeCollinearPreserving(path, mandatory)
-    : dedupeCollinear(path);
+  return dedupeCollinear(result);
 }
 
 /** @deprecated use clearFreeSpaceWirePath */
@@ -796,7 +791,25 @@ export function wireRouteHintsFromPin(
   if (!pinWorld) {
     return { startSegmentIndex: 0, endVerticalFirst: false };
   }
-  const stub = pinWirePortal(comp, pin.pinId, pinWorld);
+  let stub = pinWirePortal(comp, pin.pinId, pinWorld);
+  if (stub) {
+    const horizontal = sameAxisCoord(stub.y, pinWorld.y);
+    const sign = Math.sign(horizontal ? stub.x - pinWorld.x : stub.y - pinWorld.y);
+    let length = distance(pinWorld, stub);
+    for (const other of components) {
+      if (other.id === comp.id || other.type === 'breadboard' || other.type === WIRE_JUNCTION_TYPE) continue;
+      const body = componentBodyWorldAabb(other);
+      if (!body || pointInsideExpandedAabb(pinWorld, body, 0)) continue;
+      const pad = pointInsideExpandedAabb(pinWorld, body, WIRE_OBSTACLE_CLEARANCE) ? 0 : WIRE_OBSTACLE_CLEARANCE;
+      if (!segmentIntersectsAabb(pinWorld, stub, body, pad)) continue;
+      const box = expandAabb(body, pad + 1);
+      const edge = horizontal ? (sign > 0 ? box.minX : box.maxX) : (sign > 0 ? box.minY : box.maxY);
+      const available = (edge - (horizontal ? pinWorld.x : pinWorld.y)) * sign;
+      if (available > 0) length = Math.min(length, available);
+    }
+    stub = horizontal ? { x: pinWorld.x + sign * length, y: pinWorld.y }
+      : { x: pinWorld.x, y: pinWorld.y + sign * length };
+  }
   return {
     startSegmentIndex: 0,
     endVerticalFirst: !!stub,
@@ -1019,9 +1032,8 @@ export function normalizeWireBends(
   const pts = dedupeCollinearPreserving(raw, mandatory);
   if (pts.length <= 2) return [];
   const interior = pathToBends(pts);
-  const normalized = buildOrthogonalPath(from, interior, to, options, components);
-  if (normalized.length <= 2) return [];
-  return pathToBends(normalized);
+  void options; void components;
+  return interior;
 }
 
 export function finalizeWireBends(
@@ -1160,167 +1172,6 @@ function moveVerticalRunFromCorner(
   moveVerticalRunAtSegment(out, segmentIndex, newX);
 }
 
-/** True when the segment is a short horizontal leg attached directly to a pin. */
-function isPinHorizontalStubSegment(path: Point[], segmentIndex: number): boolean {
-  if (segmentIndex < 0 || segmentIndex >= path.length - 1) return false;
-  const a = path[segmentIndex];
-  const b = path[segmentIndex + 1];
-  if (!sameAxisCoord(a.y, b.y)) return false;
-  if (segmentIndex === 0) {
-    const pin = path[0];
-    return sameAxisCoord(pin.y, a.y) && !sameAxisCoord(pin.x, a.x);
-  }
-  if (segmentIndex === path.length - 2) {
-    const pin = path[path.length - 1];
-    return sameAxisCoord(pin.y, a.y) && !sameAxisCoord(pin.x, a.x);
-  }
-  return false;
-}
-
-/** Horizontal stub point just off the pin along its exit axis (on-component leg). */
-function pinHorizontalStubPoint(
-  pinRef: PinRef,
-  pin: Point,
-  components: PlacedComponent[],
-): Point | null {
-  const comp = components.find((c) => c.id === pinRef.componentId);
-  if (!comp) return null;
-
-  const portal = pinWirePortal(comp, pinRef.pinId, pin);
-  if (portal) {
-    // Keep the pin's axis; absolute snapToGrid shifts off-grid pins (e.g. 238 → 234).
-    if (sameAxisCoord(portal.y, pin.y)) {
-      return { x: portal.x, y: pin.y };
-    }
-    if (sameAxisCoord(portal.x, pin.x)) {
-      return { x: pin.x, y: portal.y };
-    }
-    return portal;
-  }
-
-  const hints = wireRouteHintsFromPin(pinRef, components);
-  if (hints.headerStub) {
-    if (sameAxisCoord(hints.headerStub.y, pin.y)) {
-      return { x: hints.headerStub.x, y: pin.y };
-    }
-    return hints.headerStub;
-  }
-
-  const localDir = pinExitDirectionLocal(comp, pinRef.pinId);
-  if (localDir) {
-    const worldDir = localDirectionToWorld(comp, localDir);
-    return {
-      x: pin.x + worldDir.x * MIN_PIN_EXIT_DISTANCE * 2,
-      y: pin.y + worldDir.y * MIN_PIN_EXIT_DISTANCE * 2,
-    };
-  }
-
-  return { x: pin.x + GRID_SIZE, y: pin.y };
-}
-
-/**
- * When a wire goes pin → vertical immediately, insert a short horizontal (or portal) leg on the
- * component so the main vertical run slides along that stub instead of leaving the pin.
- */
-function enforceWirePinStubAtEnd(
-  path: Point[],
-  end: 'start' | 'end',
-  pinRef: PinRef,
-  components: PlacedComponent[],
-): Point[] {
-  if (path.length < 2) return path;
-
-  const legIdx = end === 'start' ? 1 : path.length - 2;
-  const pinIdx = end === 'start' ? 0 : path.length - 1;
-  const leg = path[legIdx];
-  const pinPt = path[pinIdx];
-
-  const verticalFromPin =
-    sameAxisCoord(pinPt.x, leg.x) && !sameAxisCoord(pinPt.y, leg.y);
-  if (!verticalFromPin) return path;
-
-  const stub = pinHorizontalStubPoint(pinRef, pinPt, components);
-  if (!stub) return path;
-
-  const horizontalStub = sameAxisCoord(stub.y, pinPt.y)
-    ? { x: stub.x, y: pinPt.y }
-    : sameAxisCoord(stub.x, pinPt.x)
-      ? { x: pinPt.x, y: stub.y }
-      : stub;
-
-  const runX = horizontalStub.x;
-  const runY = horizontalStub.y;
-  const legSpan = Math.abs(leg.y - pinPt.y);
-  if (legSpan <= MIN_PIN_EXIT_DISTANCE) return path;
-
-  if (end === 'start') {
-    const tail = path.slice(2).map((p) => ({ ...p }));
-    const corner = sameAxisCoord(horizontalStub.y, pinPt.y)
-      ? { x: runX, y: leg.y }
-      : { x: leg.x, y: runY };
-    return [pinPt, horizontalStub, corner, ...tail];
-  }
-
-  const head = path.slice(0, -2).map((p) => ({ ...p }));
-  const corner = sameAxisCoord(horizontalStub.y, pinPt.y)
-    ? { x: runX, y: leg.y }
-    : { x: leg.x, y: runY };
-  return [...head, corner, horizontalStub, pinPt];
-}
-
-function enforceWirePinStubs(
-  path: Point[],
-  wire: Wire,
-  components: PlacedComponent[],
-): Point[] {
-  let out = path.map((p) => ({ ...p }));
-  out = enforceWirePinStubAtEnd(out, 'start', wire.from, components);
-  out = enforceWirePinStubAtEnd(out, 'end', wire.to, components);
-  return fixPinLegs(out);
-}
-
-/** Keep the first/last interior corners on a straight H/V line from their pins. */
-function fixPinLegs(path: Point[]): Point[] {
-  if (path.length < 3) return path;
-  const out = path.map((p) => ({ ...p }));
-
-  const startPin = out[0];
-  const first = out[1];
-  const startLeg = distance(startPin, first);
-  const startIsVertical =
-    sameAxisCoord(startPin.x, first.x) && !sameAxisCoord(startPin.y, first.y);
-  const startIsHorizontal =
-    sameAxisCoord(startPin.y, first.y) && !sameAxisCoord(startPin.x, first.x);
-  if (startLeg > 0 && startLeg <= MIN_PIN_EXIT_DISTANCE * 4 && (startIsVertical || startIsHorizontal)) {
-    if (startIsVertical) first.x = startPin.x;
-    if (startIsHorizontal) first.y = startPin.y;
-  } else if (sameAxisCoord(startPin.y, first.y)) {
-    first.y = startPin.y;
-  } else if (sameAxisCoord(startPin.x, first.x)) {
-    first.x = startPin.x;
-  }
-  out[1] = first;
-
-  const endPin = out[out.length - 1];
-  const last = out[out.length - 2];
-  const endLeg = distance(endPin, last);
-  const endIsVertical =
-    sameAxisCoord(endPin.x, last.x) && !sameAxisCoord(endPin.y, last.y);
-  const endIsHorizontal =
-    sameAxisCoord(endPin.y, last.y) && !sameAxisCoord(endPin.x, last.x);
-  if (endLeg > 0 && endLeg <= MIN_PIN_EXIT_DISTANCE * 4 && (endIsVertical || endIsHorizontal)) {
-    if (endIsVertical) last.x = endPin.x;
-    if (endIsHorizontal) last.y = endPin.y;
-  } else if (sameAxisCoord(endPin.y, last.y)) {
-    last.y = endPin.y;
-  } else if (sameAxisCoord(endPin.x, last.x)) {
-    last.x = endPin.x;
-  }
-  out[out.length - 2] = last;
-
-  return out;
-}
-
 function wireCornerTopology(path: Point[], index: number) {
   const prev = path[index - 1];
   const cur = path[index];
@@ -1344,157 +1195,7 @@ export function wireSegmentCrosshairPoint(a: Point, b: Point): Point {
   return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
 }
 
-function collectWireAlignmentCoords(
-  wires: Wire[],
-  components: PlacedComponent[],
-): { x: number[]; y: number[] } {
-  const xs = new Set<number>();
-  const ys = new Set<number>();
-
-  for (const wire of wires) {
-    const from = getPinPosition(wire.from, components);
-    const to = getPinPosition(wire.to, components);
-    if (from) {
-      xs.add(from.x);
-      ys.add(from.y);
-    }
-    if (to) {
-      xs.add(to.x);
-      ys.add(to.y);
-    }
-
-    const path = resolveWirePoints(wire, components);
-    if (!path) continue;
-    for (let i = 0; i < path.length - 1; i++) {
-      const a = path[i];
-      const b = path[i + 1];
-      if (a.y === b.y) ys.add(a.y);
-      if (a.x === b.x) xs.add(a.x);
-    }
-  }
-
-  return { x: [...xs], y: [...ys] };
-}
-
-/** Snap a dragged axis value to a nearby wire/pin grid line (commit only). */
-function snapToWireAlignment(
-  value: number,
-  axis: 'x' | 'y',
-  wires: Wire[],
-  components: PlacedComponent[],
-  threshold = WIRE_JOIN_THRESHOLD,
-  extraTargets: number[] = [],
-): number {
-  const snapped = snapWireDrag(axis === 'x' ? { x: value, y: 0 } : { x: 0, y: value })[
-    axis
-  ];
-  const fromWires =
-    axis === 'x'
-      ? collectWireAlignmentCoords(wires, components).x
-      : collectWireAlignmentCoords(wires, components).y;
-  const targets = [...new Set([...fromWires, ...extraTargets])];
-
-  let best = snapped;
-  let bestDist = threshold;
-  for (const target of targets) {
-    const dist = Math.abs(target - value);
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = target;
-    }
-  }
-  return best;
-}
-
-function pathAlignmentCoords(path: Point[]): { x: number[]; y: number[] } {
-  const xs = new Set<number>();
-  const ys = new Set<number>();
-  for (const p of path) {
-    xs.add(p.x);
-    ys.add(p.y);
-  }
-  for (let i = 0; i < path.length - 1; i++) {
-    const a = path[i];
-    const b = path[i + 1];
-    if (a.y === b.y) ys.add(a.y);
-    if (a.x === b.x) xs.add(a.x);
-  }
-  return { x: [...xs], y: [...ys] };
-}
-
-/** Pull interior corners together — only on mouse release. */
-function mergeNearbyPathVertices(path: Point[], threshold: number): Point[] {
-  if (path.length < 3) return path;
-
-  let out = path.map((p) => ({ ...p }));
-
-  for (let pass = 0; pass < 4; pass++) {
-    for (let i = 1; i < out.length - 1; i++) {
-      let { x, y } = out[i];
-      const wasCorner = isOrthogonalCorner(out, i);
-      const diagCountWith = (nx: number, ny: number) =>
-        diagonalSegmentsOf(out.map((p, idx) => (idx === i ? { x: nx, y: ny } : p))).length;
-
-      for (let j = 1; j < out.length - 1; j++) {
-        if (i === j) continue;
-        const other = out[j];
-        if (Math.hypot(x - other.x, y - other.y) <= threshold) {
-          // Refuse snaps that turn short ortho jogs into diagonals (H_R1).
-          if (diagCountWith(other.x, other.y) <= diagCountWith(x, y)) {
-            x = other.x;
-            y = other.y;
-          }
-        }
-      }
-
-      const prev = out[i - 1];
-      const next = out[i + 1];
-      const prevIsPin = i === 1;
-      const nextIsPin = i === out.length - 2;
-
-      const trySet = (nx: number, ny: number) => {
-        if (nx === x && ny === y) return;
-        if (diagCountWith(nx, ny) > diagCountWith(x, y)) return;
-        const trial = out.map((p, idx) => (idx === i ? { x: nx, y: ny } : p));
-        if (!wasCorner || isOrthogonalCorner(trial, i)) {
-          x = nx;
-          y = ny;
-        }
-      };
-
-      if (!prevIsPin) {
-        if (Math.abs(x - prev.x) <= 1 && Math.abs(y - prev.y) <= threshold) {
-          trySet(x, prev.y);
-        }
-        if (Math.abs(y - prev.y) <= 1 && Math.abs(x - prev.x) <= threshold) {
-          trySet(prev.x, y);
-        }
-      }
-      if (!nextIsPin) {
-        if (Math.abs(x - next.x) <= 1 && Math.abs(y - next.y) <= threshold) {
-          trySet(x, next.y);
-        }
-        if (Math.abs(y - next.y) <= 1 && Math.abs(x - next.x) <= threshold) {
-          trySet(next.x, y);
-        }
-      }
-
-      out[i] = { x, y };
-    }
-
-    const mandatory = pathCornerPoints(out);
-    const deduped = dedupeCollinearPreserving(out, mandatory);
-    if (deduped.length === out.length) {
-      out = deduped;
-      break;
-    }
-    out = deduped;
-  }
-
-  return fixPinLegs(out);
-}
-
-/** Bend points for a newly completed wire (includes final orthogonal leg to the pin). */
+/** Persist only deliberate draft waypoints; generated elbows follow moving pins. */
 export function bendsForCompletedWire(
   from: Point,
   to: Point,
@@ -1503,9 +1204,9 @@ export function bendsForCompletedWire(
   toPin: PinRef,
   components: PlacedComponent[],
 ): Point[] {
-  const opts = wireRouteOptionsForWire(fromPin, toPin, components);
-  const path = buildOrthogonalPath(from, draftBends, to, opts, components);
-  return normalizeWireBends(from, path, to, opts, components);
+  // Generated elbows/portals are resolved from current component positions, not persisted.
+  void from; void to; void fromPin; void toPin; void components;
+  return draftBends.map(p => ({ ...p }));
 }
 
 /** Default elbow corner when a wire has no stored bends. */
@@ -1547,6 +1248,37 @@ function buildFreeSpaceOrthogonalPath(
   return dedupeCollinearPreserving([...points, ...tail.slice(1)], bends);
 }
 
+/** Remove retraced/self-intersecting tails left by moved endpoints or legacy route corners. */
+function removeWireLoops(points: Point[]): Point[] {
+  let out = dedupeCollinear(points);
+  const between = (v: number, a: number, b: number) => v >= Math.min(a, b) && v <= Math.max(a, b);
+  for (let pass = 0; pass < points.length; pass++) {
+    let cut = false;
+    for (let i = 0; i + 1 < out.length && !cut; i++) {
+      const a = out[i], b = out[i + 1];
+      for (let j = i + 2; j + 1 < out.length; j++) {
+        const c = out[j], d = out[j + 1];
+        let cross: Point | null = null;
+        if (a.y === b.y && c.x === d.x && between(c.x, a.x, b.x) && between(a.y, c.y, d.y)) cross = { x: c.x, y: a.y };
+        else if (a.x === b.x && c.y === d.y && between(a.x, c.x, d.x) && between(c.y, a.y, b.y)) cross = { x: a.x, y: c.y };
+        else if (a.y === b.y && c.y === d.y && a.y === c.y) {
+          const x = Math.max(Math.min(a.x,b.x), Math.min(c.x,d.x));
+          if (x <= Math.min(Math.max(a.x,b.x), Math.max(c.x,d.x))) cross = { x, y: a.y };
+        } else if (a.x === b.x && c.x === d.x && a.x === c.x) {
+          const y = Math.max(Math.min(a.y,b.y), Math.min(c.y,d.y));
+          if (y <= Math.min(Math.max(a.y,b.y), Math.max(c.y,d.y))) cross = { x: a.x, y };
+        }
+        if (!cross) continue;
+        out = dedupeCollinear([...out.slice(0,i+1), cross, ...out.slice(j+1)]);
+        cut = true;
+        break;
+      }
+    }
+    if (!cut) break;
+  }
+  return out;
+}
+
 function assembleWirePath(
   pinFrom: Point,
   pinTo: Point,
@@ -1555,10 +1287,9 @@ function assembleWirePath(
   approachPortal?: Point,
   mandatory: Point[] = [],
 ): Point[] {
-  const finish = (pts: Point[]) =>
-    mandatory.length > 0
-      ? dedupeCollinearPreserving(pts, mandatory)
-      : dedupeCollinear(pts);
+  // Waypoints guide routing, but a moved endpoint must not leave a closed loop.
+  void mandatory;
+  const finish = (pts: Point[]) => removeWireLoops(pts);
 
   if (!exitPortal && !approachPortal) {
     if (freePath.length >= 2) return finish(freePath);
@@ -1588,6 +1319,32 @@ function assembleWirePath(
   return finish(parts);
 }
 
+/** Align only a nearly matching terminal run, not unrelated bends on the same axis. */
+function alignEndpointRuns(from: Point, to: Point, bends: Point[], options?: WireRouteOptions): Point[] {
+  const result = bends.map(p => ({ ...p }));
+  const align = (pin: Point, portal: Point | undefined, reverse: boolean) => {
+    if (!portal || result.length === 0) return;
+    const vertical = portal.x === pin.x && portal.y !== pin.y;
+    const horizontal = portal.y === pin.y && portal.x !== pin.x;
+    if (!vertical && !horizontal) return;
+    const axis = vertical ? 'x' : 'y';
+    const along = vertical ? 'y' : 'x';
+    const index = reverse ? result.length - 1 : 0;
+    const coordinate = result[index][axis];
+    if (Math.abs(coordinate - pin[axis]) > GRID_SIZE / 2) return;
+    const direction = Math.sign(portal[along] - pin[along]);
+    // Preserve waypoints behind the portal rather than pulling them through the body.
+    if ((result[index][along] - portal[along]) * direction < -AXIS_EPS) return;
+    for (let i = index; i >= 0 && i < result.length; i += reverse ? -1 : 1) {
+      if (result[i][axis] !== coordinate) break;
+      result[i][axis] = pin[axis];
+    }
+  };
+  align(from, options?.exitStub, false);
+  align(to, options?.approachStub, true);
+  return result;
+}
+
 /** Build orthogonal path through bend points with H/V legs at both ends. */
 export function buildOrthogonalPath(
   from: Point,
@@ -1600,6 +1357,7 @@ export function buildOrthogonalPath(
   const approachPortal = options?.approachStub;
   const routeFrom = exitPortal ?? from;
   const routeTo = approachPortal ?? to;
+  bends = alignEndpointRuns(from, to, bends, options);
   // Continue along the pin→portal axis first, then turn. Forcing H-first (segIdx 0)
   // after a vertical exit put an elbow on the exit row; the next bend on that
   // column reverse-rubberbanded through it (e.g. 612→540→756 on x=378).
@@ -1688,42 +1446,58 @@ export function resolveWirePoints(
 
   const opts = wireRouteOptionsForWire(wire.from, wire.to, components);
 
-  // Axis-aligned pin-to-pin: prefer a straight segment when the gap is clear.
-  // Fixes wires whose stored bends only exist because portals used to snap off-axis.
-  if (sameAxisCoord(from.x, to.x) || sameAxisCoord(from.y, to.y)) {
-    const direct = clearFreeSpaceWirePath([from, to], components, opts.skipObstacleComponentIds);
-    if (direct.length <= 2) {
-      return direct;
-    }
-  }
 
   return buildOrthogonalPath(
     from,
     wire.bends.map((p) => ({ x: p.x, y: p.y })),
     to,
-    wire.bends.length > 0 ? { ...opts, skipObstacleClearing: true } : opts,
+    opts,
     components,
   );
 }
 
+/** Release legacy generated corners when they describe the current automatic route exactly. */
+export function releaseAutomaticWireBends(wire: Wire, components: PlacedComponent[]): Wire {
+  if (wire.bends.length === 0) return wire;
+  const current = resolveWirePoints(wire, components);
+  const automatic = resolveWirePoints({ ...wire, bends: [] }, components);
+  if (!current || !automatic || current.length !== automatic.length) return wire;
+  const same = current.every((p, i) => sameAxisCoord(p.x, automatic[i].x) && sameAxisCoord(p.y, automatic[i].y));
+  return same ? { ...wire, bends: [] } : wire;
+}
+
 /** Bend points used for handles (materializes default elbow if needed). */
 export function getWireBends(wire: Wire, components: PlacedComponent[]): Point[] {
-  const from = getPinPosition(wire.from, components);
-  const to = getPinPosition(wire.to, components);
-  if (!from || !to) return wire.bends.map((p) => ({ ...p }));
-  if (wire.bends.length > 0) return wire.bends.map((p) => ({ ...p }));
-  return defaultWireBends(
-    from,
-    to,
-    wireRouteOptionsForWire(wire.from, wire.to, components),
-    components,
-  );
+  const path = resolveWirePoints(wire, components);
+  return path ? pathToBends(path) : wire.bends.map(p => ({ ...p }));
 }
 
 /** Result of a live wire edit (before commit). */
 export interface WireEditPreview {
   bends: Point[];
   path: Point[];
+}
+
+function resolveWireEditPreview(
+  wire: Wire,
+  components: PlacedComponent[],
+  anchor: Point[],
+  out: Point[],
+): WireEditPreview {
+  // Runs may reach a pin; keep it fixed and bridge to the displaced run.
+  for (const end of ['end', 'start'] as const) {
+    const pi = end === 'start' ? 0 : out.length - 1;
+    const li = end === 'start' ? 1 : out.length - 2;
+    const ai = end === 'start' ? 1 : anchor.length - 2;
+    const pin = out[pi], leg = out[li];
+    if (sameAxisCoord(pin.x, leg.x) || sameAxisCoord(pin.y, leg.y)) continue;
+    const horizontal = sameAxisCoord(anchor[end === 'start' ? 0 : anchor.length - 1].y, anchor[ai].y);
+    const elbow = horizontal ? { x: leg.x, y: pin.y } : { x: pin.x, y: leg.y };
+    out.splice(end === 'start' ? 1 : out.length - 1, 0, elbow);
+  }
+  const bends = freeSpaceBendsFromPath(out, wire, components);
+  const preview = resolveWirePoints({ ...wire, bends }, components) ?? out;
+  return { bends: freeSpaceBendsFromPath(preview, wire, components), path: preview };
 }
 
 function applyWireHandleEdit(
@@ -1764,8 +1538,7 @@ function applyWireHandleEdit(
     out[vertexIndex] = { x: T.x, y: anchor[vertexIndex - 1].y };
   }
 
-  const preview = fixPinLegs(out);
-  return { bends: pathToBends(preview), path: preview };
+  return resolveWireEditPreview(wire, components, anchor, out);
 }
 
 function applyWireSegmentEdit(
@@ -1792,10 +1565,6 @@ function applyWireSegmentEdit(
   const out = anchor.map((p) => ({ ...p }));
   const snapped = snapWireDragRelative(cursor, a);
 
-  if (isPinHorizontalStubSegment(anchor, segmentIndex)) {
-    return { bends: pathToBends(anchor), path: anchor };
-  }
-
   const isHorizontal =
     sameAxisCoord(a.y, b.y) && !sameAxisCoord(a.x, b.x);
   const isVertical =
@@ -1809,8 +1578,7 @@ function applyWireSegmentEdit(
     return null;
   }
 
-  const preview = fixPinLegs(out);
-  return { bends: pathToBends(preview), path: preview };
+  return resolveWireEditPreview(wire, components, anchor, out);
 }
 
 /** Apply a new position to a bend handle. */
@@ -1891,57 +1659,16 @@ export function previewWireSegmentDrag(
   );
 }
 
-/** Snap, merge collinear steps, and fix pin legs — call on mouse release after a drag. */
+/** Commit the validated preview without a second snapping/routing pass. */
 export function commitWireBendsFromPath(
   wire: Wire,
   path: Point[],
   components: PlacedComponent[],
   allWires: Wire[] = [],
 ): Point[] {
-  const from = getPinPosition(wire.from, components);
-  const to = getPinPosition(wire.to, components);
-  if (!from || !to || path.length <= 2) return wire.bends;
-
-  let merged = mergeNearbyPathVertices(path, WIRE_JOIN_THRESHOLD);
-
-  const align = pathAlignmentCoords(merged);
-  const snapped = merged.map((p) => ({ ...p }));
-  for (let i = 1; i < snapped.length - 1; i++) {
-    const pinAdjacent = i === 1 || i === snapped.length - 2;
-    snapped[i] = {
-      x: pinAdjacent
-        ? snapped[i].x
-        : snapToWireAlignment(
-            snapped[i].x,
-            'x',
-            allWires,
-            components,
-            WIRE_JOIN_THRESHOLD,
-            align.x,
-          ),
-      y: pinAdjacent
-        ? snapped[i].y
-        : snapToWireAlignment(
-            snapped[i].y,
-            'y',
-            allWires,
-            components,
-            WIRE_JOIN_THRESHOLD,
-            align.y,
-          ),
-    };
-  }
-
-  merged = fixPinLegs(
-    mergeNearbyPathVertices(
-      dedupeCollinearPreserving(snapped, pathCornerPoints(snapped)),
-      WIRE_JOIN_THRESHOLD,
-    ),
-  );
-  merged = enforceWirePinStubs(merged, wire, components);
-  merged = dedupeCollinearPreserving(merged, pathCornerPoints(merged));
-
-  return freeSpaceBendsFromPath(merged, wire, components);
+  void allWires;
+  if (path.length < 2) return wire.bends;
+  return freeSpaceBendsFromPath(dedupeCollinear(path), wire, components);
 }
 
 export function commitWireBends(
@@ -2403,10 +2130,9 @@ export function resolveWireDraftPoints(
   const exit = fromOpts.exitStub;
   const pastExit = exit ? cursorPastPinExit(from, exit, cursor) : true;
   const offAxis = exit ? cursorOffPinExitAxis(from, exit, cursor) : false;
-  // With placed bends, never obstacle-clear (same as completed wires) — clearing
-  // + non-preserving dedupe erased retreat spurs back toward the origin (H_C1).
+  // Draft waypoints use the same obstacle policy as completed wires.
   const wantClear =
-    draft.bends.length === 0 && !!(exit && (pastExit || offAxis));
+    !!(exit && (pastExit || offAxis));
   const opts: WireRouteOptions = wantClear
     ? {
         ...fromOpts,
@@ -2418,7 +2144,7 @@ export function resolveWireDraftPoints(
     : exit && draft.bends.length > 0
       ? {
           ...fromOpts,
-          skipObstacleClearing: true,
+          skipObstacleClearing: false,
         }
       : {
           startSegmentIndex: 0,

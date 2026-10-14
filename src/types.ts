@@ -26,6 +26,7 @@
 #                     | CapacitanceUnit + capacitanceValue/Unit on PlacedComponent
 # 12-10-2026 | Cursor | rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
 # 13-10-2026 | Codex | Add PaletteMetadata for category, order and optional search keywords.
+# 14-10-2026 | Codex | Wire bends represent routing waypoints; new wires omit automatic elbows.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -186,7 +187,7 @@ export interface Wire {
   id: string;
   from: PinRef;
   to: PinRef;
-  /** Corner points between pins (orthogonal segments) */
+  /** Routing waypoints in world coordinates; automatic elbows are resolved from current pins. */
   bends: { x: number; y: number }[];
 }
 

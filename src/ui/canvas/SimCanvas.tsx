@@ -26,6 +26,7 @@
 #                     | Custom Editor takes precedence over fields; chip-name editing is the fallback, never a stacked second dialog.
 #                     | Property saves still use updateComponent, preserving undo and stopping active simulation.
 # 14-10-2026 | Codex | Render GPIO warning badges above hit layers so their measured-current tooltips receive hover.
+#                    | Keep automatic routes automatic until edited; choose the drag target at pointer-down.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -550,13 +551,6 @@ export function SimCanvas() {
       const wire = wires.find((w) => w.id === wireId);
       if (!wire || !wrapRef.current) return false;
       setCanvasInteracting(true);
-
-      if (wire.bends.length === 0) {
-        const path = resolveWirePoints(wire, components);
-        if (path && path.length > 2) {
-          updateWireBends(wireId, pathToBends(path));
-        }
-      }
 
       const handleRadius = WIRE_HANDLE_RADIUS / viewport.zoom;
       const segmentHit = WIRE_SEGMENT_HIT / viewport.zoom;
@@ -1189,7 +1183,8 @@ export function SimCanvas() {
         const dx = e.clientX - interaction.startX;
         const dy = e.clientY - interaction.startY;
         if (Math.hypot(dx, dy) >= WIRE_DRAG_THRESHOLD) {
-          if (startWireEdit(interaction.wireId, world)) {
+          const origin = getWorldPoint(interaction.startX, interaction.startY);
+          if (origin && startWireEdit(interaction.wireId, origin)) {
             const seg = interactionRef.current;
             if (seg?.kind === 'wire-segment') {
               const wire = wires.find((w) => w.id === seg.wireId);
@@ -1569,12 +1564,6 @@ export function SimCanvas() {
       e.preventDefault();
       const wire = wires.find((w) => w.id === wireId);
       if (!wire) return;
-      if (wire.bends.length === 0) {
-        const path = resolveWirePoints(wire, components);
-        if (path && path.length > 2) {
-          updateWireBends(wireId, pathToBends(path));
-        }
-      }
       select([], [wireId]);
       const dragStartPath = resolveWirePoints(wire, components);
       if (!dragStartPath) return;

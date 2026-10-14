@@ -13,6 +13,7 @@
 #                     | Expanded What with practical how-to notes
 # 13-10-2026 | Codex | Style hints in shared property forms.
 #                     | Add violet breathing highlight for HIGH signal wires; reduced-motion uses a static highlight.
+# 14-10-2026 | Codex | Reserve toolbar hint space so wiring/selection text cannot move the canvas mid-gesture.
  */
 :root{
 --bg-app: #0f1419;
@@ -129,7 +130,13 @@ color:var(--danger)
 }
 .wire-hint{
 font-size:.8rem;
-color:var(--wire-draft)
+color:var(--wire-draft);
+flex:0 1 20rem;
+width:20rem;
+min-width:0;
+height:2.4em;
+line-height:1.2;
+overflow:auto
 }
 .wire-hint-subtle{
 opacity:.65

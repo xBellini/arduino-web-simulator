@@ -19,6 +19,7 @@
 #                     | Expanded What with practical how-to notes
 #                     | New components seed from the part module's `properties.defaults`
 # 06-10-2026 | Cursor | COMPLETE_WIRE_ON_WIRE: split target wire + junction pin tee while drafting
+# 14-10-2026 | Codex  | Release recognizable legacy automatic corners before moving/rotating connected parts.
  */
 
 import {
@@ -43,6 +44,7 @@ import { getDefinition } from '../registry/components';
 import { getPartModule } from '../components';
 import {
   bendsForCompletedWire,
+  releaseAutomaticWireBends,
   findWireJunctionPinAt,
   getPinPosition,
   pathToBends,
@@ -326,6 +328,8 @@ function reducer(state: SimState, action: Action): SimState {
     case 'MOVE_COMPONENT':
       return {
         ...state,
+        wires: state.wires.map(w => w.from.componentId === action.id || w.to.componentId === action.id
+          ? releaseAutomaticWireBends(w, state.components) : w),
         components: state.components.map((c) =>
           c.id === action.id ? { ...c, x: action.x, y: action.y } : c,
         ),
@@ -342,6 +346,8 @@ function reducer(state: SimState, action: Action): SimState {
       const ids = new Set(state.selectedIds);
       return {
         ...state,
+        wires: state.wires.map(w => ids.has(w.from.componentId) || ids.has(w.to.componentId)
+          ? releaseAutomaticWireBends(w, state.components) : w),
         components: state.components.map((c) => {
           if (!ids.has(c.id)) return c;
           const rotation = (c.rotation + action.degrees + 360) % 360;
