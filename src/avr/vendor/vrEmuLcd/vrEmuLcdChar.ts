@@ -8,6 +8,7 @@
 # Changelog
 # Date       | Author | Remarks
 # 05-10-2026 | Cursor | Changelog creation / TS port of vrEmuLcd character mode + A02 font
+# 15-10-2026 | Codex | Match HD44780 5x8 CGRAM: eight glyphs, codes 8–15 alias 0–7, and character RAM addresses wrap at 64 bytes.
  */
 import { FONT_A02 } from './fontA02';
 
@@ -31,7 +32,8 @@ const CHAR_WIDTH_PX = 5;
 const CHAR_HEIGHT_PX = 8;
 const DDRAM_SIZE = 128;
 const DDRAM_VISIBLE_SIZE = 80;
-const CGRAM_STORAGE_CHARS = 16;
+const CGRAM_STORAGE_CHARS = 8;
+const CGROM_START_CODE = 16;
 const DEFAULT_CGRAM_BYTE = 0xaa;
 
 const ROW_OFFSETS = [0x00, 0x40, 0x14, 0x54];
@@ -61,7 +63,7 @@ interface LcdState {
   scrollOffset: number;
   ddRam: Uint8Array;
   ddIndex: number;
-  /** Flat CGRAM: 16 chars × 8 bytes; first 5 bytes per char are column bitmaps. */
+  /** Flat CGRAM: 8 chars × 8 bytes; first 5 bytes per char are column bitmaps. */
   cgRam: Uint8Array;
   /** Index into cgRam when CGRAM selected; null = DDRAM. */
   cgIndex: number | null;
@@ -156,11 +158,12 @@ export function createVrEmuLcdChar(cols: number, rows: number): VrEmuLcdChar {
 
   function charBits(code: number): Uint8Array {
     const c = code & 0xff;
-    if (c < CGRAM_STORAGE_CHARS) {
+    // HD44780U table 5: bit 3 of a 5x8 custom character code has no effect.
+    if (c < CGROM_START_CODE) {
       const base = (c % CGRAM_STORAGE_CHARS) * CHAR_HEIGHT_PX;
       return state.cgRam.subarray(base, base + CHAR_WIDTH_PX);
     }
-    const romIndex = c - CGRAM_STORAGE_CHARS;
+    const romIndex = c - CGROM_START_CODE;
     const start = romIndex * CHAR_WIDTH_PX;
     return Uint8Array.from(FONT_A02.slice(start, start + CHAR_WIDTH_PX));
   }
