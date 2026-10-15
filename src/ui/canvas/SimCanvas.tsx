@@ -30,6 +30,8 @@
 #                     | Pause wire motion during pointer gestures and wheel bursts; resume after release/cancel or 150 ms wheel idle without rerendering the canvas.
 #                     | Cache resolved wire routes and junctions by circuit geometry so zoom and simulation renders do not rerun obstacle routing; live wire previews bypass the cache.
 #                     | Pass live wire preview identity to invalidate the overlay cache during wire editing.
+#                     | Skip pin-hover and placement calculations during panning; cancel pending hover work and avoid redundant panning-state updates.
+#                     | Keep wire motion active during running pushbutton presses; dragging, panning and zooming still pause it.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -202,7 +204,11 @@ export function SimCanvas() {
       if (pointers.size || wheelIdle !== undefined) canvas.dataset.wireMotionPaused = 'true';
       else delete canvas.dataset.wireMotionPaused;
     };
-    const down = (event: PointerEvent) => { pointers.add(event.pointerId); sync(); };
+    const down = (event: PointerEvent) => {
+      if (event.button === 0 && !spaceDownRef.current &&
+          event.target instanceof Element && event.target.closest('[data-sim-button="true"]')) return;
+      pointers.add(event.pointerId); sync();
+    };
     const up = (event: PointerEvent) => { pointers.delete(event.pointerId); sync(); };
     const wheel = () => {
       clearTimeout(wheelIdle);
@@ -345,6 +351,7 @@ export function SimCanvas() {
   }, [components, wires]);
 
   const setPanningVisual = useCallback((active: boolean) => {
+    if (isPanningRef.current === active) return;
     isPanningRef.current = active;
     setIsPanning(active);
     wrapRef.current?.classList.toggle('is-panning', active);
@@ -771,6 +778,11 @@ export function SimCanvas() {
         return;
       }
       closeContextMenu();
+      // Pending hover work must not wake React after the pan starts.
+      if (hoverPinRafRef.current !== null) cancelAnimationFrame(hoverPinRafRef.current);
+      hoverPinRafRef.current = null;
+      pendingHoverPinRef.current = null;
+      setHoveredPinSnap(null);
       suppressContextMenuRef.current = false;
       interactionRef.current = {
         kind: 'pan',
@@ -1139,25 +1151,8 @@ export function SimCanvas() {
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
-      const world = getWorldPoint(e.clientX, e.clientY);
-      if (!world) return;
-
-      if (wireDraft) {
-        syncWireCursor(world);
-      }
-
-      scheduleHoveredPinUpdate(world);
-
-      if (placementType) {
-        setPlacementPreview(
-          resolvePlacementTopLeft(placementType, world, placementRotation),
-        );
-      }
-
       const interaction = interactionRef.current;
-      if (!interaction) return;
-
-      if (interaction.kind === 'pan') {
+      if (interaction?.kind === 'pan') {
         const dx = e.clientX - interaction.startX;
         const dy = e.clientY - interaction.startY;
         if (
@@ -1183,6 +1178,23 @@ export function SimCanvas() {
         }
         return;
       }
+
+      const world = getWorldPoint(e.clientX, e.clientY);
+      if (!world) return;
+
+      if (wireDraft) {
+        syncWireCursor(world);
+      }
+
+      scheduleHoveredPinUpdate(world);
+
+      if (placementType) {
+        setPlacementPreview(
+          resolvePlacementTopLeft(placementType, world, placementRotation),
+        );
+      }
+
+      if (!interaction) return;
 
       if (interaction.kind === 'marquee') {
         const box: Marquee = {
@@ -1797,6 +1809,7 @@ export function SimCanvas() {
           height={bodyHit.height}
           className="component-hit"
           data-measure-component={comp.id}
+          data-sim-button={comp.type === 'button' && simStatus === 'running' && !wireDraft ? 'true' : undefined}
           fill="rgba(0,0,0,0.001)"
           onPointerDown={(e) => handleComponentBodyPointerDown(e, comp)}
           onDoubleClick={(e) => handleComponentBodyDoubleClick(e, comp)}

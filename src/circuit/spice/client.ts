@@ -41,6 +41,7 @@
 #                     | Engine swap: Concord ngspice-26 → eecircuit-engine module worker, structured results instead of stdout parsing, persistent worker with kill + lazy restart on timeout/crash
 #                     | Moved from `src/sim/spice/ngspiceClient.ts` (tree reorganization)
 # 14-10-2026 | Codex | Invalidate cached measurements when GPIO ownership changes at unchanged voltage.
+# 15-10-2026 | Codex | Preserve signed terminal-probe currents for wire branch accounting; existing component readings remain magnitudes.
  */
 
 
@@ -494,7 +495,7 @@ function mapSpiceToDcResult(
   for (const [compId, instanceName] of exportData.spiceInstanceByComponentId) {
     const amps = branchAmps.get(instanceName.toUpperCase());
     if (amps !== undefined) {
-      branchCurrentMa[compId] = Math.abs(amps) * 1000;
+      branchCurrentMa[compId] = (compId.includes(':terminal:') ? amps : Math.abs(amps)) * 1000;
     }
   }
 

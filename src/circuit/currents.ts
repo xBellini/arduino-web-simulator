@@ -47,8 +47,11 @@
 # 15-10-2026 | Codex | Reverse measured terminal flow for source parts so supply current leaves positive and returns through negative.
 #                     | Sum measured load-terminal currents through explicit junction trees; leave ambiguous or unmeasured branches on the existing fallback.
 #                     | Animate small positive currents too; retain the 2.5-second slowest cycle and actual current labels, with zero/unavailable values static.
+#                     | Resolve supply and return wire trees by signed measured terminal currents, including shared button pins; never copy button current across a net.
+#                     | Show N/A on declared unmodeled supply terminals, including both RTC headers, without current animation.
  */
 
+import { isMcuBoard } from '../avr/pinMap';
 import { formatCurrentMa } from '../values/electric';
 import type { PlacedComponent, Wire } from '../types';
 import { DEFAULT_RESISTANCE_UNIT, DEFAULT_RESISTANCE_VALUE, resistanceToOhms } from '../values/resistor';
@@ -370,9 +373,13 @@ export function updateWireCurrents(
   flags.wireReadingLabel = {};
   const byId = new Map(components.map(comp => [comp.id, comp]));
   const degree = new Map<string, number>();
+  const adjacent = new Map<string, Wire[]>();
   for (const wire of wires) for (const end of [wire.from, wire.to]) {
     const key = pinRefKey(end);
     degree.set(key, (degree.get(key) ?? 0) + 1);
+    const edges = adjacent.get(key) ?? [];
+    edges.push(wire);
+    adjacent.set(key, edges);
   }
   const netCache = new Map<number, number>();
   const upstreamDist = buildUpstreamDistance(netlist, components, flags);
@@ -393,7 +400,71 @@ export function updateWireCurrents(
       flags.wireFlowReverse[wire.id] = false;
       continue;
     }
+    // Unmodeled declared supply terminals must not inherit another load's current.
+    if ([wire.from, wire.to].some(end => {
+      const comp = byId.get(end.componentId);
+      const mod = comp && getPartModule(comp.type);
+      return mod?.wireCurrentPath?.(end.pinId) && !mod.spiceStamp;
+    })) {
+      flags.wireCurrentMa[wire.id] = 0;
+      flags.wireReadingLabel[wire.id] = 'N/A';
+      flags.wireFlowReverse[wire.id] = false;
+      continue;
+    }
     let hasCurrentPath = false;
+    // Cut this wire and sum signed terminal currents on either resulting wire tree.
+    // Shared component pins are vertices too: a button-to-resistor branch must not
+    // inherit all the current on the button's supply net. Loops remain ambiguous.
+    for (const [side, start] of [wire.from, wire.to].entries()) {
+      const queue = [start];
+      const visited = new Set<string>();
+      let total = 0, measuredLeaves = 0, valid = true;
+      while (queue.length && valid) {
+        const pin = queue.pop()!;
+        const key = pinRefKey(pin);
+        if (visited.has(key)) { valid = false; break; }
+        visited.add(key);
+        const comp = byId.get(pin.componentId);
+        const mod = comp && getPartModule(comp.type);
+        if (!comp || isMcuBoard(comp.type) || mod?.standaloneSource) { valid = false; break; }
+        const terminal = branchCurrentMa?.[comp.id + ':terminal:' + pin.pinId];
+        const path = mod?.wireCurrentPath?.(pin.pinId);
+        if (terminal !== undefined) {
+          total += terminal;
+          measuredLeaves++;
+        } else if (path && mod?.spiceStamp) {
+          const measured = branchCurrentMa?.[path.branch === undefined ? comp.id : comp.id + ':' + path.branch];
+          const positive = pinNet(netlist, comp.id, path.positive);
+          const negative = pinNet(netlist, comp.id, path.negative);
+          const vp = positive === null ? undefined : netVoltages?.get(positive);
+          const vn = negative === null ? undefined : netVoltages?.get(negative);
+          if (measured === undefined || vp === undefined || vn === undefined) { valid = false; break; }
+          total += measured * ((pin.pinId === path.positive) === (vp >= vn) ? 1 : -1);
+          measuredLeaves++;
+        } else if (mod?.spiceStamp) {
+          valid = false; break;
+        }
+        // A digital-only part contributes no load to the SPICE model. Do not
+        // invent its physical consumption, or traverse hidden copper as a wire.
+        const sameNetPins = (netlist.nets.get(netForPin(netlist, pin) ?? -1) ?? [])
+          .filter(ep => ep.componentId === comp.id && ep.pinId !== pin.pinId && degree.has(pinRefKey(ep)));
+        if (!path && terminal === undefined && sameNetPins.length) { valid = false; break; }
+        for (const next of adjacent.get(key) ?? []) {
+          if (next.id === wire.id) continue;
+          const other = pinRefKey(next.from) === key ? next.to : pinRefKey(next.to) === key ? next.from : null;
+          if (other && !visited.has(pinRefKey(other))) queue.push(other);
+        }
+      }
+      if (valid && measuredLeaves) {
+        flags.wireCurrentMa[wire.id] = Math.abs(total);
+        flags.wireReadingLabel[wire.id] = formatCurrentMa(Math.abs(total));
+        flags.wireFlowReverse[wire.id] = (side === 0) === (total >= 0);
+        hasCurrentPath = true;
+        break;
+      }
+    }
+    if (hasCurrentPath) continue;
+
     for (const [index, end] of [wire.from, wire.to].entries()) {
       const comp = byId.get(end.componentId);
       const path = comp && getPartModule(comp.type)?.wireCurrentPath?.(end.pinId);
@@ -413,53 +484,16 @@ export function updateWireCurrents(
       break;
     }
     if (hasCurrentPath) continue;
-    // A junction feeder carries the sum of its measured leaf loads. Only accept
-    // explicit wire trees ending in measured positive terminals (no hidden copper,
-    // source terminals, loops, or shared component pins with ambiguous current).
-    for (const [side, start] of [wire.from, wire.to].entries()) {
-      if (byId.get(start.componentId)?.type !== 'wire_junction') continue;
-      const queue = [{ pin: start, incoming: wire.id }];
-      const visited = new Set<string>();
-      let total = 0, leaves = 0, valid = true;
-      while (queue.length && valid) {
-        const { pin, incoming } = queue.pop()!;
-        const key = pinRefKey(pin);
-        if (visited.has(key)) { valid = false; break; }
-        visited.add(key);
-        const comp = byId.get(pin.componentId);
-        if (comp?.type === 'wire_junction') {
-          const outgoing = wires.filter(w => w.id !== incoming &&
-            (pinRefKey(w.from) === key || pinRefKey(w.to) === key));
-          if (!outgoing.length) { valid = false; break; }
-          for (const next of outgoing) queue.push({
-            pin: pinRefKey(next.from) === key ? next.to : next.from, incoming: next.id,
-          });
-        } else {
-          const mod = comp && getPartModule(comp.type);
-          const path = mod?.wireCurrentPath?.(pin.pinId);
-          const measured = comp && path?.branch !== undefined
-            ? branchCurrentMa?.[`${comp.id}:${path.branch}`] : undefined;
-          const positive = comp && path ? pinNet(netlist, comp.id, path.positive) : null;
-          const negative = comp && path ? pinNet(netlist, comp.id, path.negative) : null;
-          const vp = positive === null ? undefined : netVoltages?.get(positive);
-          const vn = negative === null ? undefined : netVoltages?.get(negative);
-          if (!path || path.positive !== pin.pinId || degree.get(key) !== 1 ||
-              mod?.standaloneSource || measured === undefined || vp === undefined || vn === undefined || vp < vn) {
-            valid = false; break;
-          }
-          total += measured;
-          leaves++;
-        }
-      }
-      if (valid && leaves) {
-        flags.wireCurrentMa[wire.id] = total;
-        flags.wireReadingLabel[wire.id] = formatCurrentMa(total);
-        flags.wireFlowReverse[wire.id] = side === 0;
-        hasCurrentPath = true;
-        break;
-      }
+    if ([wire.from, wire.to].some(end => {
+      const comp = byId.get(end.componentId);
+      return comp && comp.type !== 'wire_junction' && !isMcuBoard(comp.type) &&
+        !getPartModule(comp.type)?.spiceStamp && degree.get(pinRefKey(end)) === 1;
+    })) {
+      flags.wireCurrentMa[wire.id] = 0;
+      flags.wireReadingLabel[wire.id] = 'N/A';
+      flags.wireFlowReverse[wire.id] = false;
+      continue;
     }
-    if (hasCurrentPath) continue;
     const netFrom = netForPin(netlist, wire.from);
     const netTo = netForPin(netlist, wire.to);
     const netId = netFrom ?? netTo;

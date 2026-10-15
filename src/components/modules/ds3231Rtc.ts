@@ -18,6 +18,7 @@
 #                     | Drop generated SVG; footprint is `public/components/ds3231_rtc.svg`
 # 12-10-2026 | Cursor | properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
 # 13-10-2026 | Codex | Own RTC address form and palette placement; add clock/time/I2C keywords; retain address parser and hex display.
+# 15-10-2026 | Codex | Declare both RTC supply headers for N/A wire overlays without a guessed electrical load.
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';
@@ -92,6 +93,16 @@ export const ds3231RtcModule: PartModule = {
   palette: { category: 'modules', order: 50, keywords: ['rtc', 'clock', 'time', 'i2c'] },
   type: DS3231_RTC_TYPE,
   internalPinShorts: HEADER_SHORTS,
+
+  // Supply current is unavailable until this module has an electrical model.
+  wireCurrentPath(pinId) {
+    if (pinId === 'vcc' || pinId === 'gnd') {
+      return { branch: 'supply', positive: 'vcc', negative: 'gnd' };
+    }
+    if (pinId === 'vcc_r' || pinId === 'gnd_r') {
+      return { branch: 'supply', positive: 'vcc_r', negative: 'gnd_r' };
+    }
+  },
 
   definition: {
     type: DS3231_RTC_TYPE,
