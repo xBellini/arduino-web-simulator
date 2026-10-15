@@ -45,6 +45,7 @@
 #                     | Align endpoint runs within half a grid to exact pin axes, removing off-grid LCD/header grooves
 #                     | Keep pin exits outside their own bodies in tight gaps; construct exact orthogonal legs and allow straight-segment dragging
 #                     | Apply obstacle routing to free drafts from breadboard holes and junctions as well as component pins
+# 15-10-2026 | Codex  | Carry aligned terminal bends with translated components to prevent new pin-exit doglegs.
  */
 import type {
   ComponentDefinition,
@@ -1475,14 +1476,36 @@ export function resolveWirePoints(
   );
 }
 
-/** Release legacy generated corners when they describe the current automatic route exactly. */
-export function releaseAutomaticWireBends(wire: Wire, components: PlacedComponent[]): Wire {
+/** Release generated corners; on translation, carry aligned terminal runs with their pins. */
+export function releaseAutomaticWireBends(
+  wire: Wire,
+  components: PlacedComponent[],
+  movedComponents?: PlacedComponent[],
+): Wire {
   if (wire.bends.length === 0) return wire;
   const current = resolveWirePoints(wire, components);
   const automatic = resolveWirePoints({ ...wire, bends: [] }, components);
-  if (!current || !automatic || current.length !== automatic.length) return wire;
-  const same = current.every((p, i) => sameAxisCoord(p.x, automatic[i].x) && sameAxisCoord(p.y, automatic[i].y));
-  return same ? { ...wire, bends: [] } : wire;
+  const same = current && automatic && current.length === automatic.length &&
+    current.every((p, i) => sameAxisCoord(p.x, automatic[i].x) && sameAxisCoord(p.y, automatic[i].y));
+  if (same) return { ...wire, bends: [] };
+  if (!movedComponents) return wire;
+  const bends = wire.bends.map(p => ({ ...p }));
+  for (const end of ['from', 'to'] as const) {
+    const oldPin = getPinPosition(wire[end], components);
+    const newPin = getPinPosition(wire[end], movedComponents);
+    if (!oldPin || !newPin || (oldPin.x === newPin.x && oldPin.y === newPin.y)) continue;
+    const portal = wireRouteHintsFromPin(wire[end], components).headerStub;
+    if (!portal) continue;
+    const axis = portal.x === oldPin.x ? 'x' : 'y';
+    const index = end === 'from' ? 0 : bends.length - 1;
+    const coordinate = wire.bends[index][axis];
+    if (Math.abs(coordinate - oldPin[axis]) > GRID_SIZE / 2) continue;
+    for (let i = index; i >= 0 && i < bends.length; i += end === 'from' ? 1 : -1) {
+      if (wire.bends[i][axis] !== coordinate) break;
+      bends[i][axis] = newPin[axis];
+    }
+  }
+  return { ...wire, bends };
 }
 
 /** Bend points used for handles (materializes default elbow if needed). */

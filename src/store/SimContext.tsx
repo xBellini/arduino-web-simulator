@@ -21,6 +21,7 @@
 # 06-10-2026 | Cursor | COMPLETE_WIRE_ON_WIRE: split target wire + junction pin tee while drafting
 # 14-10-2026 | Codex  | Release recognizable legacy automatic corners before moving/rotating connected parts.
 #                     | Saving preserves session undo/redo stacks; loading a circuit still starts fresh history.
+# 15-10-2026 | Codex  | Component moves carry attached terminal runs while keeping remote wire bends fixed.
  */
 
 import {
@@ -326,15 +327,17 @@ function reducer(state: SimState, action: Action): SimState {
         placementRotation: 0,
       };
     }
-    case 'MOVE_COMPONENT':
+    case 'MOVE_COMPONENT': {
+      const components = state.components.map((c) =>
+        c.id === action.id ? { ...c, x: action.x, y: action.y } : c,
+      );
       return {
         ...state,
         wires: state.wires.map(w => w.from.componentId === action.id || w.to.componentId === action.id
-          ? releaseAutomaticWireBends(w, state.components) : w),
-        components: state.components.map((c) =>
-          c.id === action.id ? { ...c, x: action.x, y: action.y } : c,
-        ),
+          ? releaseAutomaticWireBends(w, state.components, components) : w),
+        components,
       };
+    }
     case 'UPDATE_COMPONENT':
       return {
         ...state,

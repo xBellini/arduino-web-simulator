@@ -7,3 +7,4 @@ user_projects/*.json
 .tmp-spice-fetch
 public/spice/models/
 public/spice/catalog.json
+scripts/check-wire-routing.mjs
