@@ -30,6 +30,7 @@
 #                     | Attach shared delayed measurement tooltip to part, pin and wire hit targets while running.
 # 15-10-2026 | Codex | Default power-connected wires to red and GND/VSS nets to black, including junctions/breadboards and drafts; ground wins mixed nets.
 #                     | Outline black ground wires in light gray for contrast against the dark canvas, including draft previews.
+#                     | Pause wire motion during pointer gestures and wheel bursts; resume after release/cancel or 150 ms wheel idle without rerendering the canvas.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -193,6 +194,41 @@ export function SimCanvas() {
   } = useSim();
 
   const wrapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const canvas = wrapRef.current;
+    if (!canvas) return;
+    const pointers = new Set<number>();
+    let wheelIdle: ReturnType<typeof setTimeout> | undefined;
+    const sync = () => {
+      if (pointers.size || wheelIdle !== undefined) canvas.dataset.wireMotionPaused = 'true';
+      else delete canvas.dataset.wireMotionPaused;
+    };
+    const down = (event: PointerEvent) => { pointers.add(event.pointerId); sync(); };
+    const up = (event: PointerEvent) => { pointers.delete(event.pointerId); sync(); };
+    const wheel = () => {
+      clearTimeout(wheelIdle);
+      wheelIdle = setTimeout(() => { wheelIdle = undefined; sync(); }, 150);
+      sync();
+    };
+    const reset = () => {
+      pointers.clear(); clearTimeout(wheelIdle); wheelIdle = undefined; sync();
+    };
+    canvas.addEventListener('pointerdown', down, true);
+    canvas.addEventListener('wheel', wheel, { passive: true, capture: true });
+    canvas.addEventListener('lostpointercapture', up);
+    window.addEventListener('pointerup', up, true);
+    window.addEventListener('pointercancel', up, true);
+    window.addEventListener('blur', reset);
+    return () => {
+      reset();
+      canvas.removeEventListener('pointerdown', down, true);
+      canvas.removeEventListener('wheel', wheel, true);
+      canvas.removeEventListener('lostpointercapture', up);
+      window.removeEventListener('pointerup', up, true);
+      window.removeEventListener('pointercancel', up, true);
+      window.removeEventListener('blur', reset);
+    };
+  }, []);
   const worldGroupRef = useRef<SVGGElement>(null);
   const suppressContextMenuRef = useRef(false);
   const svgRef = useRef<SVGSVGElement>(null);

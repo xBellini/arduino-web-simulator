@@ -17,6 +17,7 @@
 #                     | Use the requested static single-LED glow: retain solved brightness/color, remove animated blur that stalled Firefox.
 #                     | Restore resistor smoke with filter-free transform/opacity animation; reduced-motion uses static wisps.
 #                     | Style a single text-only hover measurement panel without animated or blurred effects.
+# 15-10-2026 | Codex | Pause current dashes and HIGH breathing during canvas gestures; preserve labels and resume animation phase afterward.
  */
 :root{
 --bg-app: #0f1419;
@@ -1788,6 +1789,10 @@ animation:wire-flow-dash var(--wire-flow-duration, 1s) linear infinite
 }
 .wire-flow-group.is-reverse .wire-flow-pulse{
 animation-direction:reverse
+}
+.canvas-wrap[data-wire-motion-paused] .wire-flow-pulse,
+.canvas-wrap[data-wire-motion-paused] .wire-signal-high{
+animation-play-state:paused
 }
 @keyframes wire-flow-dash{
 to{

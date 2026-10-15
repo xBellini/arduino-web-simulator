@@ -24,6 +24,7 @@
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
 # 15-10-2026 | Codex | Sense VCC and ground separately with zero-volt SPICE probes; show measured supply-wire labels even below the flow threshold.
 #                     | Sense each wired gate input independently so parallel input wires expose actual SPICE leakage currents.
+#                     | Expose SPICE probes for every wired input and separate package VCC/GND currents; preserve model pin order and small-current labels.
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';
@@ -41,7 +42,7 @@ export const hc08Module: PartModule = {
   type: '74hc08',
   wireCurrentPath: pin => pin === 'vcc' || pin === 'gnd'
     ? { branch: pin, positive: 'vcc', negative: 'gnd' }
-    : GATES.some(([a, b]) => pin === a || pin === b)
+    : GATES.some(gate => gate.slice(0, -1).some(input => input === pin))
       ? { branch: pin, positive: pin, negative: 'gnd' } : undefined,
 
   definition: {
@@ -71,17 +72,15 @@ export const hc08Module: PartModule = {
   spiceStamp(ctx) {
     const resolved = ctx.resolveModel();
     if (!resolved) return;
-    // TI gate subckt: `Y A B VCC GND`. An unpowered package contributes nothing.
-    const vcc = ctx.pinNet('vcc');
-    const gnd = ctx.pinNet('gnd');
+    const vcc = ctx.pinNet('vcc'), gnd = ctx.pinNet('gnd');
     if (vcc === null || gnd === null) return;
     let supplySensed = false;
     const internalVcc = `${ctx.sid}_vcc`, internalGnd = `${ctx.sid}_gnd`;
     for (let i = 0; i < GATES.length; i++) {
-      const [a, b, y] = GATES[i]!.map((pinId) => ctx.pinNet(pinId));
-      if (a == null || b == null || y == null) continue;
+      const pins = GATES[i]!;
+      const nets = pins.map(pin => ctx.pinNet(pin));
+      if (nets.some(net => net === null)) continue;
       if (!supplySensed) {
-        // Separate terminal measurements: output/input currents can make VCC and GND differ.
         const vccSense = `V${ctx.sid}_vcc_sense`, gndSense = `V${ctx.sid}_gnd_sense`;
         ctx.line(`${vccSense} ${ctx.node(vcc)} ${internalVcc} 0`);
         ctx.line(`${gndSense} ${internalGnd} ${ctx.node(gnd)} 0`);
@@ -89,18 +88,17 @@ export const hc08Module: PartModule = {
         ctx.instance(gndSense, 'gnd');
         supplySensed = true;
       }
-      const inst = `${resolved.deviceLetter}${ctx.sid}_g${i + 1}`;
-      const inputs = [a, b].map((net, index) => {
-        const pin = GATES[i]![index];
-        const internal = `${ctx.sid}_${pin}`;
-        const sense = `V${ctx.sid}_${pin}_sense`;
-        ctx.line(`${sense} ${ctx.node(net)} ${internal} 0`);
+      const inputNodes = nets.slice(0, -1).map((net, index) => {
+        const pin = pins[index]!;
+        const internal = `${ctx.sid}_${pin}`, sense = `V${ctx.sid}_${pin}_sense`;
+        ctx.line(`${sense} ${ctx.node(net!)} ${internal} 0`);
         ctx.instance(sense, pin);
         return internal;
       });
-      const nodes = [ctx.node(y), ...inputs, internalVcc, internalGnd];
+      const output = ctx.node(nets[nets.length - 1]!);
+      const inst = `${resolved.deviceLetter}${ctx.sid}_g${i + 1}`;
+      const nodes = [output, ...inputNodes, internalVcc, internalGnd];
       ctx.line(`${inst} ${nodes.join(' ')} ${resolved.spiceName}`);
-      ctx.instance(inst);
     }
   },
 };

@@ -18,6 +18,7 @@
 #                     | Moved from `src/parts/74hc21.ts` (tree reorganization)
 #                     | Moved to `src/components/IC/Logic Gates/`; fixed relative imports
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
+# 15-10-2026 | Codex | Add per-input SPICE probes and unavailable supply labels; legacy XSPICE model remains unsupported and has no supply terminals.
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';
@@ -31,6 +32,10 @@ const GATES = [
 export const hc21Module: PartModule = {
   palette: { category: 'logic_gates', order: 80 },
   type: '74hc21',
+  wireCurrentPath: pin => pin === 'vcc' || pin === 'gnd'
+    ? { branch: pin, positive: 'vcc', negative: 'gnd' }
+    : GATES.some(gate => gate.slice(0, -1).some(input => input === pin))
+      ? { branch: pin, positive: pin, negative: 'gnd' } : undefined,
 
   definition: {
     type: '74hc21',
@@ -58,24 +63,23 @@ export const hc21Module: PartModule = {
 
   spiceStamp(ctx) {
     const resolved = ctx.resolveModel();
-    const spiceName = resolved?.spiceName ?? '74HC21';
-    const deviceLetter = resolved?.deviceLetter ?? 'X';
+    if (!resolved) return;
+    // This model has no supply terminals and requires unsupported XSPICE code models.
     for (let i = 0; i < GATES.length; i++) {
       const pins = GATES[i]!;
-      const nets: number[] = [];
-      let missing = false;
-      for (const pinId of pins) {
-        const n = ctx.pinNet(pinId);
-        if (n === null) {
-          missing = true;
-          break;
-        }
-        nets.push(n);
-      }
-      if (missing) continue;
-      const inst = `${deviceLetter}${ctx.sid}_g${i + 1}`;
-      ctx.line(`${inst} ${nets.map((n) => ctx.node(n)).join(' ')} ${spiceName}`);
-      ctx.instance(inst);
+      const nets = pins.map(pin => ctx.pinNet(pin));
+      if (nets.some(net => net === null)) continue;
+      const inputNodes = nets.slice(0, -1).map((net, index) => {
+        const pin = pins[index]!;
+        const internal = `${ctx.sid}_${pin}`, sense = `V${ctx.sid}_${pin}_sense`;
+        ctx.line(`${sense} ${ctx.node(net!)} ${internal} 0`);
+        ctx.instance(sense, pin);
+        return internal;
+      });
+      const output = ctx.node(nets[nets.length - 1]!);
+      const inst = `${resolved.deviceLetter}${ctx.sid}_g${i + 1}`;
+      const nodes = [...inputNodes, output];
+      ctx.line(`${inst} ${nodes.join(' ')} ${resolved.spiceName}`);
     }
   },
 };

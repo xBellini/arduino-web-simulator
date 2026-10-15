@@ -21,6 +21,7 @@
 #                     | Moved from `src/parts/74hc04.ts` (tree reorganization)
 #                     | Moved to `src/components/IC/Logic Gates/`; fixed relative imports
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
+# 15-10-2026 | Codex | Expose SPICE probes for every wired input and separate package VCC/GND currents; preserve model pin order and small-current labels.
  */
 import type { PartModule } from '../../partModule';
 import { dipDevicePins } from '../../../registry/packagePins';
@@ -38,6 +39,10 @@ const GATES = [
 export const hc04Module: PartModule = {
   palette: { category: 'logic_gates', order: 30 },
   type: '74hc04',
+  wireCurrentPath: pin => pin === 'vcc' || pin === 'gnd'
+    ? { branch: pin, positive: 'vcc', negative: 'gnd' }
+    : GATES.some(gate => gate.slice(0, -1).some(input => input === pin))
+      ? { branch: pin, positive: pin, negative: 'gnd' } : undefined,
 
   definition: {
     type: '74hc04',
@@ -66,19 +71,33 @@ export const hc04Module: PartModule = {
   spiceStamp(ctx) {
     const resolved = ctx.resolveModel();
     if (!resolved) return;
-    // TI gate subckt: `Y <inputs> VCC GND`. An unpowered package contributes nothing.
-    const vcc = ctx.pinNet('vcc');
-    const gnd = ctx.pinNet('gnd');
+    const vcc = ctx.pinNet('vcc'), gnd = ctx.pinNet('gnd');
     if (vcc === null || gnd === null) return;
+    let supplySensed = false;
+    const internalVcc = `${ctx.sid}_vcc`, internalGnd = `${ctx.sid}_gnd`;
     for (let i = 0; i < GATES.length; i++) {
-      const nets = GATES[i]!.map((pinId) => ctx.pinNet(pinId));
-      if (nets.some((n) => n == null)) continue;
-      const y = nets[nets.length - 1]!;
-      const inputs = nets.slice(0, -1) as number[];
+      const pins = GATES[i]!;
+      const nets = pins.map(pin => ctx.pinNet(pin));
+      if (nets.some(net => net === null)) continue;
+      if (!supplySensed) {
+        const vccSense = `V${ctx.sid}_vcc_sense`, gndSense = `V${ctx.sid}_gnd_sense`;
+        ctx.line(`${vccSense} ${ctx.node(vcc)} ${internalVcc} 0`);
+        ctx.line(`${gndSense} ${internalGnd} ${ctx.node(gnd)} 0`);
+        ctx.instance(vccSense, 'vcc');
+        ctx.instance(gndSense, 'gnd');
+        supplySensed = true;
+      }
+      const inputNodes = nets.slice(0, -1).map((net, index) => {
+        const pin = pins[index]!;
+        const internal = `${ctx.sid}_${pin}`, sense = `V${ctx.sid}_${pin}_sense`;
+        ctx.line(`${sense} ${ctx.node(net!)} ${internal} 0`);
+        ctx.instance(sense, pin);
+        return internal;
+      });
+      const output = ctx.node(nets[nets.length - 1]!);
       const inst = `${resolved.deviceLetter}${ctx.sid}_g${i + 1}`;
-      const nodes = [y, ...inputs, vcc, gnd].map((n) => ctx.node(n));
+      const nodes = [output, ...inputNodes, internalVcc, internalGnd];
       ctx.line(`${inst} ${nodes.join(' ')} ${resolved.spiceName}`);
-      ctx.instance(inst);
     }
   },
 };
