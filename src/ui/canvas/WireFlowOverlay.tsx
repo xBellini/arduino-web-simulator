@@ -19,15 +19,10 @@
 #                     | Add a distinct breathing overlay for HIGH signals; LOW/FLOATING remain static.
 # 15-10-2026 | Codex | Omit overlapping labels and their flow/signal overlays using padded rotated bounds; retain base wires and hover measurements.
 #                     | Deduplicate shared path intervals including reverse/partial overlaps; preserve unique branches independently of label visibility and paint glow only on retained paths.
-#                     | Add opt-in wirePerf counters for overlay render and shared-segment calculation cost; no per-frame logging.
-#                     | Extend diagnostic counters for canvas construction, React subtree commits, and wheel handlers.
+#                     | Cache overlay paths, shared intervals and label layout across viewport renders; invalidate on readings, routes or live wire edits.
  */
-import type { CSSProperties } from 'react';
+import { useMemo, type CSSProperties } from 'react';
 import type { Wire } from '../../types';
-export const wirePerf = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('wirePerf') === '1'
-  ? { renders: 0, renderMs: 0, geometryMs: 0, comparisons: 0,
-      canvasRenders: 0, canvasMs: 0, reactCommits: 0, reactMs: 0, wheelHandlers: 0, wheelMs: 0, zoomMs: 0 }
-  : null;
 import type { ComponentSimFlags } from '../../circuit/solver';
 import { formatCurrentMa } from '../../values/electric';
 import { roundedPolylinePath } from './geometry';
@@ -42,18 +37,20 @@ interface WireFlowOverlayProps {
   wires: Wire[];
   simFlags: ComponentSimFlags;
   getWirePath: (wire: Wire) => { x: number; y: number }[] | null;
+  liveEditPath?: { x: number; y: number }[];
 }
 
 export function WireFlowOverlay({
   wires,
   simFlags,
   getWirePath,
+  liveEditPath,
 }: WireFlowOverlayProps) {
-  const renderStart = wirePerf ? performance.now() : 0;
+  const overlay = useMemo(() => {
   // These are SVG world coordinates, so pan/zoom needs no DOM measurement or layout pass.
   const labelBounds: { left: number; right: number; top: number; bottom: number }[] = [];
   const painted: { x: number; y: number }[][] = [];
-  const overlay = (
+  return (
     <g className="wire-flow-layer" aria-hidden>
       {wires.map((wire) => {
         const currentMa = simFlags.wireCurrentMa[wire.id];
@@ -67,7 +64,6 @@ export function WireFlowOverlay({
         if (!points || points.length < 2) return null;
 
         const runs: { x: number; y: number }[][] = [];
-        const geometryStart = wirePerf ? performance.now() : 0;
         if (flowing || signalHigh) {
           for (let i = 1; i < points.length; i++) {
             const a = points[i - 1], b = points[i];
@@ -78,7 +74,6 @@ export function WireFlowOverlay({
             let intervals = [[0, length]];
             // Only collinear intervals overlap: a crossing or a nearby parallel wire is distinct.
             for (const [c, e] of painted) {
-              if (wirePerf) wirePerf.comparisons++;
               if (Math.abs((c.x - a.x) * uy - (c.y - a.y) * ux) > 1e-6 ||
                   Math.abs((e.x - a.x) * uy - (e.y - a.y) * ux) > 1e-6) continue;
               const t0 = (c.x - a.x) * ux + (c.y - a.y) * uy;
@@ -101,7 +96,6 @@ export function WireFlowOverlay({
           }
         }
         const d = runs.map((run) => roundedPolylinePath(run)).join(' ');
-        if (wirePerf) wirePerf.geometryMs += performance.now() - geometryStart;
         const reverse = simFlags.wireFlowReverse[wire.id] ?? false;
         const labelPoint = pointAlongPolyline(points, 0.5);
         const labelAngle = labelAngleAlongPolyline(points);
@@ -159,9 +153,6 @@ export function WireFlowOverlay({
       })}
     </g>
   );
-  if (wirePerf) {
-    wirePerf.renders++;
-    wirePerf.renderMs += performance.now() - renderStart;
-  }
+  }, [wires, getWirePath, liveEditPath, simFlags.wireCurrentMa, simFlags.wireReadingLabel, simFlags.wireFlowReverse]);
   return overlay;
 }
