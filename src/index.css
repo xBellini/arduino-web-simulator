@@ -18,6 +18,8 @@
 #                     | Restore resistor smoke with filter-free transform/opacity animation; reduced-motion uses static wisps.
 #                     | Style a single text-only hover measurement panel without animated or blurred effects.
 # 15-10-2026 | Codex | Pause current dashes and HIGH breathing during canvas gestures; preserve labels and resume animation phase afterward.
+#                     | Move current glow from full base wires onto deduplicated overlay paths so shared stretches do not stack filters.
+#                     | Support opt-in wirePerf no-glow comparison without changing normal wire styling.
  */
 :root{
 --bg-app: #0f1419;
@@ -1755,10 +1757,11 @@ stroke-linecap:round;
 stroke-linejoin:round;
 pointer-events:none
 }
-.wire-group.has-current .wire{
+.wire-current-glow{
 stroke:#4dd0e1;
 filter:drop-shadow(0 0 3px rgba(77,208,225,.45))
 }
+.canvas-wrap[data-wire-perf-no-glow] .wire-current-glow{filter:none}
 .wire-flow-layer{
 pointer-events:none
 }

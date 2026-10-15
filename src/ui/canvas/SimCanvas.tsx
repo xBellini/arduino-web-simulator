@@ -31,8 +31,11 @@
 # 15-10-2026 | Codex | Default power-connected wires to red and GND/VSS nets to black, including junctions/breadboards and drafts; ground wins mixed nets.
 #                     | Outline black ground wires in light gray for contrast against the dark canvas, including draft previews.
 #                     | Pause wire motion during pointer gestures and wheel bursts; resume after release/cancel or 150 ms wheel idle without rerendering the canvas.
+#                     | Add opt-in wirePerf zoom diagnostics with bounded frame samples, gesture summaries, and wireGlow=0 comparison; disabled in ordinary sessions.
+#                     | Measure canvas construction, React subtree render commits, wheel/zoom work, input age and timer delay to locate stalls beyond wire overlays.
+#                     | Cache resolved wire routes and junctions by circuit geometry so zoom and simulation renders do not rerun obstacle routing; live wire previews bypass the cache.
  */
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Profiler, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { getDefinition } from '../../registry/components';
 import { buildCircuitNetlist } from '../../circuit/netlist';
@@ -84,7 +87,7 @@ import { ComponentShape } from './ComponentShape';
 import { ContextMenu } from './ContextMenu';
 import { PartLabelEditor } from '../editors/PartLabelEditor';
 import { PinLabel } from './ComponentShape';
-import { WireFlowOverlay } from './WireFlowOverlay';
+import { WireFlowOverlay, wirePerf } from './WireFlowOverlay';
 import { NgspiceDebugOverlay } from '../debug/NgspiceDebugOverlay';
 import { MeasurementTooltip } from './MeasurementTooltip';
 import { SimPerfOverlay } from '../debug/SimPerfOverlay';
@@ -166,6 +169,7 @@ const PROPERTIES_DOUBLE_CLICK_MS = WIRE_DOUBLE_CLICK_MS;
 const PROPERTIES_DOUBLE_CLICK_PX = WIRE_DOUBLE_CLICK_PX;
 
 export function SimCanvas() {
+  const canvasRenderStart = wirePerf ? performance.now() : 0;
   const {
     state,
     setViewport,
@@ -194,6 +198,77 @@ export function SimCanvas() {
   } = useSim();
 
   const wrapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const canvas = wrapRef.current;
+    const metrics = wirePerf;
+    if (!canvas || !metrics) return;
+    const noGlow = new URLSearchParams(window.location.search).get('wireGlow') === '0';
+    if (noGlow) canvas.dataset.wirePerfNoGlow = 'true';
+    const panel = document.createElement('pre');
+    panel.style.cssText = 'position:absolute;bottom:40px;left:12px;z-index:100;background:#101820;color:#fff;padding:8px;font:12px monospace;pointer-events:none';
+    canvas.appendChild(panel);
+    let raf = 0, idle: ReturnType<typeof setTimeout> | undefined;
+    let events = 0, lastFrame = 0, start = 0;
+    let maxInputAge = 0, maxTimerDelay = 0;
+    let heartbeat: ReturnType<typeof setInterval> | undefined;
+    let baseline = { ...metrics };
+    const frames: number[] = [];
+    let summary = 'Wheel over the canvas to measure.';
+    const draw = () => { panel.textContent = `WIRE PERF | glow ${noGlow ? 'OFF' : 'ON'}\n${summary}\nOverlay totals: ${metrics.renders} renders, ${metrics.renderMs.toFixed(1)} ms`; };
+    const frame = (now: number) => {
+      if (lastFrame && frames.length < 4096) frames.push(now - lastFrame);
+      lastFrame = now;
+      raf = requestAnimationFrame(frame);
+    };
+    const wheel = (event: WheelEvent) => {
+      if (idle === undefined) {
+        start = performance.now(); lastFrame = start; events = 0; frames.length = 0;
+        baseline = { ...metrics }; raf = requestAnimationFrame(frame);
+        maxInputAge = 0; maxTimerDelay = 0;
+        let expected = performance.now() + 50;
+        heartbeat = setInterval(() => {
+          const now = performance.now();
+          maxTimerDelay = Math.max(maxTimerDelay, now - expected);
+          expected = now + 50;
+        }, 50);
+      }
+      const age = performance.now() - event.timeStamp;
+      if (age >= 0 && age < 60000) maxInputAge = Math.max(maxInputAge, age);
+      events++;
+      clearTimeout(idle);
+      idle = setTimeout(() => {
+        idle = undefined; cancelAnimationFrame(raf); clearInterval(heartbeat);
+        const sorted = [...frames].sort((a, b) => a - b);
+        const p95 = sorted[Math.max(0, Math.ceil(sorted.length * .95) - 1)] ?? 0;
+        const report = {
+          glow: noGlow ? 'off' : 'on', wheelEvents: events, durationMs: +(performance.now() - start).toFixed(1),
+          frames: frames.length, frameP95Ms: +p95.toFixed(1), framesOver32Ms: frames.filter(x => x > 32).length,
+          overlayRenders: metrics.renders - baseline.renders,
+          overlayRenderMs: +(metrics.renderMs - baseline.renderMs).toFixed(2),
+          geometryMs: +(metrics.geometryMs - baseline.geometryMs).toFixed(2),
+          segmentComparisons: metrics.comparisons - baseline.comparisons,
+          canvasRenders: metrics.canvasRenders - baseline.canvasRenders,
+          canvasBuildMs: +(metrics.canvasMs - baseline.canvasMs).toFixed(2),
+          reactCommits: metrics.reactCommits - baseline.reactCommits,
+          reactSubtreeMs: +(metrics.reactMs - baseline.reactMs).toFixed(2),
+          wheelHandlers: metrics.wheelHandlers - baseline.wheelHandlers,
+          wheelHandlerMs: +(metrics.wheelMs - baseline.wheelMs).toFixed(2),
+          zoomApplyMs: +(metrics.zoomMs - baseline.zoomMs).toFixed(2),
+          maxInputAgeMs: +maxInputAge.toFixed(1), maxTimerDelayMs: +maxTimerDelay.toFixed(1),
+        };
+        summary = JSON.stringify(report, null, 2);
+        console.info('[wire-zoom-perf]', report); draw();
+      }, 500);
+    };
+    draw();
+    const refresh = setInterval(draw, 1000);
+    canvas.addEventListener('wheel', wheel, { passive: true, capture: true });
+    return () => {
+      canvas.removeEventListener('wheel', wheel, true);
+      clearInterval(refresh); clearInterval(heartbeat); clearTimeout(idle); cancelAnimationFrame(raf);
+      panel.remove(); delete canvas.dataset.wirePerfNoGlow;
+    };
+  }, []);
   useEffect(() => {
     const canvas = wrapRef.current;
     if (!canvas) return;
@@ -526,13 +601,18 @@ export function SimCanvas() {
     [partComponents, breadboardComponents],
   );
 
+  const wirePaths = useMemo(() => new Map(
+    wires.map(wire => [wire.id, resolveWirePoints(wire, components)] as const),
+  ), [wires, components]);
+  const wireJunctions = useMemo(() => getWireJunctionPoints(wires, components), [wires, components]);
+
   const getWirePath = useCallback(
     (wire: Wire) => {
       const liveEdit = wireEditPathRef.current;
       if (liveEdit?.wireId === wire.id) return liveEdit.path;
-      return resolveWirePoints(wire, components);
+      return wirePaths.get(wire.id) ?? null;
     },
-    [components],
+    [wirePaths],
   );
 
   const findWireAt = useCallback(
@@ -742,7 +822,9 @@ export function SimCanvas() {
         const pending = pendingWheelRef.current;
         pendingWheelRef.current = null;
         if (!pending) return;
-        applyWheelZoom(pending.deltaY, pending.clientX, pending.clientY);
+        const zoomStart = wirePerf ? performance.now() : 0;
+        try { applyWheelZoom(pending.deltaY, pending.clientX, pending.clientY); }
+        finally { if (wirePerf) wirePerf.zoomMs += performance.now() - zoomStart; }
       });
     },
     [applyWheelZoom],
@@ -1981,8 +2063,7 @@ export function SimCanvas() {
   };
 
   const renderWireJunctions = () => {
-    const junctions = getWireJunctionPoints(wires, components);
-    return junctions.map((p, i) => (
+    return wireJunctions.map((p, i) => (
       <circle key={`joint-${i}`} cx={p.x} cy={p.y} r={4} className="wire-joint" />
     ));
   };
@@ -2075,7 +2156,7 @@ export function SimCanvas() {
     (contextMenu?.componentIds.length ?? 0) > 0 || selectedWireIds.length > 0;
   const canContextDelete = canContextCopy;
 
-  return (
+  const canvasContent = (
     <div
       ref={wrapRef}
       className={`canvas-wrap${isPanning ? ' is-panning' : ''}${
@@ -2105,7 +2186,11 @@ export function SimCanvas() {
       <svg
         ref={svgRef}
         className="sim-canvas"
-        onWheel={handleWheel}
+        onWheel={wirePerf ? (event) => {
+          const started = performance.now();
+          try { handleWheel(event); }
+          finally { if (wirePerf) { wirePerf.wheelHandlers++; wirePerf.wheelMs += performance.now() - started; } }
+        } : handleWheel}
       >
         <defs>
           <pattern
@@ -2318,4 +2403,11 @@ export function SimCanvas() {
         )}
     </div>
   );
+
+  if (!wirePerf) return canvasContent;
+  wirePerf.canvasRenders++;
+  wirePerf.canvasMs += performance.now() - canvasRenderStart;
+  return <Profiler id="canvas" onRender={(_id, _phase, duration) => {
+    if (wirePerf) { wirePerf.reactCommits++; wirePerf.reactMs += duration; }
+  }}>{canvasContent}</Profiler>;
 }
