@@ -42,9 +42,13 @@
 #                     | Instantiated AVRTWI (Wire / ideal I2C master)
 # 09-10-2026 | Cursor | Merged `src/sim/taskScheduler.ts` into this file (tree reorganization)
 #                     | Moved from `src/sim/avrRunner.ts` (tree reorganization)
+# 15-10-2026 | Codex  | Add avr8js hardware SPI with cycle-scheduled MOSI/SCK and sampled MISO; release overrides on disable.
+#                     | Anchor edge deadlines to transfer start so multi-cycle instructions do not accumulate clock drift.
  */
 import { avrInstruction, AVRIOPort, AVRTimer, AVRTWI, AVRUSART, CPU, portBConfig, portCConfig, portDConfig, timer0Config, timer1Config, timer2Config, twiConfig, usart0Config } from 'avr8js';
 import { loadHex } from './firmware';
+import { AVRSPI, spiConfig } from 'avr8js';
+import { PinOverrideMode } from 'avr8js/dist/esm/peripherals/gpio';
 import { SIM_PERF_ENABLED, finishAvrBatch } from './simPerf';
 
 export class MicroTaskScheduler {
@@ -173,6 +177,7 @@ export class AvrRunner {
   readonly portD: AVRIOPort;
   readonly usart: AVRUSART;
   readonly twi: AVRTWI;
+  readonly spi: AVRSPI;
   readonly taskScheduler = new MicroTaskScheduler();
   private wallClockStartMs = 0;
   private cyclesAtWallClockStart = 0;
@@ -196,6 +201,57 @@ export class AvrRunner {
     this.portD = new AVRIOPort(this.cpu, portDConfig);
     this.usart = new AVRUSART(this.cpu, usart0Config, CPU_FREQ_HZ);
     this.twi = new AVRTWI(this.cpu, twiConfig, CPU_FREQ_HZ);
+    this.spi = new AVRSPI(this.cpu, spiConfig, CPU_FREQ_HZ);
+    // avr8js owns SPDR/SPIF/interrupts; this adapter supplies the physical pins.
+    const spiControl = this.cpu.writeHooks[spiConfig.SPCR];
+    let transferGeneration = 0;
+    this.cpu.writeHooks[spiConfig.SPCR] = (value, old, address, mask) => {
+      spiControl?.(value, old, address, mask);
+      if ((value & 0x50) !== 0x50) {
+        transferGeneration++;
+        this.spi.reset();
+        this.portB.timerOverridePin(3, PinOverrideMode.None);
+        this.portB.timerOverridePin(5, PinOverrideMode.None);
+      } else {
+        this.portB.timerOverridePin(5, value & 8 ? PinOverrideMode.Set : PinOverrideMode.Clear);
+      }
+      return false;
+    };
+    this.spi.onByte = value => {
+      // External-clock SPI slave mode is not implemented by this adapter.
+      if (!this.spi.isMaster) return;
+      const generation = ++transferGeneration;
+      const control = this.cpu.data[spiConfig.SPCR];
+      const idle = !!(control & 8), phase = !!(control & 4);
+      const lsb = this.spi.dataOrder === 'lsbFirst';
+      const halfPeriod = this.spi.clockDivider / 2;
+      const startedAt = this.cpu.cycles;
+      let edge = 0, received = 0;
+      const drive = (bit: number) => this.portB.timerOverridePin(3,
+        value & (1 << (lsb ? bit : 7 - bit)) ? PinOverrideMode.Set : PinOverrideMode.Clear);
+      this.portB.timerOverridePin(5, idle ? PinOverrideMode.Set : PinOverrideMode.Clear);
+      if (!phase) drive(0);
+      const clock = () => {
+        if (generation !== transferGeneration) return;
+        // cpu.tick runs after an instruction; replay edges due within that instruction
+        // in order, without charging its lateness again for each following edge.
+        while (edge < 16 && startedAt + (edge + 1) * halfPeriod <= this.cpu.cycles) {
+          const leading = edge % 2 === 0;
+          const bit = edge >> 1;
+          if (phase && leading) drive(bit);
+          this.portB.timerOverridePin(5, (leading ? !idle : idle) ? PinOverrideMode.Set : PinOverrideMode.Clear);
+          if (leading !== phase) {
+            const high = !!(this.cpu.data[this.portB.portConfig.PIN] & (1 << 4));
+            if (high) received |= 1 << (lsb ? bit : 7 - bit);
+          }
+          if (!phase && !leading && bit < 7) drive(bit + 1);
+          edge++;
+        }
+        if (edge < 16) this.cpu.addClockEvent(clock, startedAt + (edge + 1) * halfPeriod - this.cpu.cycles);
+        else this.spi.completeTransfer(received);
+      };
+      this.cpu.addClockEvent(clock, halfPeriod);
+    };
     this.taskScheduler.start();
   }
 

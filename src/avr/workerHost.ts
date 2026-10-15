@@ -16,8 +16,10 @@
 # 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerHost.ts` (tree reorganization)
 # 13-10-2026 | Codex | Apply backpack snapshots before each tick solve; clear them on stop/restart.
 # 14-10-2026 | Codex | Ignore retired worker messages and detach callbacks on stop so old LCD writes and cycle counts cannot enter a new run.
+# 15-10-2026 | Codex  | Mirror matrix snapshots and send changed solved power states; clear displays on stop.
  */
 
+import { setMax7219Snapshots, clearMax7219Snapshots, max7219PowerSamples } from '../components/modules/max7219Matrix8x8';
 import { setPcfBackpackSnapshot, clearPcfBackpackSnapshots } from '../components/modules/pcf8574LcdBackpack';
 import { PinState, type AVRIOPort } from 'avr8js';
 import {
@@ -98,6 +100,7 @@ export class AvrWorkerHost {
 
   private worker: Worker | null = null;
   private ready = false;
+  private matrixPowerKey = '';
   private pendingStart: AvrWorkerInMessage | null = null;
   private optionsProvider: (() => AvrExecuteOptions) | null = null;
   private callbacks: AvrWorkerHostCallbacks | null = null;
@@ -134,6 +137,12 @@ export class AvrWorkerHost {
   }
 
   private pushOptions(force = false): void {
+    const samples = max7219PowerSamples();
+    const key = JSON.stringify(samples);
+    if (key !== this.matrixPowerKey) {
+      this.matrixPowerKey = key;
+      this.post({ v: AVR_WORKER_PROTOCOL, type: 'max7219-power', samples });
+    }
     const opts = this.optionsProvider?.() ?? {};
     const maxWorkMs = opts.maxWorkMs ?? 12;
     const maxSliceMs = opts.maxSliceMs ?? 8;
@@ -162,6 +171,7 @@ export class AvrWorkerHost {
     callbacks: AvrWorkerHostCallbacks,
     optionsProvider?: () => AvrExecuteOptions,
     twiSlaves: Extract<AvrWorkerInMessage, { type: 'start' }>['twiSlaves'] = [],
+    max7219Targets: Extract<AvrWorkerInMessage, { type: 'start' }>['max7219Targets'] = [],
   ): Promise<void> {
     this.stop();
     this.callbacks = callbacks;
@@ -189,6 +199,7 @@ export class AvrWorkerHost {
           }
           break;
         case 'tick':
+          setMax7219Snapshots(msg.matrices ?? []);
           this.cpu.cycles = msg.cycles;
           this.applyPorts(msg.ports);
           for (const sample of msg.backpackPorts ?? [])
@@ -238,6 +249,7 @@ export class AvrWorkerHost {
       hex,
       lcdTargets,
       twiSlaves,
+      max7219Targets,
     };
     if (this.ready) {
       this.post(startMsg);
@@ -248,6 +260,8 @@ export class AvrWorkerHost {
   }
 
   stop(): void {
+    clearMax7219Snapshots();
+    this.matrixPowerKey = '';
     clearPcfBackpackSnapshots();
     this.lastPostedWorkMs = null;
     this.lastPostedSliceMs = null;

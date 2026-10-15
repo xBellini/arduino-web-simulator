@@ -1,10 +1,14 @@
 /**
  * What: MAX7219 8×8 LED matrix module as a placeable part — footprint and header pinout.
- * Role: definition-only part module (no SPI / display sim yet).
+ * Role: package the worker's SimulIDE controller state as one five-pin module.
+ * Display brightness maps the controller intensity to a visible color range;
+ * this is presentation only, not solved LED current. Inactive lenses are black.
+ * Supply validity requires a solved 4.0–5.5 V (MAX7219 datasheet operating range).
+ * No supply-current model is available; current remains unavailable.
  * Owns/exports: `max7219Matrix8x8Module`.
  * Conventions: pin x/y in footprint space (SVG `data-terminal-*` minus viewBox min-x/min-y;
  * viewBox is `25 0 199 134`).
- * Not-here: digit/segment driving — add hooks here later, not a second STATIC_REGISTRY entry.
+ * Controller behavior lives in libraries/simulide/max72xx.ts; bus glue in avr/max7219Bridge.ts.
  *
 # Changelog
 # Date       | Author | Remarks
@@ -12,12 +16,68 @@
 # 05-10-2026 | Cursor | Pin x: footprint space (terminal 32 − viewBox min-x 25 → 7)
 # 09-10-2026 | Cursor | Moved from `src/parts/max7219Matrix8x8.ts` (tree reorganization)
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
+# 15-10-2026 | Codex | Add solved power gating and static matrix overlay from batched controller state; no blur or animation.
+#                     | Treat pending DC results as unknown, not power loss, to preserve controller RAM across GPIO cache misses.
+#                     | Paint all inactive pixels black, including stopped/unpowered modules; keep minimum intensity visibly colored.
+#                     | Reference the relocated controller library directly for snapshot types; behavior unchanged.
  */
-import type { PartModule } from '../partModule';
+import { createElement, useSyncExternalStore } from 'react';
+import type { PartModule, PartOverlayProps } from '../partModule';
+import type { Max72xxSnapshot } from '../../libraries/simulide/max72xx';
+
+const snapshots = new Map<string, Max72xxSnapshot>();
+const power = new Map<string, boolean>();
+const listeners = new Set<() => void>();
+const subscribe = (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; };
+export const max7219PowerSamples = () => [...power].map(([id, powered]) => ({ id, powered }));
+export function setMax7219Snapshots(samples: Array<Max72xxSnapshot & { id: string }>): void {
+  let changed = false;
+  for (const sample of samples) {
+    const old = snapshots.get(sample.id);
+    if (old?.intensity === sample.intensity && old.rows.every((row, i) => row === sample.rows[i])) continue;
+    snapshots.set(sample.id, sample);
+    changed = true;
+  }
+  if (changed) for (const listener of listeners) listener();
+}
+export function clearMax7219Snapshots(): void {
+  snapshots.clear();
+  power.clear();
+  for (const listener of listeners) listener();
+}
+function MatrixOverlay({ component, simRunning }: PartOverlayProps) {
+  const state = useSyncExternalStore(subscribe, () => snapshots.get(component.id));
+  // Presentation range: dim orange-red remains distinguishable from black at
+  // register zero (upstream intensity 1). Full intensity retains the existing color.
+  const brightness = 0.35 + 0.65 * Math.max(0, Math.min(15, (state?.intensity ?? 1) - 1)) / 15;
+  const fill = `rgb(${Math.round(255 * brightness)},${Math.round(140 * brightness)},${Math.round(100 * brightness)})`;
+  return createElement('g', { pointerEvents: 'none', 'data-max7219': component.id },
+    Array.from({ length: 64 }, (_, pixel) => {
+      const x = pixel % 8, y = Math.floor(pixel / 8);
+      const lit = simRunning && state && (state.rows[y] & (0x80 >> x));
+      return createElement('circle', {
+        key: pixel, cx: 79.9 + 15.6 * x, cy: 9.9 + 15.6 * y, r: 5.55,
+        fill: lit ? fill : '#000000',
+      });
+    }));
+}
 
 export const max7219Matrix8x8Module: PartModule = {
   palette: { category: 'modules', order: 10 },
   type: 'max7219_matrix_8x8',
+  applyDcResult: ({ comp, dc, pinNet }) => {
+    // A cache miss is not a measured brownout. The initial solve is awaited by
+    // the controller; later measured out-of-range supplies reset the worker IC.
+    if (!dc) return;
+    const positive = pinNet('vcc'), negative = pinNet('gnd');
+    const vcc = positive === null ? undefined : dc?.netVoltages.get(positive);
+    const gnd = negative === null ? undefined : dc?.netVoltages.get(negative);
+    const voltage = vcc === undefined || gnd === undefined ? NaN : vcc - gnd;
+    power.set(comp.id, voltage >= 4 && voltage <= 5.5);
+  },
+  overlay: props => createElement(MatrixOverlay, props),
+  measurements: ({ voltage }) => [{ label: 'Supply', value: voltage('vcc', 'gnd'), unit: 'V' }],
+  wireLogicLevel: (pin, level) => ['din', 'cs', 'clk'].includes(pin) ? level(pin) : undefined,
 
   definition: {
     type: 'max7219_matrix_8x8',

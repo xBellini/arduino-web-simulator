@@ -1,0 +1,64 @@
+What: Provenance and scope of the vendored MAX72xx reference model.
+
+# Changelog
+# Date       | Author | Remarks
+# 15-10-2026 | Codex  | Record pinned source, license and verified implementation limits.
+#                     | Document the single-module TypeScript adaptation and integration.
+#                     | Record user-requested black inactive pixels and visible minimum brightness.
+#                     | Document user-authorized MAX7219 datasheet corrections in the TypeScript adaptation.
+#                     | Move the complete model bundle to src/libraries/simulide; AVR bridge remains in src/avr.
+
+Project: SimulIDE-dev, Arcachofo/SimulIDE-dev
+Commit: fc5da465bb15e80b6307f0c9564f5241567f7d86
+Retrieved: 2026-10-15
+Source directory: src/components/outputs/leds/
+Source files: max72xx_matrix.cpp, max72xx_matrix.h
+URL: https://github.com/Arcachofo/SimulIDE-dev/tree/fc5da465bb15e80b6307f0c9564f5241567f7d86/src/components/outputs/leds
+License notices: upstream copyright.txt and COPYING are included unchanged.
+The source is attributed to Santiago Gonzalez; copyright.txt assigns his files
+to GNU Affero General Public License v3. Preserve these notices in adaptations.
+
+Original C++ reference modifications: explanatory/changelog headers only.
+Status: controller adapted in max72xx.ts and integrated through avr/max7219Bridge.ts.
+Location: src/libraries/simulide contains the AVR-independent controller and
+its original source, license and provenance. src/avr/max7219Bridge.ts owns AVR wiring.
+This is C++ tied to Qt and SimulIDE, not a standalone SPICE model or a drop-in
+TypeScript dependency. Future integration must isolate the controller behavior
+from upstream UI and simulator classes. The existing five-pin matrix remains
+one placeable module; the controller must not become a separate palette part.
+
+Verified in source:
+- Eight digit RAM registers, no-op command, brightness, scan limit, shutdown,
+  display test, and multiple display slots are implemented.
+- Only no-decode mode is supported. BCD decoding is not implemented.
+- Commands are applied after the 16th rising clock edge while CS is low;
+  CS high resets receive state. This differs from MAX7219 LOAD-edge latching.
+- Shutdown gates the display-test output in paint().
+- Decode, scan-limit, shutdown and test state are shared across display slots.
+- Brightness is an upstream visual approximation, not solved LED current.
+- This implementation does not supply a module power-consumption SPICE model.
+
+Do not describe this source as a complete or datasheet-accurate MAX7219 model.
+Do not silently implement its missing features or import its Qt display UI.
+
+Integration (15-10-2026): max72xx.ts is an AGPL-3.0-only TypeScript adaptation
+of initialize(), voltChanged(), proccessCommand() and paint() pixel selection.
+Only display slot zero is exposed, matching the five-pin single matrix module.
+Qt rendering is replaced with our SVG lenses. At the user's request, inactive
+lenses are black and active intensity uses a visible 35%-100% color range;
+This presentation mapping does not alter controller registers or imply current.
+CS/clock inputs come from AVR GPIO; hardware SPI edges are
+scheduled from avr8js transfer settings. Power validity is supplied separately
+from solved module VCC-GND (4.0 to 5.5 V, manufacturer operating range).
+Local datasheet corrections (15-10-2026, explicitly requested by the user):
+max72xx.ts shifts DIN on every rising CLK regardless of LOAD, and latches the
+last 16 bits only on rising LOAD. Code B decoding is per digit with independent
+decimal points. Power-up intensity is minimum. Display test overrides shutdown,
+scan limit, decode and intensity without changing their stored registers.
+Reference: Analog Devices MAX7219/MAX7221 datasheet Rev 6, pages 6-10:
+https://www.analog.com/media/en/technical-documentation/data-sheets/MAX7219-MAX7221.pdf
+These corrections apply to MAX7219, not MAX7221's CS-gated serial interface.
+Remaining limits: no DOUT/chaining on the five-pin module, analog current,
+multiplex timing, setup/hold violation detection, or brownout RAM retention.
+RAM/shift-register zero initialization is deterministic simulator state, not a
+claim about unspecified physical power-up memory. The upstream C++ is unchanged.

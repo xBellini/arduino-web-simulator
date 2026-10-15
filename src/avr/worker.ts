@@ -9,10 +9,13 @@
 # 09-10-2026 | Cursor | Moved from `src/sim/avr.worker.ts` (tree reorganization)
 #                     | Register DS3231 + AT24C32 TWI slaves; tick RTC from AVR cycles
 # 13-10-2026 | Codex | Report PCF latches and sampled PINC levels alongside GPIO ticks.
+# 15-10-2026 | Codex  | Run SimulIDE MAX7219 models in the AVR worker and batch display state.
+#                     | Update the renamed max7219Bridge import; behavior unchanged.
  */
 
 /// <reference lib="webworker" />
 
+import { Max7219Bus, type Max7219Target } from './max7219Bridge';
 import { PinState } from 'avr8js';
 import { AvrRunner, CPU_FREQ_HZ } from './runner';
 import {
@@ -33,6 +36,8 @@ type PacerExports = {
 };
 
 let runner: AvrRunner | null = null;
+let matrixBus: Max7219Bus | null = null;
+let matrixTargets: Max7219Target[] = [];
 let twiBus: TwiSlaveBus | null = null;
 let tabHidden = false;
 let maxWorkMs = 12;
@@ -179,6 +184,8 @@ function attachTwiBus(): void {
 let detachLcd: (() => void) | null = null;
 
 function stopRunner(): void {
+  matrixBus?.dispose();
+  matrixBus = null;
   detachLcd?.();
   detachLcd = null;
   rtcCores = [];
@@ -195,6 +202,7 @@ function startRunner(hex: string): void {
   runner.usart.onByteTransmit = (value) => {
     post({ v: AVR_WORKER_PROTOCOL, type: 'usart', byte: value });
   };
+  matrixBus = new Max7219Bus(runner, matrixTargets);
   attachTwiBus();
   detachLcd = attachLcdProbe();
   refreshQuantum();
@@ -217,6 +225,7 @@ function startRunner(hex: string): void {
       cycles: runner.cpu.cycles,
       cyclesBehind: runner.cyclesBehind(tabHidden),
       ports: [portSnapshot('B'), portSnapshot('C'), portSnapshot('D')],
+      matrices: matrixBus?.snapshots(),
       backpackPorts: [...backpackPorts].map(([id, port]) => {
         const sample = (bit: number): 'high' | 'low' | undefined => {
           // Byte-level TWI: sample PINC, never invent clock edges.
@@ -245,9 +254,13 @@ self.onmessage = (ev: MessageEvent<AvrWorkerInMessage>) => {
 
   switch (msg.type) {
     case 'start':
+      matrixTargets = msg.max7219Targets ?? [];
       lcdTargets = msg.lcdTargets;
       twiSlaves = msg.twiSlaves ?? [];
       startRunner(msg.hex);
+      break;
+    case 'max7219-power':
+      matrixBus?.setPower(msg.samples);
       break;
     case 'stop':
       stopRunner();

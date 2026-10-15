@@ -9,8 +9,11 @@
 # 09-10-2026 | Cursor | Moved from `src/sim/avrWorkerProtocol.ts` (tree reorganization)
 #                     | `ds3231_rtc` TWI slave (DS3231 @ 0x68 + AT24C32 @ 0x57)
 # 13-10-2026 | Codex | Batch PCF port latches and observed AVR I2C pin levels with each tick.
+# 15-10-2026 | Codex  | Carry MAX7219 targets, solved power validity and batched display snapshots.
+#                     | Update the renamed max7219Bridge import; protocol unchanged.
  */
 
+import type { Max7219Target, Max72xxSnapshot } from './max7219Bridge';
 import type { AvrPortName } from './pinMap';
 
 export const AVR_WORKER_PROTOCOL = 1 as const;
@@ -62,7 +65,9 @@ export type AvrWorkerInMessage =
       }>;
       /** Ideal I2C slaves registered on AVRTWI (in-worker). */
       twiSlaves: AvrWorkerTwiSlave[];
+      max7219Targets: Max7219Target[];
     }
+  | { v: typeof AVR_WORKER_PROTOCOL; type: 'max7219-power'; samples: Array<{ id: string; powered: boolean }> }
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'stop' }
   | {
       v: typeof AVR_WORKER_PROTOCOL;
@@ -91,6 +96,7 @@ export type AvrWorkerOutMessage =
       cycles: number;
       cyclesBehind: number;
       ports: AvrPortSnapshot[];
+      matrices?: Array<Max72xxSnapshot & { id: string }>;
       backpackPorts?: Array<{ id: string; port: number; sda?: 'high' | 'low'; scl?: 'high' | 'low' }>;
       /** Optional Sim perf batch metrics for the overlay. */
       perf?: {

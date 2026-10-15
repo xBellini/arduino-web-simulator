@@ -15,7 +15,11 @@
 #                     | Moved from `src/sim/buildLcdWorkerTargets.ts` (tree reorganization)
 #                     | Discover DS3231 RTC modules on the MCU I2C nets
 # 12-10-2026 | Cursor | DS3231 rtcAddr from placed rtcI2cAddr (default 0x68)
+# 15-10-2026 | Codex  | Discover matrix DIN/CLK/CS through net mapping for hardware SPI or GPIO.
+#                     | Update the renamed max7219Bridge import; discovery unchanged.
  */
+import type { Max7219Target } from './max7219Bridge';
+import { max7219PowerSamples } from '../components/modules/max7219Matrix8x8';
 import type { PlacedComponent, Wire } from '../types';
 import { isParallelLcdType, parallelLcdGeometry } from '../components/output/lcdParallel';
 import { buildCircuitNetlist, netForPin } from '../circuit/netlist';
@@ -197,4 +201,15 @@ export function buildTwiWorkerTargets(
     });
   }
   return out;
+}
+
+export function buildMax7219WorkerTargets(components: PlacedComponent[], wires: Wire[]): Max7219Target[] {
+  const netlist = buildCircuitNetlist(components, wires);
+  const power = new Map(max7219PowerSamples().map(s => [s.id, s.powered]));
+  return components.filter(c => c.type === 'max7219_matrix_8x8').flatMap(c => {
+    const din = refForLcdPin(netlist, c.id, 'din');
+    const clk = refForLcdPin(netlist, c.id, 'clk');
+    const cs = refForLcdPin(netlist, c.id, 'cs');
+    return din && clk && cs ? [{ id: c.id, din, clk, cs, powered: power.get(c.id) ?? false }] : [];
+  });
 }

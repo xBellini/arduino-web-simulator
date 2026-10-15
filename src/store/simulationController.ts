@@ -30,6 +30,8 @@
 # 09-10-2026 | Cursor | Removed XSPICE-era F4 rAF debug instrumentation
 # 14-10-2026 | Codex | Invalidate cached measurements when GPIO ownership changes at unchanged voltage.
 #                     | Cancel superseded compile/start continuations so Stop/restart cannot leave multiple AVR workers writing LCD/time state.
+# 15-10-2026 | Codex  | Pass connected MAX7219 modules and initial solved power validity into each worker.
+#                     | Await the initial matrix supply solve before firmware setup can send its first SPI commands.
  */
 
 import type { PinState, PlacedComponent, Wire } from '../types';
@@ -58,7 +60,7 @@ import { isMcuBoard } from '../avr/pinMap';
 import { AvrRunner, CPU_FREQ_HZ } from '../avr/runner';
 import { AvrWorkerHost } from '../avr/workerHost';
 import { buildLcdWorkerTargets } from '../avr/workerTargets';
-import { buildTwiWorkerTargets } from '../avr/workerTargets';
+import { buildTwiWorkerTargets, buildMax7219WorkerTargets } from '../avr/workerTargets';
 import type { ComponentSimFlags } from '../avr/gpioBridge';
 import type { AVRIOPort } from 'avr8js';
 // LCD EN probe runs inside the AVR Worker; main only applies posted bus samples.
@@ -397,6 +399,15 @@ export class SimulationController {
       this.callbacks.onCompilerAppend?.(parts.join(' ') + '\n');
     }
 
+    if (components.some(c => c.type === 'max7219_matrix_8x8')) {
+      // The initial legacy solve can be singular while GPIO inputs float. Wait
+      // for ngspice rather than discarding setup() SPI writes as "unpowered".
+      const { resistorBlown, ledBlown, capacitorBlown } = this.bridge.simState;
+      await refreshDcOperatingPoint(components, this.bridge.netlist, 0,
+        resistorBlown, ledBlown, this.buttonPressed,
+        computeMcuSources(this.bridge, mcu), capacitorBlown);
+      if (this.runner !== host) return;
+    }
     this.callbacks.onStatus('running');
     syncPorts();
     requestAnimationFrame(() => {
@@ -425,6 +436,7 @@ export class SimulationController {
         },
         this.getExecuteOptions,
         buildTwiWorkerTargets(components, wires),
+        buildMax7219WorkerTargets(components, wires),
       );
     });
   }
