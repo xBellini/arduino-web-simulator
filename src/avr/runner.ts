@@ -44,6 +44,7 @@
 #                     | Moved from `src/sim/avrRunner.ts` (tree reorganization)
 # 15-10-2026 | Codex  | Add avr8js hardware SPI with cycle-scheduled MOSI/SCK and sampled MISO; release overrides on disable.
 #                     | Anchor edge deadlines to transfer start so multi-cycle instructions do not accumulate clock drift.
+#                     | Preserve USART read-only status and pending RX across control writes; flush unread reception only when RX is disabled, preventing full-duplex echo loss.
  */
 import { avrInstruction, AVRIOPort, AVRTimer, AVRTWI, AVRUSART, CPU, portBConfig, portCConfig, portDConfig, timer0Config, timer1Config, timer2Config, twiConfig, usart0Config } from 'avr8js';
 import { loadHex } from './firmware';
@@ -200,6 +201,32 @@ export class AvrRunner {
     this.portC = new AVRIOPort(this.cpu, portCConfig);
     this.portD = new AVRIOPort(this.cpu, portDConfig);
     this.usart = new AVRUSART(this.cpu, usart0Config, CPU_FREQ_HZ);
+    // avr8js 0.21 clears RXC on unrelated UCSR0A/B writes. ATmega328P
+    // datasheet sections 24.12.2–3: status bits are read-only, TXC is W1C,
+    // and disabling RX (not changing interrupt enables) flushes reception.
+    const serialStatus = this.cpu.writeHooks[usart0Config.UCSRA];
+    this.cpu.writeHooks[usart0Config.UCSRA] = (value, old, address, mask) => {
+      const status = this.cpu.data[usart0Config.UCSRA];
+      const result = serialStatus?.(value, old, address, mask);
+      this.cpu.data[usart0Config.UCSRA] |= status & (value & 0x40 ? 0xbc : 0xfc);
+      return result;
+    };
+    const receiveInterrupt = {
+      address: usart0Config.rxCompleteInterrupt,
+      flagRegister: usart0Config.UCSRA, flagMask: 0x80,
+      enableRegister: usart0Config.UCSRB, enableMask: 0x80, constant: true,
+    };
+    const serialControl = this.cpu.writeHooks[usart0Config.UCSRB];
+    this.cpu.writeHooks[usart0Config.UCSRB] = (value, old, address, mask) => {
+      const unread = this.cpu.data[usart0Config.UCSRA] & 0x80;
+      const result = serialControl?.(value, old, address, mask);
+      if (!(value & 0x10)) {
+        this.cpu.readData(usart0Config.UDR); // Flush the model's pending receive byte and flag.
+      } else if (unread) {
+        this.cpu.setInterruptFlag(receiveInterrupt);
+      }
+      return result;
+    };
     this.twi = new AVRTWI(this.cpu, twiConfig, CPU_FREQ_HZ);
     this.spi = new AVRSPI(this.cpu, spiConfig, CPU_FREQ_HZ);
     // avr8js owns SPDR/SPIF/interrupts; this adapter supplies the physical pins.

@@ -17,6 +17,7 @@
 # 13-10-2026 | Codex | Apply backpack snapshots before each tick solve; clear them on stop/restart.
 # 14-10-2026 | Codex | Ignore retired worker messages and detach callbacks on stop so old LCD writes and cycle counts cannot enter a new run.
 # 15-10-2026 | Codex  | Mirror matrix snapshots and send changed solved power states; clear displays on stop.
+#                     | Forward serial input and receive completion separately from output text.
  */
 
 import { setMax7219Snapshots, clearMax7219Snapshots, max7219PowerSamples } from '../components/modules/max7219Matrix8x8';
@@ -84,6 +85,7 @@ export class AvrPortMirror implements Pick<
 
 export type AvrWorkerHostCallbacks = {
   onSerialByte: (byte: number) => void;
+  onSerialReceive?: () => void;
   onTick: () => void;
   onError?: (message: string) => void;
 };
@@ -120,6 +122,10 @@ export class AvrWorkerHost {
 
   private post(msg: AvrWorkerInMessage): void {
     this.worker?.postMessage(msg);
+  }
+
+  sendSerial(text: string): void {
+    if (this.ready) this.post({ v: AVR_WORKER_PROTOCOL, type: 'serial-input', bytes: Array.from(new TextEncoder().encode(text)) });
   }
 
   private postInput(port: AvrPortName, bit: number, high: boolean): void {
@@ -215,6 +221,9 @@ export class AvrWorkerHost {
             );
           }
           this.callbacks?.onTick();
+          break;
+        case 'serial-received':
+          this.callbacks?.onSerialReceive?.();
           break;
         case 'usart':
           this.callbacks?.onSerialByte(msg.byte);

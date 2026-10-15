@@ -29,6 +29,7 @@
 # 14-10-2026 | Codex | Wire bends represent routing waypoints; new wires omit automatic elbows.
 # 15-10-2026 | Codex | Add part-owned power indicator geometry, color and supply terminals.
 #                     | Declare onboard pin-driven indicator geometry independently of power LEDs.
+#                     | Add lightweight Uno TX/RX activity indicators with part-owned lamp geometry.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -75,6 +76,7 @@ export interface PaletteMetadata {
 
 export interface ComponentDefinition {
   /** Onboard lamp driven by the live electrical pin state. */
+  serialIndicators?: Record<'tx' | 'rx', { x: number; y: number; width: number; height: number; color: string }>;
   pinIndicator?: { x: number; y: number; width: number; height: number; color: string; pin: string };
   /** Artwork-local power lamp. Indicates positive solved supply, not rated operation or current. */
   powerIndicator?: { x: number; y: number; width: number; height: number; color: string;

@@ -58,6 +58,7 @@
 # 13-10-2026 | Codex | Derive membership/order from part metadata; retain all 63 entries and hide internal junctions.
 #                     | Declare the Uno green power indicator at its artwork ON LED.
 #                     | Map Uno L LED to live D13 state at the artwork LED location, in yellow.
+# 15-10-2026 | Codex | Add lightweight Uno TX/RX activity indicators with part-owned lamp geometry.
  */
 import type {
   ComponentDefinition,
@@ -151,6 +152,10 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     label: 'Arduino Uno',
     scale: 2,
     artwork: art('arduino_uno'),
+    serialIndicators: {
+      tx: { x: 132.766, y: 64.538, width: 5.428, height: 4.921, color: '#ffd633' },
+      rx: { x: 132.766, y: 74.538, width: 5.428, height: 4.921, color: '#ffd633' },
+    },
     pinIndicator: { x: 132.766, y: 45.538, width: 5.428, height: 4.921, color: '#ffd633', pin: 'd13' },
     powerIndicator: { x: 258.266, y: 64.538, width: 5.428, height: 4.921, color: '#28e657', positive: '5v', negative: 'gnd2', poweredBoard: true },
     pins: [

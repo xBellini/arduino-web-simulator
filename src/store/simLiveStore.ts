@@ -18,6 +18,7 @@
 #                     | `applySimLivePinStates` no-ops when pins/flags/backend/debug are unchanged
 # 05-10-2026 | Cursor | `simPerf` overlay snapshot preserved across pin updates
 # 15-10-2026 | Codex | Buffer serial display text for 16 ms on an independent subscription; preserve order, flush on stop and discard pending text on clear.
+#                     | Track short serial activity holds on independent listeners; clear lamps on stop without per-byte canvas updates.
  */
 
 import type { PinState } from '../types';
@@ -92,6 +93,35 @@ export function resetSerialOutput(): void {
   for (const listener of serialListeners) listener();
 }
 
+// Independent, bounded-rate lamp subscription; serial bytes never invalidate the canvas.
+let serialActivity = { boardId: '', tx: false, rx: false };
+const activityListeners = new Set<() => void>();
+let activityTimer: ReturnType<typeof setTimeout> | undefined;
+const activityUntil = { tx: 0, rx: 0 };
+export const getSerialActivity = () => serialActivity;
+export function subscribeSerialActivity(listener: () => void): () => void {
+  activityListeners.add(listener);
+  return () => { activityListeners.delete(listener); };
+}
+export function markSerialActivity(boardId: string, direction: 'tx' | 'rx'): void {
+  activityUntil[direction] = performance.now() + 120;
+  if (serialActivity.boardId !== boardId || !serialActivity[direction]) {
+    serialActivity = { ...serialActivity, boardId, [direction]: true };
+    for (const listener of activityListeners) listener();
+  }
+  if (activityTimer === undefined) activityTimer = setTimeout(expireSerialActivity, 120);
+}
+function expireSerialActivity(): void {
+  activityTimer = undefined;
+  const now = performance.now();
+  const tx = activityUntil.tx > now, rx = activityUntil.rx > now;
+  if (tx !== serialActivity.tx || rx !== serialActivity.rx) {
+    serialActivity = { ...serialActivity, tx, rx };
+    for (const listener of activityListeners) listener();
+  }
+  if (tx || rx) activityTimer = setTimeout(expireSerialActivity, 120);
+}
+
 function emit(): void {
   for (const listener of listeners) {
     listener();
@@ -159,6 +189,11 @@ export function setDcSolverBackend(backend: DcSolverBackend): void {
 }
 
 export function resetSimLiveState(): void {
+  clearTimeout(activityTimer);
+  activityTimer = undefined;
+  activityUntil.tx = activityUntil.rx = 0;
+  serialActivity = { boardId: '', tx: false, rx: false };
+  for (const listener of activityListeners) listener();
   snapshot = {
     pinStatesByComponent: {},
     simFlags: createComponentSimFlags(),

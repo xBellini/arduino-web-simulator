@@ -13,6 +13,7 @@
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Moved from `src/components/IdePanel.tsx` (tree reorganization)
 # 15-10-2026 | Codex | Isolate serial text and autoscroll in a memoized monitor subscribing to buffered output; serial batches no longer rebuild the IDE or canvas.
+#                     | Add a serial Send field with newline; keep typing and batched output inside the isolated monitor.
  */
 import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
@@ -24,12 +25,22 @@ import { SketchEditor } from './SketchEditor';
 type IdeTab = 'code' | 'build';
 
 const SerialMonitor = memo(function SerialMonitor() {
+  const { state, sendSerial } = useSim();
+  const [input, setInput] = useState('');
   const text = useSyncExternalStore(subscribeSerialOutput, getSerialOutput, getSerialOutput);
   const ref = useRef<HTMLPreElement>(null);
   useEffect(() => {
     if (ref.current) ref.current.scrollTop = ref.current.scrollHeight;
   }, [text]);
-  return <pre ref={ref} className="sim-log serial-log ide-serial-log">{text || '(no output yet)'}</pre>;
+  return <><pre ref={ref} className="sim-log serial-log ide-serial-log">{text || '(no output yet)'}</pre>
+    <form style={{ display: 'flex', gap: 4 }} onSubmit={event => {
+      event.preventDefault();
+      if (input && state.simStatus === 'running') { sendSerial(input + '\n'); setInput(''); }
+    }}>
+      <input aria-label="Serial input" placeholder="Send text (newline)" value={input} maxLength={1024}
+        disabled={state.simStatus !== 'running'} onChange={event => setInput(event.target.value)} style={{ minWidth: 0, flex: 1 }} />
+      <button type="submit" disabled={state.simStatus !== 'running' || !input}>Send</button>
+    </form></>;
 });
 
 export function IdePanel() {

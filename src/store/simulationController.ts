@@ -32,6 +32,7 @@
 #                     | Cancel superseded compile/start continuations so Stop/restart cannot leave multiple AVR workers writing LCD/time state.
 # 15-10-2026 | Codex  | Pass connected MAX7219 modules and initial solved power validity into each worker.
 #                     | Await the initial matrix supply solve before firmware setup can send its first SPI commands.
+#                     | Drive TX/RX indicators from USART transmit/receive events and forward monitor input to the active runner.
  */
 
 import type { PinState, PlacedComponent, Wire } from '../types';
@@ -75,6 +76,7 @@ import {
 } from '../avr/firmware';
 import {
   applySimLivePinStates,
+  markSerialActivity,
   resetSimLiveState,
   setDcSolverBackend,
   type DcSolverBackend,
@@ -421,7 +423,11 @@ export class SimulationController {
         {
           onSerialByte: (value) => {
             if (this.runner !== host) return;
+            markSerialActivity(mcu.id, 'tx');
             this.callbacks.onSerialOutput(String.fromCharCode(value));
+          },
+          onSerialReceive: () => {
+            if (this.runner === host) markSerialActivity(mcu.id, 'rx');
           },
           onTick: () => {
             if (this.runner !== host) return;
@@ -1179,6 +1185,10 @@ export class SimulationController {
     this.netLevels.clear();
     this.buttonPressed = {};
     clearLcdSimState();
+  }
+
+  sendSerial(text: string): void {
+    this.runner?.sendSerial(text);
   }
 
   stop(): void {

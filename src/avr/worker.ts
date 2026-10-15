@@ -11,6 +11,7 @@
 # 13-10-2026 | Codex | Report PCF latches and sampled PINC levels alongside GPIO ticks.
 # 15-10-2026 | Codex  | Run SimulIDE MAX7219 models in the AVR worker and batch display state.
 #                     | Update the renamed max7219Bridge import; behavior unchanged.
+#                     | Receive queued monitor bytes through USART character timing; report completed reception and clear queued bytes on stop.
  */
 
 /// <reference lib="webworker" />
@@ -36,6 +37,7 @@ type PacerExports = {
 };
 
 let runner: AvrRunner | null = null;
+const serialInputQueue: number[] = [];
 let matrixBus: Max7219Bus | null = null;
 let matrixTargets: Max7219Target[] = [];
 let twiBus: TwiSlaveBus | null = null;
@@ -184,6 +186,7 @@ function attachTwiBus(): void {
 let detachLcd: (() => void) | null = null;
 
 function stopRunner(): void {
+  serialInputQueue.length = 0;
   matrixBus?.dispose();
   matrixBus = null;
   detachLcd?.();
@@ -201,6 +204,11 @@ function startRunner(hex: string): void {
   runner = new AvrRunner(hex);
   runner.usart.onByteTransmit = (value) => {
     post({ v: AVR_WORKER_PROTOCOL, type: 'usart', byte: value });
+  };
+  runner.usart.onRxComplete = () => {
+    post({ v: AVR_WORKER_PROTOCOL, type: 'serial-received' });
+    const next = serialInputQueue.shift();
+    if (next !== undefined && !runner?.usart.writeByte(next)) serialInputQueue.length = 0;
   };
   matrixBus = new Max7219Bus(runner, matrixTargets);
   attachTwiBus();
@@ -264,6 +272,14 @@ self.onmessage = (ev: MessageEvent<AvrWorkerInMessage>) => {
       break;
     case 'stop':
       stopRunner();
+      break;
+    case 'serial-input':
+      if (!runner || !runner.usart.rxEnable) break;
+      serialInputQueue.push(...msg.bytes.slice(0, Math.max(0, 4096 - serialInputQueue.length)));
+      if (!runner.usart.rxBusy) {
+        const next = serialInputQueue.shift();
+        if (next !== undefined && !runner.usart.writeByte(next)) serialInputQueue.length = 0;
+      }
       break;
     case 'set-inputs':
       if (!runner) break;

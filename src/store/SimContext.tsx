@@ -23,6 +23,7 @@
 #                     | Saving preserves session undo/redo stacks; loading a circuit still starts fresh history.
 # 15-10-2026 | Codex  | Component moves carry attached terminal runs while keeping remote wire bends fixed.
 #                     | Route serial output through its independent buffered store; flush on stop/error and clear before new runs without per-byte editor dispatches.
+#                     | Expose serial input for the running simulation without modifying the buffered output path.
  */
 
 import {
@@ -732,6 +733,7 @@ interface SimContextValue {
   clearLoadedHex: () => void;
   compileAndRun: () => Promise<void>;
   stopSimulation: () => void;
+  sendSerial: (text: string) => void;
   clearSerialOutput: () => void;
   setButtonPressed: (componentId: string, pressed: boolean) => void;
   setPotPosition: (componentId: string, position: number) => void;
@@ -829,6 +831,10 @@ export function SimProvider({ children }: { children: ReactNode }) {
     } finally {
       window.clearTimeout(watchdog);
     }
+  }, []);
+
+  const sendSerial = useCallback((text: string) => {
+    if (stateRef.current.simStatus === 'running') simulationRef.current?.sendSerial(text);
   }, []);
 
   const stopSimulation = useCallback(() => {
@@ -1243,6 +1249,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
       clearLoadedHex,
       compileAndRun,
       stopSimulation,
+      sendSerial,
       clearSerialOutput,
       setButtonPressed,
       setPotPosition,
@@ -1286,6 +1293,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
       clearLoadedHex,
       compileAndRun,
       stopSimulation,
+      sendSerial,
       clearSerialOutput,
       setButtonPressed,
       setPotPosition,
