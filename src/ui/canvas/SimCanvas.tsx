@@ -28,10 +28,13 @@
 # 14-10-2026 | Codex | Render GPIO warning badges above hit layers so their measured-current tooltips receive hover.
 #                    | Keep automatic routes automatic until edited; choose the drag target at pointer-down.
 #                     | Attach shared delayed measurement tooltip to part, pin and wire hit targets while running.
+# 15-10-2026 | Codex | Default power-connected wires to red and GND/VSS nets to black, including junctions/breadboards and drafts; ground wins mixed nets.
+#                     | Outline black ground wires in light gray for contrast against the dark canvas, including draft previews.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { getDefinition } from '../../registry/components';
+import { buildCircuitNetlist } from '../../circuit/netlist';
 import { GpioOvercurrentOverlay } from './ComponentOverlays';
 import { getComponentBodyHitbox, pointInComponentHitbox, componentPlacementPivot } from '../../registry/componentHitbox';
 import { useSim } from '../../store/SimContext';
@@ -284,6 +287,27 @@ export function SimCanvas() {
   void liveSnap.version;
   const selectedSet = new Set(selectedIds);
   const selectedWireSet = new Set(selectedWireIds);
+  const pinWireColors = useMemo(() => {
+    const colors = new Map<string, string>();
+    for (const component of components) {
+      for (const pin of getDefinition(component.type).pins) {
+        const names = [pin.id, pin.description].map(name => name?.trim().toUpperCase());
+        if (pin.type === 'ground' || names.some(name => name === 'GND' || name === 'VSS')) {
+          colors.set(`${component.id}:${pin.id}`, '#000000');
+        } else if (pin.type === 'power' || names.some(name => name === 'VCC')) {
+          colors.set(`${component.id}:${pin.id}`, '#ff0000');
+        }
+      }
+    }
+    // Use actual copper connectivity, not simulation HIGH/LOW or component conduction.
+    for (const pins of buildCircuitNetlist(components, wires).nets.values()) {
+      const keys = pins.map(pin => `${pin.componentId}:${pin.pinId}`);
+      const color = keys.some(key => colors.get(key) === '#000000') ? '#000000'
+        : keys.some(key => colors.get(key) === '#ff0000') ? '#ff0000' : undefined;
+      if (color) for (const key of keys) colors.set(key, color);
+    }
+    return colors;
+  }, [components, wires]);
 
   const setPanningVisual = useCallback((active: boolean) => {
     isPanningRef.current = active;
@@ -1884,6 +1908,7 @@ export function SimCanvas() {
         ? simFlags.wireCurrentMa[wire.id]
         : undefined;
     const hasCurrent = wireShowsCurrent(currentMa);
+    const color = pinWireColors.get(`${wire.from.componentId}:${wire.from.pinId}`);
     return (
       <g
         key={mode === 'hit' ? `${wire.id}-hit` : `${wire.id}-${mode}`}
@@ -1896,7 +1921,11 @@ export function SimCanvas() {
           .join(' ')}
       >
         {mode === 'visual' && (
-          <path d={d} className="wire" fill="none" pointerEvents="none" />
+          <>
+            {color === '#000000' && <path d={d} fill="none" pointerEvents="none"
+              stroke="#b0bec5" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />}
+            <path d={d} className="wire" style={{ stroke: color }} fill="none" pointerEvents="none" />
+          </>
         )}
         {mode === 'hit' && (
           <path
@@ -1954,12 +1983,19 @@ export function SimCanvas() {
       wireCursorPin,
     );
     if (!points || points.length < 2) return null;
+    const color = [wireDraft.from, wireCursorPin].some(pin => pin && pinWireColors.get(`${pin.componentId}:${pin.pinId}`) === '#000000')
+      ? '#000000' : [wireDraft.from, wireCursorPin].some(pin => pin && pinWireColors.get(`${pin.componentId}:${pin.pinId}`) === '#ff0000') ? '#ff0000' : undefined;
     return (
+      <>
+      {color === '#000000' && <path d={roundedPolylinePath(points)} className="wire wire-draft"
+        style={{ stroke: '#b0bec5', strokeWidth: 5 }} fill="none" pointerEvents="none" />}
       <path
         d={roundedPolylinePath(points)}
         className="wire wire-draft"
+        style={{ stroke: color }}
         fill="none"
       />
+      </>
     );
   };
 
