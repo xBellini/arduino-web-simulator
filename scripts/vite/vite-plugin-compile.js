@@ -10,6 +10,13 @@
 # Date       | Author | Remarks
 # 24-09-2026 | Cursor | Changelog creation / local arduino-cli compile API
 # 09-10-2026 | Cursor | Moved from `vite-plugin-compile.js` (tree reorganization)
+# 15-10-2026 | Codex | Read an explicitly selected local HEX for automatic reload; restrict requests to same-origin loopback and reject changing or oversized files.
+#                     | Select any HEX with a local Windows picker; use an absolute PowerShell path, report errors, and dispose the process on cancellation.
+#                     | Remove the invisible owner window that prevented the file picker from appearing.
+#                     | Raise only the picker process's dialog to the foreground so it does not open behind other applications.
+#                     | Temporarily attach the picker input thread to the foreground thread when activating the file dialog.
+#                     | Use the foreground window as the HEX dialog's native owner instead of forcing focus with a timer.
+#                     | Close an abandoned picker normally so its owner is re-enabled after cancellation or timeout.
  */
 import fs from 'node:fs';
 import os from 'node:os';
@@ -271,11 +278,114 @@ async function compileSketchBody(sketch) {
 
 /** Dev-only API: local arduino-cli sketch compile → Intel HEX. */
 export function compilePlugin() {
+  let pickerOpen = false;
   return {
     name: 'arduino-compile',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url?.split('?')[0];
+        if (url === '/api/compile/hex-file') {
+          const remote = req.socket.remoteAddress;
+          const local = remote === '127.0.0.1' || remote === '::1' || remote === '::ffff:127.0.0.1';
+          const origin = req.headers.origin;
+          if (!local || !origin || origin !== `http://${req.headers.host}` || req.method !== 'POST' ||
+              !req.headers['content-type']?.startsWith('application/json')) {
+            sendJson(res, 403, { error: 'HEX watching requires a local, same-origin request.' });
+            return;
+          }
+          res.setHeader('Cache-Control', 'no-store');
+          try {
+            let { filename, pick } = JSON.parse(await readBody(req));
+            if (pick) {
+              if (process.platform !== 'win32') { sendJson(res, 501, { error: 'Local HEX picker requires Windows.' }); return; }
+              if (pickerOpen) { sendJson(res, 409, { error: 'The HEX file picker is already open.' }); return; }
+              pickerOpen = true;
+              try {
+                filename = await new Promise((resolve, reject) => {
+                  const script = `$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -ReferencedAssemblies System.Windows.Forms -TypeDefinition @'
+using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Threading.Tasks;
+public sealed class HexPickerWindow : IWin32Window {
+  public IntPtr Handle { get; private set; }
+  public HexPickerWindow() { Handle = GetForegroundWindow(); }
+  [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern IntPtr FindWindow(string className, string title);
+  [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
+  [DllImport("user32.dll")] public static extern IntPtr SendMessage(IntPtr window, uint message, IntPtr wParam, IntPtr lParam);
+  public DialogResult Show(OpenFileDialog dialog) {
+    var cancelled = Task.Run(() => Console.ReadLine());
+    using (var timer = new Timer()) {
+      timer.Interval = 100;
+      timer.Tick += delegate {
+        if (!cancelled.IsCompleted) return;
+        IntPtr window = FindWindow("#32770", dialog.Title);
+        uint processId;
+        GetWindowThreadProcessId(window, out processId);
+        if (window != IntPtr.Zero && processId == System.Diagnostics.Process.GetCurrentProcess().Id) {
+          timer.Stop();
+          SendMessage(window, 0x0010, IntPtr.Zero, IntPtr.Zero);
+        }
+      };
+      timer.Start();
+      return dialog.ShowDialog(this);
+    }
+  }
+}
+'@
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$owner = New-Object HexPickerWindow
+$dialog = New-Object System.Windows.Forms.OpenFileDialog
+$dialog.Title = 'Import HEX firmware'
+$dialog.Filter = 'Intel HEX (*.hex)|*.hex'
+$dialog.CheckFileExists = $true
+try {
+  if ($owner.Show($dialog) -eq [System.Windows.Forms.DialogResult]::OK) { [Console]::Write($dialog.FileName) }
+} finally { $dialog.Dispose() }`;
+                  const executable = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
+                  const child = spawn(executable, ['-NoProfile', '-STA', '-EncodedCommand', Buffer.from(script, 'utf16le').toString('base64')], { windowsHide: true });
+                  let output = '', stderr = '';
+                  child.stdout.setEncoding('utf8'); child.stderr.setEncoding('utf8');
+                  child.stdout.on('data', chunk => { output += chunk; });
+                  child.stderr.on('data', chunk => { stderr += chunk; });
+                  child.stdin.on('error', () => {}); // The dialog may close before cancellation reaches it.
+                  const cancel = () => { if (!child.stdin.destroyed) child.stdin.end(); };
+                  res.on('close', cancel);
+                  const timeout = setTimeout(() => { cancel(); reject(new Error('HEX file selection timed out.')); }, 120000);
+                  child.on('error', error => { clearTimeout(timeout); res.off('close', cancel); reject(error); });
+                  child.on('close', code => {
+                    clearTimeout(timeout); res.off('close', cancel);
+                    if (code === 0) resolve(output.trim().replace(/^\uFEFF/, ''));
+                    else reject(new Error('HEX picker failed: ' + (stderr.trim() || 'process exited before selection')));
+                  });
+                });
+              } finally { pickerOpen = false; }
+              if (!filename) { sendJson(res, 200, { cancelled: true }); return; }
+            }
+            if (typeof filename !== 'string' || !path.isAbsolute(filename) || path.extname(filename).toLowerCase() !== '.hex') {
+              sendJson(res, 400, { error: 'Enter the full path to a .hex file.' });
+              return;
+            }
+            const before = await fs.promises.stat(filename);
+            if (!before.isFile() || before.size > 1024 * 1024) {
+              sendJson(res, 400, { error: 'Select a HEX file smaller than 1 MB.' });
+              return;
+            }
+            const hex = await fs.promises.readFile(filename, 'utf8');
+            const after = await fs.promises.stat(filename);
+            if (before.mtimeMs !== after.mtimeMs || before.size !== after.size) {
+              sendJson(res, 409, { error: 'HEX is being rebuilt; waiting for it to finish.' });
+              return;
+            }
+            sendJson(res, 200, { hex, filename: path.basename(filename), ...(pick ? { path: filename } : {}) });
+          } catch (error) {
+            sendJson(res, 400, { error: error instanceof Error ? error.message : 'Cannot read the HEX file.' });
+          }
+          return;
+        }
         if (!url?.startsWith('/api/compile')) {
           next();
           return;

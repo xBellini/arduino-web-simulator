@@ -14,6 +14,10 @@
 # 09-10-2026 | Cursor | Moved from `src/components/IdePanel.tsx` (tree reorganization)
 # 15-10-2026 | Codex | Isolate serial text and autoscroll in a memoized monitor subscribing to buffered output; serial batches no longer rebuild the IDE or canvas.
 #                     | Add a serial Send field with newline; keep typing and batched output inside the isolated monitor.
+#                     | Watch an explicit local HEX path, validate stable rebuilds, and reload stopped for manual Run; cancel watching when switching firmware or projects.
+#                     | Keep HEX reload stopped for manual Run without separate watch controls.
+#                     | Restore the browser file picker so importing does not depend on a server-side desktop dialog.
+#                     | Import any local HEX via the existing button, watch its path automatically, and preserve firmware on cancel/error without auto-running rebuilds.
  */
 import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
@@ -62,6 +66,13 @@ export function IdePanel() {
   const [templateOpen, setTemplateOpen] = useState(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [confirmNewSketch, setConfirmNewSketch] = useState(false);
+  const [pickingHex, setPickingHex] = useState(false);
+  const pickerAbort = useRef<AbortController | null>(null);
+  useEffect(() => () => pickerAbort.current?.abort(), []);
+  const importedHex = useRef<string | null>(null);
+  const [watchedHexPath, setWatchedHexPath] = useState<string | null>(null);
+  const [watchMessage, setWatchMessage] = useState('');
+  const watchedHexLoaded = useRef(false);
   const hexInputRef = useRef<HTMLInputElement>(null);
   const inoInputRef = useRef<HTMLInputElement>(null);
   const templateRef = useRef<HTMLDivElement>(null);
@@ -81,6 +92,55 @@ export function IdePanel() {
   const running = simStatus === 'running';
   const busy = simStatus === 'compiling';
   const usingHex = loadedHex !== null;
+
+  useEffect(() => {
+    if (loadedHex === null && watchedHexLoaded.current) setWatchedHexPath(null);
+  }, [loadedHex]);
+
+  useEffect(() => {
+    watchedHexLoaded.current = !!watchedHexPath;
+    if (!watchedHexPath) { setWatchMessage(''); return; }
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    let previous = importedHex.current;
+    let accepted = importedHex.current;
+    const abort = new AbortController();
+    const poll = async () => {
+      try {
+        const response = await fetch('/api/compile/hex-file', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: watchedHexPath }), signal: abort.signal,
+        });
+        const data = await response.json() as { hex?: string; filename?: string; error?: string };
+        if (cancelled) return;
+        if (!response.ok || typeof data.hex !== 'string' || !data.filename) {
+          previous = null;
+          setWatchMessage(data.error || 'HEX watch requires the local dev server.');
+        } else if (data.hex !== previous) {
+          previous = data.hex;
+          setWatchMessage('Waiting for the HEX file to settle…');
+        } else if (data.hex !== accepted) {
+          // Require a complete file as well as two matching reads; the normal
+          // importer validates checksums before stopping the current run.
+          const error = !/:00000001FF\s*$/i.test(data.hex)
+            ? 'Build has not written the final HEX record yet.'
+            : loadHexFirmware(data.hex, data.filename);
+          if (error) setWatchMessage(`Waiting for valid HEX: ${error}`);
+          else {
+            accepted = data.hex;
+            watchedHexLoaded.current = true;
+            setWatchMessage('HEX reloaded. Press Run when ready.');
+          }
+        } else setWatchMessage('Watching HEX for changes.');
+      } catch {
+        if (!cancelled) { previous = null; setWatchMessage('HEX watch unavailable; retrying…'); }
+      } finally {
+        if (!cancelled) timer = setTimeout(poll, 1000);
+      }
+    };
+    void poll();
+    return () => { cancelled = true; abort.abort(); clearTimeout(timer); };
+  }, [watchedHexPath, loadHexFirmware]);
 
   const simLiveSnap = useSyncExternalStore(
     subscribeSimLive,
@@ -111,7 +171,28 @@ export function IdePanel() {
     void compileAndRun();
   }, [compileAndRun]);
 
-  const handleHexPick = () => hexInputRef.current?.click();
+  const handleHexPick = async () => {
+    if (!import.meta.env.DEV) { hexInputRef.current?.click(); return; }
+    if (pickerAbort.current) return;
+    const abort = new AbortController(); pickerAbort.current = abort;
+    setPickingHex(true);
+    try {
+      const response = await fetch('/api/compile/hex-file', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pick: true }), signal: abort.signal,
+      });
+      const data = await response.json() as { hex?: string; filename?: string; path?: string; cancelled?: boolean; error?: string };
+      if (data.cancelled) return;
+      if (!response.ok || !data.hex || !data.filename || !data.path) throw new Error(data.error || 'Could not open local HEX picker.');
+      const error = !/:00000001FF\s*$/i.test(data.hex) ? 'HEX file is incomplete.' : loadHexFirmware(data.hex, data.filename);
+      if (error) throw new Error(error);
+      importedHex.current = data.hex;
+      watchedHexLoaded.current = true;
+      setWatchedHexPath(data.path);
+      setFileError(null); setTab('build');
+    } catch (error) {
+      if (!abort.signal.aborted) { setFileError(error instanceof Error ? error.message : 'Could not import HEX.'); setTab('build'); }
+    } finally { pickerAbort.current = null; if (!abort.signal.aborted) setPickingHex(false); }
+  };
   const handleInoPick = () => inoInputRef.current?.click();
 
   const handleHexFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,6 +202,7 @@ export function IdePanel() {
 
     try {
       const text = await file.text();
+      setWatchedHexPath(null);
       const err = loadHexFirmware(text, file.name);
       if (err) {
         setFileError(err);
@@ -290,7 +372,7 @@ export function IdePanel() {
 
       {usingHex && loadedHexName && (
         <div className="sim-firmware-banner">
-          <span className="sim-firmware-label" title={loadedHexName}>
+          <span className="sim-firmware-label" title={watchedHexPath ? `${loadedHexName} — ${watchMessage}` : loadedHexName}>
             HEX: {loadedHexName}
           </span>
           <button
@@ -304,6 +386,7 @@ export function IdePanel() {
           </button>
         </div>
       )}
+
 
       <div className="ide-file-toolbar">
         <button
@@ -384,8 +467,8 @@ export function IdePanel() {
         <button
           type="button"
           className="sim-btn ide-btn-import"
-          onClick={handleHexPick}
-          disabled={running || busy}
+          onClick={() => void handleHexPick()}
+          disabled={running || busy || pickingHex}
           title={ARDUINO_IDE_HEX_HINT}
         >
           Import .hex
