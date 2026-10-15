@@ -21,9 +21,9 @@
  * Owns/exports: `updateWireCurrents`, `wireShowsCurrent`, `wireFlowDuration`, `pointAlongPolyline`,
  * `labelAngleAlongPolyline`. Conventions: Call only after `solveCircuit` (needs net levels, flags,
  * and `estimateNetCurrentMa`). Flow direction follows conventional current from sources; magnitude
- * below `MIN_WIRE_CURRENT_MA` hides animation. Series parts bridge BFS between pin pairs. To treat
+ * zero or unavailable current hides animation; every finite positive magnitude animates. Series parts bridge BFS between pin pairs. To treat
  * a part as in-series for flow direction, implement `seriesPins` on its part module. To change when
- * dots appear, adjust `wireShowsCurrent` / `MIN_WIRE_CURRENT_MA` or duration in `wireFlowDuration`.
+ * dots appear, adjust `wireShowsCurrent` or duration in `wireFlowDuration`.
  * To add a new power-source pin role, implement `pinRole` on the module (or rely on registry
  * `power`/`ground` pin types). Not here: Branch mA per component or DC voltages — see branchCurrent
  * and circuit/dcSolver.ts.
@@ -44,6 +44,9 @@
 # 13-10-2026 | Codex | Read direct LCD leaf-wire currents from solver branches; show sampled logic without flow; shared rails retain existing estimates.
 #                     | Prefer known endpoint logic over floating readings on backpack-to-LCD wires.
 # 14-10-2026 | Codex | Resolve LED/resistor leaf-wire direction from declared terminals and solved voltage; whole-part paths retain solved-net legacy fallback.
+# 15-10-2026 | Codex | Reverse measured terminal flow for source parts so supply current leaves positive and returns through negative.
+#                     | Sum measured load-terminal currents through explicit junction trees; leave ambiguous or unmeasured branches on the existing fallback.
+#                     | Animate small positive currents too; retain the 2.5-second slowest cycle and actual current labels, with zero/unavailable values static.
  */
 
 import { formatCurrentMa } from '../values/electric';
@@ -223,7 +226,6 @@ export function buildNetBranchCurrentMa(
   return result;
 }
 
-const MIN_WIRE_CURRENT_MA = 0.05;
 
 /** Lower = closer to the positive supply (conventional current origin). */
 const ROLE_SOURCE = 0;
@@ -404,10 +406,58 @@ export function updateWireCurrents(
       flags.wireReadingLabel[wire.id] = ma === undefined ? 'N/A' : formatCurrentMa(ma);
       const va = a === null ? undefined : netVoltages?.get(a);
       const vb = b === null ? undefined : netVoltages?.get(b);
-      const intoPart = (end.pinId === path.positive) === (va !== undefined && vb !== undefined && va >= vb);
+      const intoLoad = (end.pinId === path.positive) === (va !== undefined && vb !== undefined && va >= vb);
+      const intoPart = getPartModule(comp.type)?.standaloneSource ? !intoLoad : intoLoad;
       flags.wireFlowReverse[wire.id] = index === 0 ? intoPart : !intoPart;
       hasCurrentPath = true;
       break;
+    }
+    if (hasCurrentPath) continue;
+    // A junction feeder carries the sum of its measured leaf loads. Only accept
+    // explicit wire trees ending in measured positive terminals (no hidden copper,
+    // source terminals, loops, or shared component pins with ambiguous current).
+    for (const [side, start] of [wire.from, wire.to].entries()) {
+      if (byId.get(start.componentId)?.type !== 'wire_junction') continue;
+      const queue = [{ pin: start, incoming: wire.id }];
+      const visited = new Set<string>();
+      let total = 0, leaves = 0, valid = true;
+      while (queue.length && valid) {
+        const { pin, incoming } = queue.pop()!;
+        const key = pinRefKey(pin);
+        if (visited.has(key)) { valid = false; break; }
+        visited.add(key);
+        const comp = byId.get(pin.componentId);
+        if (comp?.type === 'wire_junction') {
+          const outgoing = wires.filter(w => w.id !== incoming &&
+            (pinRefKey(w.from) === key || pinRefKey(w.to) === key));
+          if (!outgoing.length) { valid = false; break; }
+          for (const next of outgoing) queue.push({
+            pin: pinRefKey(next.from) === key ? next.to : next.from, incoming: next.id,
+          });
+        } else {
+          const mod = comp && getPartModule(comp.type);
+          const path = mod?.wireCurrentPath?.(pin.pinId);
+          const measured = comp && path?.branch !== undefined
+            ? branchCurrentMa?.[`${comp.id}:${path.branch}`] : undefined;
+          const positive = comp && path ? pinNet(netlist, comp.id, path.positive) : null;
+          const negative = comp && path ? pinNet(netlist, comp.id, path.negative) : null;
+          const vp = positive === null ? undefined : netVoltages?.get(positive);
+          const vn = negative === null ? undefined : netVoltages?.get(negative);
+          if (!path || path.positive !== pin.pinId || degree.get(key) !== 1 ||
+              mod?.standaloneSource || measured === undefined || vp === undefined || vn === undefined || vp < vn) {
+            valid = false; break;
+          }
+          total += measured;
+          leaves++;
+        }
+      }
+      if (valid && leaves) {
+        flags.wireCurrentMa[wire.id] = total;
+        flags.wireReadingLabel[wire.id] = formatCurrentMa(total);
+        flags.wireFlowReverse[wire.id] = side === 0;
+        hasCurrentPath = true;
+        break;
+      }
     }
     if (hasCurrentPath) continue;
     const netFrom = netForPin(netlist, wire.from);
@@ -435,7 +485,7 @@ export function updateWireCurrents(
     }
 
     flags.wireCurrentMa[wire.id] = currentMa;
-    if (currentMa < MIN_WIRE_CURRENT_MA) {
+    if (!wireShowsCurrent(currentMa)) {
       flags.wireFlowReverse[wire.id] = false;
       continue;
     }
@@ -448,7 +498,7 @@ export function updateWireCurrents(
 }
 
 export function wireShowsCurrent(currentMa: number | undefined): boolean {
-  return (currentMa ?? 0) >= MIN_WIRE_CURRENT_MA;
+  return currentMa !== undefined && Number.isFinite(currentMa) && currentMa > 0;
 }
 
 export function wireFlowDuration(currentMa: number): string {

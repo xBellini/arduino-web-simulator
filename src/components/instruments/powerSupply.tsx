@@ -18,6 +18,7 @@
 # 09-10-2026 | Cursor | Moved from `src/parts/powerSupply.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Own palette placement and custom editor registration; retain unit conversion, steppers and legacy current limits.
 # 14-10-2026 | Codex | Own hover readings using solved samples and existing simulation flags.
+# 15-10-2026 | Codex | Expose the SPICE source branch on unbranched supply leads, including small readings and loads sharing IC power pins.
  */
 import { InstrumentPropertiesEditor } from '../../ui/editors/InstrumentPropertiesEditor';
 import { isCurrentUnit, isVoltageUnit, supplyVoltageVolts } from '../../values/electric';
@@ -36,6 +37,8 @@ export const powerSupplyModule: PartModule = {
   ],
   palette: { category: 'instruments', order: 0 },
   type: 'power_supply',
+  wireCurrentPath: pin => pin === 'pos' || pin === 'neg'
+    ? { branch: 'supply', positive: 'pos', negative: 'neg' } : undefined,
   standaloneSource: true,
 
   definition: {
@@ -59,6 +62,7 @@ export const powerSupplyModule: PartModule = {
     ctx.line(`V${ctx.sid} ${ctx.node(nPos)} ${ctx.node(nNeg)} DC ${volts}`);
     ctx.markSourced(nPos);
     ctx.instance(`V${ctx.sid}`);
+    ctx.instance(`V${ctx.sid}`, 'supply');
   },
 
   spiceCacheKey({ comp }) {

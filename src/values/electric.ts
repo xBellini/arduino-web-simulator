@@ -30,6 +30,7 @@
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Merged `src/utils/instrumentsGeometry.ts` into this file (tree reorganization)
 #                     | Moved from `src/utils/electricUnits.ts` (tree reorganization)
+# 15-10-2026 | Codex | Format small measured currents in microamps/nanoamps instead of rounding them to zero mA.
  */
 
 import type { CurrentUnit, PlacedComponent, VoltageUnit } from '../types';
@@ -46,6 +47,8 @@ export function formatVoltage(v: number): string {
 
 export function formatCurrentMa(mA: number): string {
   if (!Number.isFinite(mA)) return '---';
+  if (mA !== 0 && Math.abs(mA) < 0.001) return `${(mA * 1e6).toFixed(1)} nA`;
+  if (mA !== 0 && Math.abs(mA) < 0.1) return `${(mA * 1000).toFixed(1)} µA`;
   if (mA >= 1000) return `${(mA / 1000).toFixed(2)} A`;
   if (mA >= 100) return `${mA.toFixed(0)} mA`;
   if (mA >= 10) return `${mA.toFixed(1)} mA`;
