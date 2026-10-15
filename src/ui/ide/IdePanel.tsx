@@ -1,6 +1,7 @@
 /**
  * What: Right IDE column — sketch source, build log tab, serial monitor, firmware/load helpers. Exports
- * IdePanel; SketchEditor for code; SimContext for sketchSource, compileAndRun/stop, serial, templates, hex.
+ * IdePanel; SketchEditor for code; SimContext for sketchSource, compileAndRun/stop, templates, hex.
+ * SerialMonitor subscribes independently to buffered serial text in simLiveStore.
  * simLiveStore subscription drives run elapsed time and live output while simStatus === 'running'. To add a
  * sketch template: register in sketch/templates and wire a menu entry in template dropdown here. To add a
  * new file import type: mirror ino/hex hidden inputs + handler calling context loader. Canvas editing,
@@ -11,15 +12,25 @@
 # 17-09-2026 | Cursor | Changelog creation
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Moved from `src/components/IdePanel.tsx` (tree reorganization)
+# 15-10-2026 | Codex | Isolate serial text and autoscroll in a memoized monitor subscribing to buffered output; serial batches no longer rebuild the IDE or canvas.
  */
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
-import { getSimLiveSnapshot, subscribeSimLive } from '../../store/simLiveStore';
+import { getSerialOutput, subscribeSerialOutput, getSimLiveSnapshot, subscribeSimLive } from '../../store/simLiveStore';
 import { ARDUINO_IDE_HEX_HINT } from '../../avr/firmware';
 import { SKETCH_TEMPLATES } from './templates';
 import { SketchEditor } from './SketchEditor';
 
 type IdeTab = 'code' | 'build';
+
+const SerialMonitor = memo(function SerialMonitor() {
+  const text = useSyncExternalStore(subscribeSerialOutput, getSerialOutput, getSerialOutput);
+  const ref = useRef<HTMLPreElement>(null);
+  useEffect(() => {
+    if (ref.current) ref.current.scrollTop = ref.current.scrollHeight;
+  }, [text]);
+  return <pre ref={ref} className="sim-log serial-log ide-serial-log">{text || '(no output yet)'}</pre>;
+});
 
 export function IdePanel() {
   const {
@@ -43,7 +54,6 @@ export function IdePanel() {
   const hexInputRef = useRef<HTMLInputElement>(null);
   const inoInputRef = useRef<HTMLInputElement>(null);
   const templateRef = useRef<HTMLDivElement>(null);
-  const serialRef = useRef<HTMLPreElement>(null);
   const runStartedAtRef = useRef(0);
   const [runElapsedSec, setRunElapsedSec] = useState(0);
 
@@ -52,7 +62,6 @@ export function IdePanel() {
     simErrorMessage,
     sketchSource,
     sketchName,
-    serialOutput,
     compilerOutput,
     loadedHex,
     loadedHexName,
@@ -158,13 +167,6 @@ export function IdePanel() {
       setTab('build');
     }
   }, [simStatus]);
-
-  useEffect(() => {
-    const el = serialRef.current;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
-    }
-  }, [serialOutput]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -440,9 +442,7 @@ export function IdePanel() {
             <span>Serial monitor</span>
             <span className="ide-serial-meta">9600 baud</span>
           </div>
-          <pre ref={serialRef} className="sim-log serial-log ide-serial-log">
-            {serialOutput || '(no output yet)'}
-          </pre>
+          <SerialMonitor />
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 /**
  * What: Module-level live sim snapshot for React — outside the editor reducer.
  * Role: high-frequency pin states / flags / solver debug without undo pollution.
+ * Also owns buffered serial display text with separate listeners so output never invalidates canvas subscribers.
  * Owns/exports: subscribe/getters, `applySimLivePinStates`, `resetSimLiveState`,
  * `setDcSolverBackend`, ngspice debug setters, version counter for hooks.
  * Conventions: only `SimulationController` and solvers should write; UI reads via subscribe
@@ -16,6 +17,7 @@
 #                     | Expanded What with practical how-to notes
 #                     | `applySimLivePinStates` no-ops when pins/flags/backend/debug are unchanged
 # 05-10-2026 | Cursor | `simPerf` overlay snapshot preserved across pin updates
+# 15-10-2026 | Codex | Buffer serial display text for 16 ms on an independent subscription; preserve order, flush on stop and discard pending text on clear.
  */
 
 import type { PinState } from '../types';
@@ -56,6 +58,39 @@ let snapshot: SimLiveSnapshot = {
 };
 
 const listeners = new Set<() => void>();
+
+// Serial display notifications must not invalidate the canvas live snapshot.
+let serialText = '';
+let pendingSerial = '';
+let serialTimer: ReturnType<typeof setTimeout> | undefined;
+const serialListeners = new Set<() => void>();
+
+export function getSerialOutput(): string { return serialText; }
+export function subscribeSerialOutput(listener: () => void): () => void {
+  serialListeners.add(listener);
+  return () => { serialListeners.delete(listener); };
+}
+export function flushSerialOutput(): void {
+  clearTimeout(serialTimer);
+  serialTimer = undefined;
+  if (!pendingSerial) return;
+  serialText += pendingSerial;
+  pendingSerial = '';
+  for (const listener of serialListeners) listener();
+}
+export function appendSerialOutput(text: string): void {
+  if (!text) return;
+  pendingSerial += text;
+  if (serialTimer === undefined) serialTimer = setTimeout(flushSerialOutput, 16);
+}
+export function resetSerialOutput(): void {
+  clearTimeout(serialTimer);
+  serialTimer = undefined;
+  pendingSerial = '';
+  if (!serialText) return;
+  serialText = '';
+  for (const listener of serialListeners) listener();
+}
 
 function emit(): void {
   for (const listener of listeners) {

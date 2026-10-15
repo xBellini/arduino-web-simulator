@@ -18,9 +18,10 @@
 #                     | Moved from `src/parts/lcdParallel.tsx` (tree reorganization)
 # 13-10-2026 | Codex | Forward variant palette metadata; register custom LCD editor preserving color preview.
 #                     | Show solved HIGH/LOW/FLOATING on directly connected data/control wires; representative source-backed nominal loads supply solved controller/backlight currents.
+# 15-10-2026 | Codex | Batch LCD pixels into two cached SVG paths; preserve pixel geometry, colors, cursor and custom glyph updates.
  */
 import { LcdPropertiesEditor } from '../../ui/editors/LcdPropertiesEditor';
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import {
   createHd44780,
   createParallelLatch,
@@ -137,10 +138,12 @@ function LcdGlassOverlay({
   simRunning?: boolean;
   colors: ReturnType<typeof lcdColorsFromComponent>;
 }): ReactNode {
-  if (!simRunning) return null;
+  const cached = useRef<{ key: string; node: ReactNode } | null>(null);
+  if (!simRunning) { cached.current = null; return null; }
   const ic = icById.get(componentId);
   const { background, character, segment } = colors;
   if (!ic || !ic.isDisplayOn()) {
+    cached.current = null;
     return (
       <rect
         x={glass.x}
@@ -163,29 +166,40 @@ function LcdGlassOverlay({
   const on = character;
   const off = segment;
 
-  const cells: ReactNode[] = [];
+  // Include actual pixels, not just character codes: CGRAM can change in place.
+  const bitmaps = new Map<number, ReturnType<Hd44780['glyphBitmap']>>();
+  const pixels: boolean[][] = [];
+  const cursors: boolean[] = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const code = ic.getCell(c, r);
-      const bitmap = ic.glyphBitmap(code);
+      let bitmap = bitmaps.get(code);
+      if (!bitmap) { bitmap = ic.glyphBitmap(code); bitmaps.set(code, bitmap); }
+      const cell: boolean[] = [];
+      for (let y = 0; y < 8; y++) for (let x = 0; x < 5; x++) cell.push(!!bitmap[y]?.[x]);
+      pixels.push(cell);
+      cursors.push(!!(ic.isCursorAt(c, r) && ic.cursorFlags()));
+    }
+  }
+  const key = JSON.stringify([cols, rows, glass.x, glass.y, glass.width, glass.height,
+    background, character, segment, pixels, cursors]);
+  if (cached.current?.key === key) return cached.current.node;
+  const cells: ReactNode[] = [];
+  let onPath = '', offPath = '';
+  const width = Math.max(0.15, pixW * 0.85);
+  const height = Math.max(0.15, pixH * 0.85);
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
       const ox = glass.x + c * cellW + padX;
       const oy = glass.y + r * cellH + padY;
       for (let y = 0; y < 8; y++) {
         for (let x = 0; x < 5; x++) {
-          cells.push(
-            <rect
-              key={`${r}-${c}-${y}-${x}`}
-              x={ox + x * pixW}
-              y={oy + y * pixH}
-              width={Math.max(0.15, pixW * 0.85)}
-              height={Math.max(0.15, pixH * 0.85)}
-              fill={bitmap[y]?.[x] ? on : off}
-              pointerEvents="none"
-            />,
-          );
+          const path = `M${ox + x * pixW} ${oy + y * pixH}h${width}v${height}h${-width}Z`;
+          if (pixels[r * cols + c][y * 5 + x]) onPath += path;
+          else offPath += path;
         }
       }
-      if (ic.isCursorAt(c, r) && ic.cursorFlags()) {
+      if (cursors[r * cols + c]) {
         cells.push(
           <rect
             key={`cur-${r}-${c}`}
@@ -202,7 +216,7 @@ function LcdGlassOverlay({
     }
   }
 
-  return (
+  const node = (
     <g className="lcd-glass-overlay" pointerEvents="none">
       <rect
         x={glass.x}
@@ -212,9 +226,13 @@ function LcdGlassOverlay({
         fill={background}
         opacity={0.9}
       />
+      <path d={offPath} fill={off} />
+      <path d={onPath} fill={on} />
       {cells}
     </g>
   );
+  cached.current = { key, node };
+  return node;
 }
 
 // Representative nominal 5 V loads, shared by the generic 16x2 and 20x4 parts.

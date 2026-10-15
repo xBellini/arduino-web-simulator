@@ -22,6 +22,7 @@
 # 14-10-2026 | Codex  | Release recognizable legacy automatic corners before moving/rotating connected parts.
 #                     | Saving preserves session undo/redo stacks; loading a circuit still starts fresh history.
 # 15-10-2026 | Codex  | Component moves carry attached terminal runs while keeping remote wire bends fixed.
+#                     | Route serial output through its independent buffered store; flush on stop/error and clear before new runs without per-byte editor dispatches.
  */
 
 import {
@@ -42,6 +43,7 @@ import type {
   Wire,
   WireDraft,
 } from '../types';
+import { appendSerialOutput, flushSerialOutput, resetSerialOutput } from './simLiveStore';
 import { getDefinition } from '../registry/components';
 import { getPartModule } from '../components';
 import {
@@ -123,7 +125,6 @@ interface SimState {
   simErrorMessage: string;
   sketchSource: string;
   sketchName: string;
-  serialOutput: string;
   compilerOutput: string;
   simTimeMs: number;
   pressedButtonIds: string[];
@@ -178,7 +179,6 @@ type Action =
   | { type: 'SET_LOADED_HEX'; hex: string; filename: string }
   | { type: 'CLEAR_LOADED_HEX' }
   | { type: 'SET_SIM_STATUS'; status: SimRunStatus; message?: string }
-  | { type: 'APPEND_SERIAL'; text: string }
   | { type: 'SET_COMPILER_OUTPUT'; text: string }
   | { type: 'APPEND_COMPILER_OUTPUT'; text: string }
   | { type: 'CLEAR_SERIAL' }
@@ -257,8 +257,6 @@ function reducer(state: SimState, action: Action): SimState {
             ? (action.message ?? state.simErrorMessage)
             : '',
       };
-    case 'APPEND_SERIAL':
-      return { ...state, serialOutput: state.serialOutput + action.text };
     case 'SET_COMPILER_OUTPUT':
       return { ...state, compilerOutput: action.text };
     case 'APPEND_COMPILER_OUTPUT':
@@ -269,7 +267,6 @@ function reducer(state: SimState, action: Action): SimState {
     case 'CLEAR_SERIAL':
       return {
         ...state,
-        serialOutput: '',
         compilerOutput: '',
         simErrorMessage: '',
       };
@@ -685,7 +682,6 @@ const initialState: SimState = {
   simErrorMessage: '',
   sketchSource: DEFAULT_SKETCH,
   sketchName: 'sketch',
-  serialOutput: '',
   compilerOutput: '',
   simTimeMs: 0,
   pressedButtonIds: [],
@@ -766,6 +762,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
     simulationRef.current = new SimulationController(
       {
         onStatus: (status, message) => {
+          if (status !== 'running') flushSerialOutput();
           dispatch({ type: 'SET_SIM_STATUS', status, message });
         },
         onCompilerOutput: (text) => {
@@ -775,7 +772,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
           dispatch({ type: 'APPEND_COMPILER_OUTPUT', text });
         },
         onSerialOutput: (text) => {
-          dispatch({ type: 'APPEND_SERIAL', text });
+          appendSerialOutput(text);
         },
       },
       { isCanvasInteracting: () => canvasInteractingRef.current },
@@ -806,6 +803,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
 
   const compileAndRun = useCallback(async () => {
     const s = stateRef.current;
+    resetSerialOutput();
     dispatch({ type: 'CLEAR_SERIAL' });
 
     const watchdog = window.setTimeout(() => {
@@ -901,6 +899,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const clearSerialOutput = useCallback(() => {
+    resetSerialOutput();
     dispatch({ type: 'CLEAR_SERIAL' });
   }, []);
 
