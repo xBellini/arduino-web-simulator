@@ -20,10 +20,21 @@
 #                     | Treat pending DC results as unknown, not power loss, to preserve controller RAM across GPIO cache misses.
 #                     | Paint all inactive pixels black, including stopped/unpowered modules; keep minimum intensity visibly colored.
 #                     | Reference the relocated controller library directly for snapshot types; behavior unchanged.
+#                     | Add saved module-wide LED color presets through the shared properties editor; preserve black off pixels and intensity scaling.
  */
 import { createElement, useSyncExternalStore } from 'react';
 import type { PartModule, PartOverlayProps } from '../partModule';
 import type { Max72xxSnapshot } from '../../libraries/simulide/max72xx';
+
+const LED_COLORS = [
+  { value: '#ff8c64', label: 'Orange-red (default)' },
+  { value: '#ff3030', label: 'Red' },
+  { value: '#ffb000', label: 'Amber' },
+  { value: '#ffff00', label: 'Yellow' },
+  { value: '#30ff60', label: 'Green' },
+  { value: '#4090ff', label: 'Blue' },
+  { value: '#ffffff', label: 'White' },
+];
 
 const snapshots = new Map<string, Max72xxSnapshot>();
 const power = new Map<string, boolean>();
@@ -47,10 +58,10 @@ export function clearMax7219Snapshots(): void {
 }
 function MatrixOverlay({ component, simRunning }: PartOverlayProps) {
   const state = useSyncExternalStore(subscribe, () => snapshots.get(component.id));
-  // Presentation range: dim orange-red remains distinguishable from black at
-  // register zero (upstream intensity 1). Full intensity retains the existing color.
+  // Presentation range keeps the selected color visible at register zero.
   const brightness = 0.35 + 0.65 * Math.max(0, Math.min(15, (state?.intensity ?? 1) - 1)) / 15;
-  const fill = `rgb(${Math.round(255 * brightness)},${Math.round(140 * brightness)},${Math.round(100 * brightness)})`;
+  const color = LED_COLORS.find(option => option.value === component.ledColor)?.value ?? LED_COLORS[0].value;
+  const fill = `rgb(${[1, 3, 5].map(offset => Math.round(parseInt(color.slice(offset, offset + 2), 16) * brightness)).join(',')})`;
   return createElement('g', { pointerEvents: 'none', 'data-max7219': component.id },
     Array.from({ length: 64 }, (_, pixel) => {
       const x = pixel % 8, y = Math.floor(pixel / 8);
@@ -65,6 +76,14 @@ function MatrixOverlay({ component, simRunning }: PartOverlayProps) {
 export const max7219Matrix8x8Module: PartModule = {
   palette: { category: 'modules', order: 10 },
   type: 'max7219_matrix_8x8',
+  properties: {
+    title: 'MAX7219 matrix properties',
+    fields: [{ key: 'ledColor', label: 'LED color', kind: 'color', options: LED_COLORS }],
+    defaults: () => ({ ledColor: LED_COLORS[0].value }),
+    load(raw, into) {
+      into.ledColor = LED_COLORS.find(option => option.value === raw.ledColor)?.value ?? LED_COLORS[0].value;
+    },
+  },
   applyDcResult: ({ comp, dc, pinNet }) => {
     // A cache miss is not a measured brownout. The initial solve is awaited by
     // the controller; later measured out-of-range supplies reset the worker IC.
