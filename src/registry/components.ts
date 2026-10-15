@@ -56,6 +56,8 @@
 #                      | Restored ds3231_rtc in Modules palette after SVG re-added
 # 13-10-2026 | Bellini | Readded bare_packages in PALETTE_CATEGORIES for debugging
 # 13-10-2026 | Codex | Derive membership/order from part metadata; retain all 63 entries and hide internal junctions.
+#                     | Declare the Uno green power indicator at its artwork ON LED.
+#                     | Map Uno L LED to live D13 state at the artwork LED location, in yellow.
  */
 import type {
   ComponentDefinition,
@@ -149,6 +151,8 @@ const STATIC_REGISTRY: Record<string, ComponentRegistryEntry> = {
     label: 'Arduino Uno',
     scale: 2,
     artwork: art('arduino_uno'),
+    pinIndicator: { x: 132.766, y: 45.538, width: 5.428, height: 4.921, color: '#ffd633', pin: 'd13' },
+    powerIndicator: { x: 258.266, y: 64.538, width: 5.428, height: 4.921, color: '#28e657', positive: '5v', negative: 'gnd2', poweredBoard: true },
     pins: [
 	  { id: 'scl', description: 'SCL', x: 99.7, y: 10 },
 	  { id: 'sda', description: 'SDA', x: 109.7, y: 10 },

@@ -28,6 +28,7 @@
 # 09-10-2026 | Cursor | Moved from `src/sim/circuitNetlist.ts` (tree reorganization)
 #                     | Apply `PartModule.internalPinShorts` (duplicate module headers)
 # 14-10-2026 | Codex | Carry active GPIO identities for measured per-pin warnings.
+# 15-10-2026 | Codex | Keep onboard indicator pins in the electrical netlist even without external wires, allowing Uno D13 Blink to publish its live state.
  */
 
 
@@ -199,6 +200,8 @@ export function buildCircuitNetlist(
   }
 
   for (const comp of components) {
+    const onboardPin = getDefinition(comp.type).pinIndicator?.pin;
+    if (onboardPin) indexFor({ componentId: comp.id, pinId: onboardPin });
     if (comp.type === 'breadboard') {
       applyBreadboardInternalUnions(uf, indexFor, comp.id);
     }

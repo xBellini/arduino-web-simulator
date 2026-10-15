@@ -27,6 +27,8 @@
 # 12-10-2026 | Cursor | rtcI2cAddr on PlacedComponent (DS3231 RTC 7-bit Wire address)
 # 13-10-2026 | Codex | Add PaletteMetadata for category, order and optional search keywords.
 # 14-10-2026 | Codex | Wire bends represent routing waypoints; new wires omit automatic elbows.
+# 15-10-2026 | Codex | Add part-owned power indicator geometry, color and supply terminals.
+#                     | Declare onboard pin-driven indicator geometry independently of power LEDs.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -72,6 +74,11 @@ export interface PaletteMetadata {
 }
 
 export interface ComponentDefinition {
+  /** Onboard lamp driven by the live electrical pin state. */
+  pinIndicator?: { x: number; y: number; width: number; height: number; color: string; pin: string };
+  /** Artwork-local power lamp. Indicates positive solved supply, not rated operation or current. */
+  powerIndicator?: { x: number; y: number; width: number; height: number; color: string;
+    positive: string; negative: string; poweredBoard?: boolean };
   palette?: PaletteMetadata;
   type: string;
   label: string;

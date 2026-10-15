@@ -21,6 +21,7 @@
 #                     | Part module `visuals` dispatch runs before the legacy per-type passes
 #                     | Deleted leftover per-type visual passes; modules own brightness/heat/blow
 # 09-10-2026 | Cursor | Moved from `src/sim/componentVisuals.ts` (tree reorganization)
+# 15-10-2026 | Codex | Derive module lamps from solved supply polarity; MCU boards retain the existing powered-on simulation convention.
  */
 
 
@@ -30,6 +31,7 @@ import { netForPin } from './netlist';
 import { resistorCurrentMa } from './currents';
 import type { CircuitSimState, ComponentSimFlags } from './solver';
 import { getPartModule } from '../components';
+import { getDefinition } from '../registry/components';
 
 const SUPPLY_V = 5;
 
@@ -83,7 +85,16 @@ export function updateComponentVisuals(
   const blowDtMs = dtMs > 0 ? dtMs : 16;
   simState.lastVisualMs = simTimeMs;
 
+  flags.modulePowered = {};
   for (const comp of components) {
+    const lamp = getDefinition(comp.type).powerIndicator;
+    if (lamp) {
+      const p = pinNet(netlist, comp.id, lamp.positive), n = pinNet(netlist, comp.id, lamp.negative);
+      const vp = p === null ? undefined : netVoltages?.get(p);
+      const vn = n === null ? undefined : netVoltages?.get(n);
+      flags.modulePowered[comp.id] = lamp.poweredBoard === true ||
+        (vp !== undefined && vn !== undefined && vp > vn);
+    }
     const mod = getPartModule(comp.type);
     if (!mod?.visuals) continue;
     mod.visuals({

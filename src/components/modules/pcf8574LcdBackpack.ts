@@ -22,6 +22,7 @@
 # 09-10-2026 | Cursor | Moved from `src/parts/pcf8574LcdBackpack.ts` (tree reorganization)
 # 13-10-2026 | Codex | Declare palette category/order beside this part; preserve placement order and electrical behavior.
 #                     | Add sampled worker signal overlays and solved LCD supply/backlight paths.
+# 15-10-2026 | Codex | Light the artwork power LED blue from solved supply polarity with a static overlay.
  */
 import type { PartModule } from '../partModule';
 import type { NetLevel } from '../../circuit/netlist';
@@ -253,6 +254,7 @@ export const pcf8574LcdBackpackModule: PartModule = {
     type: PCF8574_LCD_BACKPACK_TYPE,
     label: 'PCF8574 LCD backpack',
     scale: 2,
+    powerIndicator: { x: 145, y: 29, width: 6, height: 7, color: '#339dff', positive: 'vcc', negative: 'gnd' },
     artwork: '/components/pcf8574_lcd_backpack.svg',
     pins: [
       { id: 'gnd', description: 'GND', x: 9.5, y: 54, type: 'ground' },

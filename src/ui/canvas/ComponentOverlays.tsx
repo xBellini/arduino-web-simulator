@@ -25,8 +25,12 @@
 #                     | Drop capacitor body value marking (value only in properties editor)
 # 09-10-2026 | Cursor | Moved from `src/components/ComponentOverlays.tsx` (tree reorganization)
 # 14-10-2026 | Codex | Add yellow GPIO overload warning with measured pin currents in a hover tooltip; simulation only.
+#                     | Render static part-declared power LEDs only while running and powered, without filters or animation.
+#                     | Add a small static two-layer halo to powered module LEDs without blur filters or animation.
+#                     | Drive the yellow Uno L lamp from live D13 HIGH/LOW, including LED_BUILTIN, with no sketch-specific handling.
  */
 import type { ReactNode } from 'react';
+import { pinStateForComponent } from '../../store/simLiveStore';
 import type { ComponentDefinition, PlacedComponent } from '../../types';
 import {
   DEFAULT_RESISTANCE_UNIT,
@@ -199,6 +203,25 @@ export function ComponentOverlays({
           packageId={packageId}
         />
       )}
+      {simRunning && [
+        { lamp: design.powerIndicator, on: simFlags?.modulePowered?.[component.id], label: 'Power on', kind: 'power' },
+        { lamp: design.pinIndicator, on: design.pinIndicator &&
+          pinStateForComponent(component.id, design.pinIndicator.pin, 'floating') === 'high', label: 'L LED on (D13)', kind: 'pin' },
+      ].map(({ lamp, on, label, kind }) => lamp && on && (
+        <g key={kind} data-power-indicator={kind === 'power' ? component.id : undefined}
+          data-pin-indicator={kind === 'pin' ? component.id : undefined} aria-label={label} pointerEvents="none" fill={lamp.color}>
+          <rect x={lamp.x - 3} y={lamp.y - 3}
+            width={lamp.width + 6} height={lamp.height + 6}
+            rx={3.5} opacity={0.08} />
+          <rect x={lamp.x - 1.5} y={lamp.y - 1.5}
+            width={lamp.width + 3} height={lamp.height + 3}
+            rx={2} opacity={0.18} />
+          <rect
+          x={lamp.x} y={lamp.y}
+          width={lamp.width} height={lamp.height}
+          rx={0.5} />
+        </g>
+      ))}
       <PinLettersOverlay design={design} />
       {partOverlay?.({ component, design, simFlags, simRunning })}
 

@@ -19,6 +19,7 @@
 # 12-10-2026 | Cursor | properties.editable: rtcI2cAddr (default 0x68) for Wire/library match
 # 13-10-2026 | Codex | Own RTC address form and palette placement; add clock/time/I2C keywords; retain address parser and hex display.
 # 15-10-2026 | Codex | Declare both RTC supply headers for N/A wire overlays without a guessed electrical load.
+#                     | Light the artwork power LED red from solved supply polarity; current remains unavailable.
  */
 import type { PartModule } from '../partModule';
 import type { TwiSlave } from '../../avr/twiBus';
@@ -107,6 +108,7 @@ export const ds3231RtcModule: PartModule = {
   definition: {
     type: DS3231_RTC_TYPE,
     label: 'DS3231 RTC',
+    powerIndicator: { x: 62, y: 16, width: 8, height: 7.5, color: '#ff3636', positive: 'vcc', negative: 'gnd' },
     scale: 2,
     artwork: '/components/ds3231_rtc.svg',
     pins: [

@@ -28,6 +28,7 @@
 # 09-10-2026 | Cursor | Moved from `src/sim/circuitSolver.ts` (tree reorganization)
 # 13-10-2026 | Codex | Calculate wire readings after final MCU logic overrides; add explicit pin-reading labels.
 # 14-10-2026 | Codex | Flag solved GPIO current above 20 mA; clear on recovery or unavailable samples.
+#                     | Carry solved module power-indicator state alongside existing visual flags.
  */
 
 import { getDefinition } from '../registry/components';
@@ -99,6 +100,7 @@ export function createCircuitSimState(): CircuitSimState {
 }
 
 export interface ComponentSimFlags {
+  modulePowered?: Record<string, boolean>;
   ledLit: Record<string, boolean>;
   ledBrightness: Record<string, number>;
   ledCurrentMa: Record<string, number>;
