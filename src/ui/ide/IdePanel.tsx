@@ -18,11 +18,12 @@
 #                     | Keep HEX reload stopped for manual Run without separate watch controls.
 #                     | Restore the browser file picker so importing does not depend on a server-side desktop dialog.
 #                     | Import any local HEX via the existing button, watch its path automatically, and preserve firmware on cancel/error without auto-running rebuilds.
+# 16-10-2026 | Codex | Add optional auto-run after a validated watched HEX reload (off by default); remove the Use sketch button.
  */
 import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
 import { getSerialOutput, subscribeSerialOutput, getSimLiveSnapshot, subscribeSimLive } from '../../store/simLiveStore';
-import { ARDUINO_IDE_HEX_HINT } from '../../avr/firmware';
+import { ARDUINO_IDE_HEX_HINT, normalizeHexText } from '../../avr/firmware';
 import { SKETCH_TEMPLATES } from './templates';
 import { SketchEditor } from './SketchEditor';
 
@@ -59,7 +60,6 @@ export function IdePanel() {
     stopSimulation,
     clearSerialOutput,
     loadHexFirmware,
-    clearLoadedHex,
   } = useSim();
 
   const [tab, setTab] = useState<IdeTab>('code');
@@ -72,6 +72,9 @@ export function IdePanel() {
   const importedHex = useRef<string | null>(null);
   const [watchedHexPath, setWatchedHexPath] = useState<string | null>(null);
   const [watchMessage, setWatchMessage] = useState('');
+  const [autoRunHex, setAutoRunHex] = useState(false);
+  const autoRunHexRef = useRef(false);
+  const pendingHexRun = useRef<string | null>(null);
   const watchedHexLoaded = useRef(false);
   const hexInputRef = useRef<HTMLInputElement>(null);
   const inoInputRef = useRef<HTMLInputElement>(null);
@@ -96,6 +99,15 @@ export function IdePanel() {
   useEffect(() => {
     if (loadedHex === null && watchedHexLoaded.current) setWatchedHexPath(null);
   }, [loadedHex]);
+
+  useEffect(() => {
+    const pending = pendingHexRun.current;
+    pendingHexRun.current = null;
+    // Wait for the imported firmware to reach context before Run reads it.
+    if (pending !== null && pending === loadedHex && autoRunHexRef.current) {
+      void compileAndRun();
+    }
+  }, [loadedHex, compileAndRun]);
 
   useEffect(() => {
     watchedHexLoaded.current = !!watchedHexPath;
@@ -129,7 +141,8 @@ export function IdePanel() {
           else {
             accepted = data.hex;
             watchedHexLoaded.current = true;
-            setWatchMessage('HEX reloaded. Press Run when ready.');
+            if (autoRunHexRef.current) pendingHexRun.current = normalizeHexText(data.hex);
+            setWatchMessage(autoRunHexRef.current ? 'HEX reloaded. Starting simulation…' : 'HEX reloaded. Press Run when ready.');
           }
         } else setWatchMessage('Watching HEX for changes.');
       } catch {
@@ -139,7 +152,7 @@ export function IdePanel() {
       }
     };
     void poll();
-    return () => { cancelled = true; abort.abort(); clearTimeout(timer); };
+    return () => { cancelled = true; abort.abort(); clearTimeout(timer); pendingHexRun.current = null; };
   }, [watchedHexPath, loadHexFirmware]);
 
   const simLiveSnap = useSyncExternalStore(
@@ -375,15 +388,13 @@ export function IdePanel() {
           <span className="sim-firmware-label" title={watchedHexPath ? `${loadedHexName} — ${watchMessage}` : loadedHexName}>
             HEX: {loadedHexName}
           </span>
-          <button
-            type="button"
-            className="sim-firmware-clear"
-            onClick={clearLoadedHex}
-            disabled={running || busy}
-            title="Switch back to in-app sketch IDE"
-          >
-            Use sketch
-          </button>
+          {watchedHexPath && <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <input type="checkbox" checked={autoRunHex} onChange={event => {
+              autoRunHexRef.current = event.target.checked;
+              setAutoRunHex(event.target.checked);
+            }} />
+            Auto-run on HEX reload
+          </label>}
         </div>
       )}
 
