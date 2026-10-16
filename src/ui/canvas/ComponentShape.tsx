@@ -36,8 +36,10 @@
 # 09-10-2026 | Cursor | Merged `src/components/PartArtwork.tsx` into this file (tree reorganization)
 #                     | Merged `src/components/PinLabel.tsx` into this file (tree reorganization)
 #                     | Moved from `src/components/ComponentShape.tsx` (tree reorganization)
+# 16-10-2026 | Codex | Subscribe button shapes directly to their pressed state; unrelated parts and editor UI stay untouched.
  */
-import type { CSSProperties } from 'react';
+import { useCallback, useSyncExternalStore, type CSSProperties } from 'react';
+import { getButtonPressed, subscribeButtonPressed } from '../../store/simLiveStore';
 import { getDesignDefinition, getDefinitionScale } from '../../registry/components';
 import { BB_COLS, BB_IC_SLOT_BOTTOM, BB_IC_SLOT_TOP, BB_RAIL_BOT_MINUS_Y, BB_RAIL_BOT_PLUS_Y, BB_RAIL_TOP_MINUS_Y, BB_RAIL_TOP_PLUS_Y, holeX, tieBandRowYs, tieRowYs } from '../../registry/breadboardGrid';
 import type { PlacedComponent, ComponentDefinition } from '../../types';
@@ -104,7 +106,6 @@ export function PartArtwork({ def, className }: PartArtworkProps) {
 interface Props {
   component: PlacedComponent;
   selected?: boolean;
-  simButtonPressed?: boolean;
   simFlags?: ComponentSimFlags;
   simRunning?: boolean;
 }
@@ -272,10 +273,15 @@ function BreadboardPackage({ width, height }: { width: number; height: number })
 export function ComponentShape({
   component,
   selected,
-  simButtonPressed,
   simFlags,
   simRunning,
 }: Props) {
+  const subscribePressed = useCallback((listener: () => void) =>
+    component.type === 'button' && simRunning
+      ? subscribeButtonPressed(component.id, listener)
+      : () => {}, [component.id, component.type, simRunning]);
+  const readPressed = useCallback(() => !!simRunning && getButtonPressed(component.id), [component.id, simRunning]);
+  const simButtonPressed = useSyncExternalStore(subscribePressed, readPressed, readPressed);
   const design = getDesignDefinition(component.type);
   const scale = getDefinitionScale(component.type);
   const id = component.id;

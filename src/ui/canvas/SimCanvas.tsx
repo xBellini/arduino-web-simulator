@@ -32,6 +32,7 @@
 #                     | Pass live wire preview identity to invalidate the overlay cache during wire editing.
 #                     | Skip pin-hover and placement calculations during panning; cancel pending hover work and avoid redundant panning-state updates.
 #                     | Keep wire motion active during running pushbutton presses; dragging, panning and zooming still pause it.
+# 16-10-2026 | Codex | Let individual button shapes subscribe to pressed appearance instead of rebuilding the canvas through editor state.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
@@ -309,7 +310,6 @@ export function SimCanvas() {
     placementType,
     placementRotation,
     simStatus,
-    pressedButtonIds,
   } = state;
   const liveSnap = useSyncExternalStore(
     subscribeSimLive,
@@ -1785,7 +1785,6 @@ export function SimCanvas() {
         <ComponentShape
           component={comp}
           selected={selected}
-          simButtonPressed={pressedButtonIds.includes(comp.id)}
           simFlags={simFlags}
           simRunning={simStatus === 'running'}
         />

@@ -25,6 +25,7 @@
 #                     | Route serial output through its independent buffered store; flush on stop/error and clear before new runs without per-byte editor dispatches.
 #                     | Expose serial input for the running simulation without modifying the buffered output path.
 # 16-10-2026 | Codex | Save firmware paths with circuits and clear stale firmware when restoring a project.
+#                     | Keep button electrical updates synchronous while publishing appearance outside editor context.
  */
 
 import {
@@ -103,7 +104,7 @@ import {
   SimulationController,
   type SimRunStatus,
 } from './simulationController';
-import { resetSimLiveState } from './simLiveStore';
+import { resetSimLiveState, setLiveButtonPressed } from './simLiveStore';
 import {
   createComponentSimFlags,
   type ComponentSimFlags,
@@ -129,7 +130,6 @@ interface SimState {
   sketchName: string;
   compilerOutput: string;
   simTimeMs: number;
-  pressedButtonIds: string[];
   simFlags: ComponentSimFlags;
   loadedHex: string | null;
   loadedHexName: string | null;
@@ -187,8 +187,7 @@ type Action =
   | { type: 'SET_COMPILER_OUTPUT'; text: string }
   | { type: 'APPEND_COMPILER_OUTPUT'; text: string }
   | { type: 'CLEAR_SERIAL' }
-  | { type: 'RESET_LIVE_PIN_STATES' }
-  | { type: 'SET_BUTTON_PRESSED'; componentId: string; pressed: boolean };
+  | { type: 'RESET_LIVE_PIN_STATES' };
 
 function createComponent(
   type: string,
@@ -289,15 +288,9 @@ function reducer(state: SimState, action: Action): SimState {
         simStatus: 'idle',
         simTimeMs: 0,
         simErrorMessage: '',
-        pressedButtonIds: [],
         simFlags: createComponentSimFlags(),
       };
-    case 'SET_BUTTON_PRESSED': {
-      const set = new Set(state.pressedButtonIds);
-      if (action.pressed) set.add(action.componentId);
-      else set.delete(action.componentId);
-      return { ...state, pressedButtonIds: [...set] };
-    }
+
     case 'SET_VIEWPORT':
       return { ...state, viewport: action.viewport };
     case 'SELECT':
@@ -693,7 +686,6 @@ const initialState: SimState = {
   sketchName: 'sketch',
   compilerOutput: '',
   simTimeMs: 0,
-  pressedButtonIds: [],
   simFlags: createComponentSimFlags(),
   loadedHex: null,
   loadedHexName: null, hexPath: null,
@@ -920,7 +912,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
 
   const setButtonPressed = useCallback((componentId: string, pressed: boolean) => {
     simulationRef.current?.setButtonPressed(componentId, pressed);
-    dispatch({ type: 'SET_BUTTON_PRESSED', componentId, pressed });
+    setLiveButtonPressed(componentId, pressed);
   }, []);
 
   const setPotPosition = useCallback((componentId: string, position: number) => {

@@ -19,6 +19,7 @@
 # 05-10-2026 | Cursor | `simPerf` overlay snapshot preserved across pin updates
 # 15-10-2026 | Codex | Buffer serial display text for 16 ms on an independent subscription; preserve order, flush on stop and discard pending text on clear.
 #                     | Track short serial activity holds on independent listeners; clear lamps on stop without per-byte canvas updates.
+# 16-10-2026 | Codex | Isolate pressed-button appearance with per-part subscriptions; clear held visuals on stop.
  */
 
 import type { PinState } from '../types';
@@ -59,6 +60,27 @@ let snapshot: SimLiveSnapshot = {
 };
 
 const listeners = new Set<() => void>();
+
+// Button appearance has independent per-part subscribers, never canvas notifications.
+const pressedButtons = new Set<string>();
+const buttonListeners = new Map<string, Set<() => void>>();
+export const getButtonPressed = (id: string): boolean => pressedButtons.has(id);
+export function subscribeButtonPressed(id: string, listener: () => void): () => void {
+  let listeners = buttonListeners.get(id);
+  if (!listeners) buttonListeners.set(id, listeners = new Set());
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (!listeners.size) buttonListeners.delete(id);
+  };
+}
+export function setLiveButtonPressed(id: string, pressed: boolean): void {
+  if (pressedButtons.has(id) === pressed) return;
+  if (pressed) pressedButtons.add(id);
+  else pressedButtons.delete(id);
+  for (const listener of buttonListeners.get(id) ?? []) listener();
+}
+
 
 // Serial display notifications must not invalidate the canvas live snapshot.
 let serialText = '';
@@ -189,6 +211,7 @@ export function setDcSolverBackend(backend: DcSolverBackend): void {
 }
 
 export function resetSimLiveState(): void {
+  for (const id of [...pressedButtons]) setLiveButtonPressed(id, false);
   clearTimeout(activityTimer);
   activityTimer = undefined;
   activityUntil.tx = activityUntil.rx = 0;
