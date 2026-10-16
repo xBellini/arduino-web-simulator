@@ -24,6 +24,7 @@
 # 15-10-2026 | Codex  | Component moves carry attached terminal runs while keeping remote wire bends fixed.
 #                     | Route serial output through its independent buffered store; flush on stop/error and clear before new runs without per-byte editor dispatches.
 #                     | Expose serial input for the running simulation without modifying the buffered output path.
+# 16-10-2026 | Codex | Save firmware paths with circuits and clear stale firmware when restoring a project.
  */
 
 import {
@@ -132,6 +133,8 @@ interface SimState {
   simFlags: ComponentSimFlags;
   loadedHex: string | null;
   loadedHexName: string | null;
+  hexPath: string | null;
+  hexWatchVersion: number;
 }
 
 type Action =
@@ -158,6 +161,7 @@ type Action =
       wires: Wire[];
       viewport: Viewport;
       nextIdCounter: number;
+      hexPath?: string;
     }
   | {
       type: 'RESTORE_SNAPSHOT';
@@ -177,7 +181,7 @@ type Action =
   | { type: 'SET_SKETCH_NAME'; name: string }
   | { type: 'NEW_SKETCH' }
   | { type: 'LOAD_SKETCH'; source: string; name: string }
-  | { type: 'SET_LOADED_HEX'; hex: string; filename: string }
+  | { type: 'SET_LOADED_HEX'; hex: string; filename: string; hexPath: string | null }
   | { type: 'CLEAR_LOADED_HEX' }
   | { type: 'SET_SIM_STATUS'; status: SimRunStatus; message?: string }
   | { type: 'SET_COMPILER_OUTPUT'; text: string }
@@ -221,7 +225,7 @@ function reducer(state: SimState, action: Action): SimState {
         ...state,
         sketchSource: action.source,
         loadedHex: null,
-        loadedHexName: null,
+        loadedHexName: null, hexPath: null,
       };
     case 'SET_SKETCH_NAME':
       return { ...state, sketchName: action.name };
@@ -231,7 +235,7 @@ function reducer(state: SimState, action: Action): SimState {
         sketchSource: DEFAULT_SKETCH,
         sketchName: 'sketch',
         loadedHex: null,
-        loadedHexName: null,
+        loadedHexName: null, hexPath: null,
       };
     case 'LOAD_SKETCH':
       return {
@@ -239,16 +243,17 @@ function reducer(state: SimState, action: Action): SimState {
         sketchSource: action.source,
         sketchName: action.name,
         loadedHex: null,
-        loadedHexName: null,
+        loadedHexName: null, hexPath: null,
       };
     case 'SET_LOADED_HEX':
       return {
         ...state,
         loadedHex: action.hex,
         loadedHexName: action.filename,
+        hexPath: action.hexPath,
       };
     case 'CLEAR_LOADED_HEX':
-      return { ...state, loadedHex: null, loadedHexName: null };
+      return { ...state, loadedHex: null, loadedHexName: null, hexPath: null };
     case 'SET_SIM_STATUS':
       return {
         ...state,
@@ -632,6 +637,9 @@ function reducer(state: SimState, action: Action): SimState {
       idCounter = action.nextIdCounter;
       return {
         ...state,
+        loadedHex: null, loadedHexName: null,
+        hexPath: action.hexPath ?? null,
+        hexWatchVersion: state.hexWatchVersion + 1,
         components: action.components,
         wires: action.wires,
         viewport: action.viewport,
@@ -688,7 +696,8 @@ const initialState: SimState = {
   pressedButtonIds: [],
   simFlags: createComponentSimFlags(),
   loadedHex: null,
-  loadedHexName: null,
+  loadedHexName: null, hexPath: null,
+  hexWatchVersion: 0,
 };
 
 interface SimContextValue {
@@ -729,7 +738,7 @@ interface SimContextValue {
   loadSketchFromFile: (text: string, filename: string) => void;
   saveSketchToFile: () => void;
   applySketchTemplate: (templateId: string) => void;
-  loadHexFirmware: (text: string, filename: string) => string | null;
+  loadHexFirmware: (text: string, filename: string, hexPath?: string) => string | null;
   clearLoadedHex: () => void;
   compileAndRun: () => Promise<void>;
   stopSimulation: () => void;
@@ -886,13 +895,13 @@ export function SimProvider({ children }: { children: ReactNode }) {
     [haltSimulation],
   );
 
-  const loadHexFirmware = useCallback((text: string, filename: string): string | null => {
+  const loadHexFirmware = useCallback((text: string, filename: string, hexPath?: string): string | null => {
     const parsed = parseHexFile(text, filename);
     if (!parsed.validation.ok) {
       return parsed.validation.message ?? 'Invalid HEX file.';
     }
     haltSimulation();
-    dispatch({ type: 'SET_LOADED_HEX', hex: parsed.hex, filename: parsed.filename });
+    dispatch({ type: 'SET_LOADED_HEX', hex: parsed.hex, filename: parsed.filename, hexPath: hexPath ?? null });
     dispatch({
       type: 'SET_COMPILER_OUTPUT',
       text: `Ready to run: ${parsed.filename}\nProgram data: ${parsed.validation.dataBytes ?? 0} bytes`,
@@ -1165,6 +1174,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
         viewport: state.viewport,
         sketch: state.sketchSource,
         sketchName: state.sketchName,
+        hexPath: state.hexPath ?? undefined,
       });
 
       let where: 'folder' | 'download';
@@ -1178,19 +1188,12 @@ export function SimProvider({ children }: { children: ReactNode }) {
 
       return where;
     },
-    [state.components, state.wires, state.viewport, state.sketchSource, state.sketchName],
+    [state.components, state.wires, state.viewport, state.sketchSource, state.sketchName, state.hexPath],
   );
 
   const loadProject = useCallback(
     (file: ProjectFile) => {
       haltSimulation();
-      dispatch({
-        type: 'LOAD_PROJECT',
-        components: file.components,
-        wires: file.wires,
-        viewport: file.viewport,
-        nextIdCounter: maxIdSuffix(file.components, file.wires),
-      });
       if (file.sketch !== undefined) {
         dispatch({
           type: 'LOAD_SKETCH',
@@ -1198,6 +1201,14 @@ export function SimProvider({ children }: { children: ReactNode }) {
           name: file.sketchName?.trim() || 'sketch',
         });
       }
+      dispatch({
+        type: 'LOAD_PROJECT',
+        components: file.components,
+        wires: file.wires,
+        viewport: file.viewport,
+        hexPath: file.hexPath,
+        nextIdCounter: maxIdSuffix(file.components, file.wires),
+      });
       resetUndoHistory();
     },
     [resetUndoHistory, haltSimulation],

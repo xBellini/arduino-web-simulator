@@ -19,6 +19,7 @@
 #                     | Restore the browser file picker so importing does not depend on a server-side desktop dialog.
 #                     | Import any local HEX via the existing button, watch its path automatically, and preserve firmware on cancel/error without auto-running rebuilds.
 # 16-10-2026 | Codex | Add optional auto-run after a validated watched HEX reload (off by default); remove the Use sketch button.
+#                     | Restore HEX watching from the circuit path without auto-running the initial restored firmware.
  */
 import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
@@ -69,13 +70,16 @@ export function IdePanel() {
   const [pickingHex, setPickingHex] = useState(false);
   const pickerAbort = useRef<AbortController | null>(null);
   useEffect(() => () => pickerAbort.current?.abort(), []);
-  const importedHex = useRef<string | null>(null);
-  const [watchedHexPath, setWatchedHexPath] = useState<string | null>(null);
+
+  const watchedHexPath = state.hexPath;
+  const watchVersion = state.hexWatchVersion;
+  const loadedHexRef = useRef(state.loadedHex);
+  loadedHexRef.current = state.loadedHex;
   const [watchMessage, setWatchMessage] = useState('');
   const [autoRunHex, setAutoRunHex] = useState(false);
   const autoRunHexRef = useRef(false);
   const pendingHexRun = useRef<string | null>(null);
-  const watchedHexLoaded = useRef(false);
+
   const hexInputRef = useRef<HTMLInputElement>(null);
   const inoInputRef = useRef<HTMLInputElement>(null);
   const templateRef = useRef<HTMLDivElement>(null);
@@ -97,10 +101,6 @@ export function IdePanel() {
   const usingHex = loadedHex !== null;
 
   useEffect(() => {
-    if (loadedHex === null && watchedHexLoaded.current) setWatchedHexPath(null);
-  }, [loadedHex]);
-
-  useEffect(() => {
     const pending = pendingHexRun.current;
     pendingHexRun.current = null;
     // Wait for the imported firmware to reach context before Run reads it.
@@ -110,12 +110,12 @@ export function IdePanel() {
   }, [loadedHex, compileAndRun]);
 
   useEffect(() => {
-    watchedHexLoaded.current = !!watchedHexPath;
+
     if (!watchedHexPath) { setWatchMessage(''); return; }
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
-    let previous = importedHex.current;
-    let accepted = importedHex.current;
+    let previous = loadedHexRef.current;
+    let accepted = loadedHexRef.current;
     const abort = new AbortController();
     const poll = async () => {
       try {
@@ -125,6 +125,7 @@ export function IdePanel() {
         });
         const data = await response.json() as { hex?: string; filename?: string; error?: string };
         if (cancelled) return;
+        if (typeof data.hex === 'string') data.hex = normalizeHexText(data.hex);
         if (!response.ok || typeof data.hex !== 'string' || !data.filename) {
           previous = null;
           setWatchMessage(data.error || 'HEX watch requires the local dev server.');
@@ -136,13 +137,14 @@ export function IdePanel() {
           // importer validates checksums before stopping the current run.
           const error = !/:00000001FF\s*$/i.test(data.hex)
             ? 'Build has not written the final HEX record yet.'
-            : loadHexFirmware(data.hex, data.filename);
+            : loadHexFirmware(data.hex, data.filename, watchedHexPath);
           if (error) setWatchMessage(`Waiting for valid HEX: ${error}`);
           else {
+            const isReload = accepted !== null;
             accepted = data.hex;
-            watchedHexLoaded.current = true;
-            if (autoRunHexRef.current) pendingHexRun.current = normalizeHexText(data.hex);
-            setWatchMessage(autoRunHexRef.current ? 'HEX reloaded. Starting simulation…' : 'HEX reloaded. Press Run when ready.');
+
+            if (isReload && autoRunHexRef.current) pendingHexRun.current = normalizeHexText(data.hex);
+            setWatchMessage(isReload && autoRunHexRef.current ? 'HEX reloaded. Starting simulation…' : 'HEX reloaded. Press Run when ready.');
           }
         } else setWatchMessage('Watching HEX for changes.');
       } catch {
@@ -153,7 +155,7 @@ export function IdePanel() {
     };
     void poll();
     return () => { cancelled = true; abort.abort(); clearTimeout(timer); pendingHexRun.current = null; };
-  }, [watchedHexPath, loadHexFirmware]);
+  }, [watchedHexPath, watchVersion, loadHexFirmware]);
 
   const simLiveSnap = useSyncExternalStore(
     subscribeSimLive,
@@ -196,11 +198,9 @@ export function IdePanel() {
       const data = await response.json() as { hex?: string; filename?: string; path?: string; cancelled?: boolean; error?: string };
       if (data.cancelled) return;
       if (!response.ok || !data.hex || !data.filename || !data.path) throw new Error(data.error || 'Could not open local HEX picker.');
-      const error = !/:00000001FF\s*$/i.test(data.hex) ? 'HEX file is incomplete.' : loadHexFirmware(data.hex, data.filename);
+      const error = !/:00000001FF\s*$/i.test(data.hex) ? 'HEX file is incomplete.' : loadHexFirmware(data.hex, data.filename, data.path);
       if (error) throw new Error(error);
-      importedHex.current = data.hex;
-      watchedHexLoaded.current = true;
-      setWatchedHexPath(data.path);
+
       setFileError(null); setTab('build');
     } catch (error) {
       if (!abort.signal.aborted) { setFileError(error instanceof Error ? error.message : 'Could not import HEX.'); setTab('build'); }
@@ -215,7 +215,7 @@ export function IdePanel() {
 
     try {
       const text = await file.text();
-      setWatchedHexPath(null);
+
       const err = loadHexFirmware(text, file.name);
       if (err) {
         setFileError(err);
@@ -383,6 +383,7 @@ export function IdePanel() {
         <strong>Arduino IDE</strong> and import the compiled <strong>.hex</strong>.
       </p>
 
+      {watchedHexPath && !usingHex && <p role="status" title={watchedHexPath}>{watchMessage || 'Loading saved HEX…'}</p>}
       {usingHex && loadedHexName && (
         <div className="sim-firmware-banner">
           <span className="sim-firmware-label" title={watchedHexPath ? `${loadedHexName} — ${watchMessage}` : loadedHexName}>
@@ -397,7 +398,6 @@ export function IdePanel() {
           </label>}
         </div>
       )}
-
 
       <div className="ide-file-toolbar">
         <button

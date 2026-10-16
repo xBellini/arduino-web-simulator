@@ -30,6 +30,7 @@
 #                     | Part modules validate their own persisted fields via `properties.load`
 # 09-10-2026 | Cursor | Merged `src/utils/userProjectsApi.ts` into this file (tree reorganization)
 #                     | Moved from `src/utils/projectFile.ts` (tree reorganization)
+# 16-10-2026 | Codex | Persist optional local HEX paths; older circuits remain compatible.
  */
 
 import { getDefinition } from '../registry/components';
@@ -47,6 +48,7 @@ export interface ProjectFile {
   sketch?: string;
   /** Sketch basename without .ino (optional). */
   sketchName?: string;
+  hexPath?: string;
 }
 
 export interface SimSnapshot {
@@ -55,6 +57,7 @@ export interface SimSnapshot {
   viewport: Viewport;
   sketch?: string;
   sketchName?: string;
+  hexPath?: string;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -216,6 +219,7 @@ export function createProjectFile(snapshot: SimSnapshot): ProjectFile {
     })),
     viewport: { ...snapshot.viewport },
   };
+  if (snapshot.hexPath) project.hexPath = snapshot.hexPath;
   if (snapshot.sketch !== undefined) {
     project.sketch = snapshot.sketch;
   }
@@ -252,6 +256,12 @@ export function parseProjectFile(json: unknown): ProjectFile {
     wires,
     viewport,
   };
+  if (json.hexPath !== undefined) {
+    if (typeof json.hexPath !== 'string' || !json.hexPath.trim() || !/\.hex$/i.test(json.hexPath)) {
+      throw new Error('Invalid HEX path: expected a non-empty .hex filename');
+    }
+    project.hexPath = json.hexPath;
+  }
   if (typeof json.sketch === 'string') {
     project.sketch = json.sketch;
   }
