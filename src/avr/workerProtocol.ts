@@ -96,6 +96,7 @@ export type AvrWorkerOutMessage =
   | {
       v: typeof AVR_WORKER_PROTOCOL;
       type: 'tick';
+      sentAt?: number;
       cycles: number;
       cyclesBehind: number;
       ports: AvrPortSnapshot[];

@@ -49,13 +49,14 @@
 #                     | Animate small positive currents too; retain the 2.5-second slowest cycle and actual current labels, with zero/unavailable values static.
 #                     | Resolve supply and return wire trees by signed measured terminal currents, including shared button pins; never copy button current across a net.
 #                     | Show N/A on declared unmodeled supply terminals, including both RTC headers, without current animation.
+# 17-10-2026 | Codex  | Follow named-net copper links when summing measured branch currents.
  */
 
 import { isMcuBoard } from '../avr/pinMap';
 import { formatCurrentMa } from '../values/electric';
 import type { PlacedComponent, Wire } from '../types';
 import { DEFAULT_RESISTANCE_UNIT, DEFAULT_RESISTANCE_VALUE, resistanceToOhms } from '../values/resistor';
-import { netForPin, type CircuitNetlist, type NetLevel } from './netlist';
+import { namedNetLinks, netForPin, type CircuitNetlist, type NetLevel } from './netlist';
 import { LED_ON_RESISTANCE_OHMS } from '../components/output/led';
 import { VF_CONDUCT_SLACK_V } from '../values/led';
 import { getPartModule } from '../components';
@@ -374,7 +375,7 @@ export function updateWireCurrents(
   const byId = new Map(components.map(comp => [comp.id, comp]));
   const degree = new Map<string, number>();
   const adjacent = new Map<string, Wire[]>();
-  for (const wire of wires) for (const end of [wire.from, wire.to]) {
+  for (const wire of [...wires, ...namedNetLinks(components)]) for (const end of [wire.from, wire.to]) {
     const key = pinRefKey(end);
     degree.set(key, (degree.get(key) ?? 0) + 1);
     const edges = adjacent.get(key) ?? [];

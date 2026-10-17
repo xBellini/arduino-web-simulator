@@ -31,7 +31,7 @@ import {
 } from './workerProtocol';
 import type { AvrPortName } from './pinMap';
 import { feedLcdParallelBus, setLcdGpioProbeActive } from '../components/output/lcdParallel';
-import { finishAvrBatch, isSimPerfEnabled } from './simPerf';
+import { finishAvrBatch, isSimPerfEnabled, recordStutter } from './simPerf';
 import type { AvrExecuteOptions } from './runner';
 
 type PortListener = (value: number, oldValue: number) => void;
@@ -180,6 +180,7 @@ export class AvrWorkerHost {
     max7219Targets: Extract<AvrWorkerInMessage, { type: 'start' }>['max7219Targets'] = [],
   ): Promise<void> {
     this.stop();
+    recordStutter('avr-start');
     this.callbacks = callbacks;
     this.optionsProvider = optionsProvider ?? null;
 
@@ -204,7 +205,10 @@ export class AvrWorkerHost {
             this.pushOptions(true);
           }
           break;
-        case 'tick':
+        case 'tick': {
+          const traceStart = performance.now();
+          if (msg.sentAt !== undefined) recordStutter('avr-tick', msg.perf?.batchWallMs ?? -1,
+            performance.timeOrigin + traceStart - msg.sentAt, msg.cycles, String(msg.cyclesBehind));
           setMax7219Snapshots(msg.matrices ?? []);
           this.cpu.cycles = msg.cycles;
           this.applyPorts(msg.ports);
@@ -221,7 +225,9 @@ export class AvrWorkerHost {
             );
           }
           this.callbacks?.onTick();
+          recordStutter('avr-handler', performance.now() - traceStart);
           break;
+        }
         case 'serial-received':
           this.callbacks?.onSerialReceive?.();
           break;
@@ -276,6 +282,7 @@ export class AvrWorkerHost {
     this.lastPostedSliceMs = null;
     setLcdGpioProbeActive(false);
     if (this.worker) {
+      recordStutter('avr-stop');
       this.post({ v: AVR_WORKER_PROTOCOL, type: 'stop' });
       this.worker.onmessage = null;
       this.worker.onerror = null;

@@ -26,6 +26,11 @@
 #                     | Expose serial input for the running simulation without modifying the buffered output path.
 # 16-10-2026 | Codex | Save firmware paths with circuits and clear stale firmware when restoring a project.
 #                     | Keep button electrical updates synchronous while publishing appearance outside editor context.
+# 17-10-2026 | Codex  | Add single-click named-net placement on pins or standalone connectable junctions.
+
+#                     | Finish drafts at free connectable endpoints with normal routing and undo history.
+
+#                     | Labels placed on wires split their existing route into electrically joined segments in one undo step.
  */
 
 import {
@@ -123,6 +128,7 @@ interface SimState {
   selectedWireIds: string[];
   wireDraft: WireDraft | null;
   placementType: string | null;
+  netLabelPlacement: string | null;
   placementRotation: number;
   simStatus: SimRunStatus;
   simErrorMessage: string;
@@ -150,10 +156,12 @@ type Action =
   | { type: 'ADD_WIRE_BEND'; x: number; y: number }
   | { type: 'CANCEL_WIRE' }
   | { type: 'COMPLETE_WIRE'; pin: PinRef }
-  | { type: 'COMPLETE_WIRE_ON_WIRE'; wireId: string; world: { x: number; y: number } }
+  | { type: 'COMPLETE_WIRE_ON_WIRE'; wireId: string | null; world: { x: number; y: number } }
   | { type: 'UPDATE_WIRE_BENDS'; wireId: string; bends: { x: number; y: number }[] }
   | { type: 'START_PLACEMENT'; componentType: string }
   | { type: 'CANCEL_PLACEMENT' }
+  | { type: 'START_NET_LABEL'; name: string }
+  | { type: 'CONFIRM_NET_LABEL'; x: number; y: number; pin?: PinRef }
   | { type: 'ROTATE_PLACEMENT'; degrees: number }
   | {
       type: 'LOAD_PROJECT';
@@ -319,7 +327,7 @@ function reducer(state: SimState, action: Action): SimState {
         components: [...state.components, component],
         selectedIds: [component.id],
         selectedWireIds: [],
-        placementType: null,
+        placementType: null, netLabelPlacement: null,
         placementRotation: 0,
       };
     }
@@ -444,6 +452,16 @@ function reducer(state: SimState, action: Action): SimState {
     case 'COMPLETE_WIRE_ON_WIRE': {
       const draft = state.wireDraft;
       if (!draft) return state;
+      if (action.wireId === null) {
+        const existing = findWireJunctionPinAt(action.world, state.components);
+        if (existing) return reducer(state, { type: 'COMPLETE_WIRE', pin: existing });
+        const point = wireJunctionTopLeft(action.world);
+        const junction = createComponent(WIRE_JUNCTION_TYPE, point.x, point.y);
+        return reducer({ ...state, components: [...state.components, junction] }, {
+          type: 'COMPLETE_WIRE',
+          pin: { componentId: junction.id, pinId: WIRE_JUNCTION_PIN_ID },
+        });
+      }
       const target = state.wires.find((w) => w.id === action.wireId);
       if (!target) return state;
 
@@ -609,17 +627,54 @@ function reducer(state: SimState, action: Action): SimState {
           w.id === action.wireId ? { ...w, bends: action.bends } : w,
         ),
       };
+    case 'CONFIRM_NET_LABEL': {
+      const name = state.netLabelPlacement;
+      if (!name) return state;
+      const { x, y, pin } = action;
+      if (pin) return {
+        ...state, netLabelPlacement: null,
+        components: state.components.map(c => c.id === pin.componentId
+          ? { ...c, pinNetLabels: { ...c.pinNetLabels, [pin.pinId]: name } } : c),
+      };
+      // Match the uppermost wire, just like its canvas hit target. Use the same
+      // projection and polyline split as wire-to-wire completion.
+      for (const wire of [...state.wires].reverse()) {
+        const hit = projectPointOntoWire(wire, state.components, { x, y });
+        if (!hit) continue;
+        const split = splitWirePathAt(hit.path, hit.point, hit.segmentIndex);
+        if (!split) continue;
+        const point = wireJunctionTopLeft(hit.point);
+        const component = createComponent(WIRE_JUNCTION_TYPE, point.x, point.y);
+        component.pinNetLabels = { [WIRE_JUNCTION_PIN_ID]: name };
+        const terminal = { componentId: component.id, pinId: WIRE_JUNCTION_PIN_ID };
+        return {
+          ...state, netLabelPlacement: null,
+          components: [...state.components, component],
+          wires: state.wires.flatMap(w => w.id === wire.id ? [
+            { ...w, to: terminal, bends: pathToBends(split.left) },
+            { ...w, id: nextId('wire'), from: terminal, bends: pathToBends(split.right) },
+          ] : [w]),
+        };
+      }
+      const point = wireJunctionTopLeft({ x, y });
+      const component = createComponent(WIRE_JUNCTION_TYPE, point.x, point.y);
+      component.pinNetLabels = { [WIRE_JUNCTION_PIN_ID]: name };
+      return { ...state, netLabelPlacement: null, components: [...state.components, component] };
+    }
+    case 'START_NET_LABEL':
+      return { ...state, netLabelPlacement: action.name, placementType: null, wireDraft: null, selectedIds: [], selectedWireIds: [] };
     case 'START_PLACEMENT':
       return {
         ...state,
         placementType: action.componentType,
+        netLabelPlacement: null,
         placementRotation: 0,
         wireDraft: null,
         selectedIds: [],
         selectedWireIds: [],
       };
     case 'CANCEL_PLACEMENT':
-      return { ...state, placementType: null, placementRotation: 0 };
+      return { ...state, placementType: null, netLabelPlacement: null, placementRotation: 0 };
     case 'ROTATE_PLACEMENT':
       if (!state.placementType) return state;
       return {
@@ -639,7 +694,7 @@ function reducer(state: SimState, action: Action): SimState {
         selectedIds: [],
         selectedWireIds: [],
         wireDraft: null,
-        placementType: null,
+        placementType: null, netLabelPlacement: null,
         placementRotation: 0,
       };
     case 'RESTORE_SNAPSHOT':
@@ -652,7 +707,7 @@ function reducer(state: SimState, action: Action): SimState {
         selectedIds: [],
         selectedWireIds: [],
         wireDraft: null,
-        placementType: null,
+        placementType: null, netLabelPlacement: null,
         placementRotation: 0,
       };
     case 'PASTE':
@@ -663,7 +718,7 @@ function reducer(state: SimState, action: Action): SimState {
         selectedIds: action.selectedIds,
         selectedWireIds: action.selectedWireIds,
         wireDraft: null,
-        placementType: null,
+        placementType: null, netLabelPlacement: null,
         placementRotation: 0,
       };
     default:
@@ -678,7 +733,7 @@ const initialState: SimState = {
   selectedIds: [],
   selectedWireIds: [],
   wireDraft: null,
-  placementType: null,
+  placementType: null, netLabelPlacement: null,
   placementRotation: 0,
   simStatus: 'idle',
   simErrorMessage: '',
@@ -702,7 +757,7 @@ interface SimContextValue {
   rotateSelected: (degrees?: number) => void;
   deleteSelected: () => void;
   pinClick: (pin: PinRef) => void;
-  completeWireOnWire: (wireId: string, world: { x: number; y: number }) => void;
+  completeWireOnWire: (wireId: string | null, world: { x: number; y: number }) => void;
   addWireBend: (x: number, y: number) => void;
   updateWireBends: (
     wireId: string,
@@ -712,6 +767,8 @@ interface SimContextValue {
   cancelWire: () => void;
   startPlacement: (componentType: string) => void;
   cancelPlacement: () => void;
+  startNetLabelPlacement: (name: string) => void;
+  confirmNetLabelPlacement: (x: number, y: number, pin?: PinRef) => void;
   confirmPlacement: (x: number, y: number, rotation: number) => void;
   rotatePlacement: (degrees?: number) => void;
   saveProject: (filename?: string) => Promise<'folder' | 'download'>;
@@ -1109,7 +1166,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
   );
 
   const completeWireOnWire = useCallback(
-    (wireId: string, world: { x: number; y: number }) => {
+    (wireId: string | null, world: { x: number; y: number }) => {
       if (!stateRef.current.wireDraft) return;
       haltSimulation();
       recordUndoSnapshot();
@@ -1137,6 +1194,16 @@ export function SimProvider({ children }: { children: ReactNode }) {
   const startPlacement = useCallback((componentType: string) => {
     dispatch({ type: 'START_PLACEMENT', componentType });
   }, []);
+
+  const startNetLabelPlacement = useCallback((name: string) => {
+    dispatch({ type: 'START_NET_LABEL', name: name.trim() });
+  }, []);
+  const confirmNetLabelPlacement = useCallback((x: number, y: number, pin?: PinRef) => {
+    const name = stateRef.current.netLabelPlacement;
+    if (!name) return;
+    haltSimulation(); recordUndoSnapshot();
+    dispatch({ type: 'CONFIRM_NET_LABEL', x, y, pin });
+  }, [haltSimulation, recordUndoSnapshot]);
 
   const cancelPlacement = useCallback(() => {
     dispatch({ type: 'CANCEL_PLACEMENT' });
@@ -1230,6 +1297,8 @@ export function SimProvider({ children }: { children: ReactNode }) {
       cancelWire,
       startPlacement,
       cancelPlacement,
+      startNetLabelPlacement,
+      confirmNetLabelPlacement,
       confirmPlacement,
       rotatePlacement,
       saveProject,
@@ -1274,6 +1343,8 @@ export function SimProvider({ children }: { children: ReactNode }) {
       cancelWire,
       startPlacement,
       cancelPlacement,
+      startNetLabelPlacement,
+      confirmNetLabelPlacement,
       confirmPlacement,
       rotatePlacement,
       saveProject,

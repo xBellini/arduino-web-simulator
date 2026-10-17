@@ -230,6 +230,7 @@ function startRunner(hex: string): void {
     post({
       v: AVR_WORKER_PROTOCOL,
       type: 'tick',
+      sentAt: import.meta.env.DEV ? performance.timeOrigin + performance.now() : undefined,
       cycles: runner.cpu.cycles,
       cyclesBehind: runner.cyclesBehind(tabHidden),
       ports: [portSnapshot('B'), portSnapshot('C'), portSnapshot('D')],

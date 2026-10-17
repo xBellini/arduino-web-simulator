@@ -46,6 +46,9 @@
 #                     | Keep pin exits outside their own bodies in tight gaps; construct exact orthogonal legs and allow straight-segment dragging
 #                     | Apply obstacle routing to free drafts from breadboard holes and junctions as well as component pins
 # 15-10-2026 | Codex  | Carry aligned terminal bends with translated components to prevent new pin-exit doglegs.
+# 17-10-2026 | Codex  | Keep labeled junctions as valid endpoints when their long wire is removed.
+
+#                     | Preserve single-wire junctions as open endpoints; prune only unused junctions.
  */
 import type {
   ComponentDefinition,
@@ -1913,8 +1916,7 @@ export function findWireJunctionPinAt(
 }
 
 /**
- * Drop wire_junction components with fewer than two attached wires.
- * Also drops the leftover single wire (otherwise it would reference a deleted pin).
+ * Drop unused, unnamed wire junctions. Single-wire junctions are valid free ends.
  */
 export function pruneOrphanWireJunctions(
   components: PlacedComponent[],
@@ -1929,7 +1931,7 @@ export function pruneOrphanWireJunctions(
       const n = ws.filter(
         (w) => w.from.componentId === c.id || w.to.componentId === c.id,
       ).length;
-      if (n < 2) orphanIds.add(c.id);
+      if (n === 0 && !Object.values(c.pinNetLabels ?? {}).some(name => name.trim())) orphanIds.add(c.id);
     }
     if (orphanIds.size === 0) break;
     ws = ws.filter(

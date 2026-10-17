@@ -29,6 +29,7 @@
 #                     | Apply `PartModule.internalPinShorts` (duplicate module headers)
 # 14-10-2026 | Codex | Carry active GPIO identities for measured per-pin warnings.
 # 15-10-2026 | Codex | Keep onboard indicator pins in the electrical netlist even without external wires, allowing Uno D13 Blink to publish its live state.
+# 17-10-2026 | Codex  | Merge matching pin labels through shared netlist; names never generate power or ground.
  */
 
 
@@ -175,6 +176,21 @@ function applyMcuBoardInternalUnions(
   shortGroup(rail33PinIds);
 }
 
+/** Virtual copper links for matching labels; never rendered as wires or sources. */
+export function namedNetLinks(components: PlacedComponent[]): Wire[] {
+  const first = new Map<string, PinRef>();
+  const links: Wire[] = [];
+  for (const comp of components) for (const pin of getDefinition(comp.type).pins) {
+    const name = comp.pinNetLabels?.[pin.id]?.trim();
+    if (!name) continue;
+    const ref = { componentId: comp.id, pinId: pin.id };
+    const from = first.get(name);
+    if (from) links.push({ id: '@net:' + links.length, from, to: ref, bends: [] });
+    else first.set(name, ref);
+  }
+  return links;
+}
+
 export function buildCircuitNetlist(
   components: PlacedComponent[],
   wires: Wire[],
@@ -195,11 +211,14 @@ export function buildCircuitNetlist(
     return idx;
   };
 
-  for (const wire of wires) {
+  for (const wire of [...wires, ...namedNetLinks(components)]) {
     uf.union(indexFor(wire.from), indexFor(wire.to));
   }
 
   for (const comp of components) {
+    for (const pin of getDefinition(comp.type).pins) {
+      if (comp.pinNetLabels?.[pin.id]?.trim()) indexFor({ componentId: comp.id, pinId: pin.id });
+    }
     const onboardPin = getDefinition(comp.type).pinIndicator?.pin;
     if (onboardPin) indexFor({ componentId: comp.id, pinId: onboardPin });
     if (comp.type === 'breadboard') {

@@ -30,6 +30,7 @@
 # 15-10-2026 | Codex | Add part-owned power indicator geometry, color and supply terminals.
 #                     | Declare onboard pin-driven indicator geometry independently of power LEDs.
 #                     | Add lightweight Uno TX/RX activity indicators with part-owned lamp geometry.
+# 17-10-2026 | Codex  | Store named electrical connections on pins, including wire junctions.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -136,6 +137,8 @@ export type ComponentRegistryEntry = Omit<
 
 
 export interface PlacedComponent {
+  /** Case-sensitive circuit-wide net names, attached to existing pins. */
+  pinNetLabels?: Record<string, string>;
   id: string;
   type: string;
   x: number;

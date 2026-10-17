@@ -33,8 +33,12 @@
 #                     | Skip pin-hover and placement calculations during panning; cancel pending hover work and avoid redundant panning-state updates.
 #                     | Keep wire motion active during running pushbutton presses; dragging, panning and zooming still pause it.
 # 16-10-2026 | Codex | Let individual button shapes subscribe to pressed appearance instead of rebuilding the canvas through editor state.
+# 17-10-2026 | Codex  | Add editable named nets on pins and junctions; labels follow parts and use existing undo/save paths.
+#                     | Preview toolbar labels under the cursor, highlight pin snaps, and allow standalone labels to move.
+
+#                     | Double-click empty canvas to finish a wire with a connectable free end.
  */
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { Profiler, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { getDefinition } from '../../registry/components';
 import { buildCircuitNetlist } from '../../circuit/netlist';
@@ -57,7 +61,7 @@ import {
   findPinSnap,
   findWireHandleAt,
   findWireSegmentAt,
-  //getPinPosition,
+  getPinPosition,
   getWireInternalVertices,
   getWireJunctionPoints,
   insertWireJoint,
@@ -90,7 +94,7 @@ import { WireFlowOverlay } from './WireFlowOverlay';
 import { NgspiceDebugOverlay } from '../debug/NgspiceDebugOverlay';
 import { MeasurementTooltip } from './MeasurementTooltip';
 import { SimPerfOverlay } from '../debug/SimPerfOverlay';
-import { isSimPerfEnabled } from '../../avr/simPerf';
+import { isSimPerfEnabled, recordStutter, recordCanvasCommit } from '../../avr/simPerf';
 import { wireShowsCurrent } from '../../circuit/currents';
 
 const PIN_HIT_RADIUS = PIN_SNAP_RADIUS;
@@ -168,6 +172,7 @@ const PROPERTIES_DOUBLE_CLICK_MS = WIRE_DOUBLE_CLICK_MS;
 const PROPERTIES_DOUBLE_CLICK_PX = WIRE_DOUBLE_CLICK_PX;
 
 export function SimCanvas() {
+  const traceBuildStart = performance.now();
   const {
     state,
     setViewport,
@@ -181,6 +186,7 @@ export function SimCanvas() {
     cancelWire,
     cancelPlacement,
     confirmPlacement,
+    confirmNetLabelPlacement,
     rotatePlacement,
     deleteSelected,
     recordUndoSnapshot,
@@ -268,7 +274,9 @@ export function SimCanvas() {
     y: number;
     componentIds: string[];
     pasteAtWorld?: { x: number; y: number };
+    netPin?: { componentId: string; pinId: string };
   } | null>(null);
+  const [netEditor, setNetEditor] = useState<{ componentId: string; pinId: string; x: number; y: number } | null>(null);
   const [propertiesEditor, setPropertiesEditor] = useState<{
     componentId: string;
     x: number;
@@ -295,6 +303,7 @@ export function SimCanvas() {
   const hoverPinRafRef = useRef<number | null>(null);
   const pendingHoverPinRef = useRef<typeof hoveredPinSnap>(null);
   /** Snapped top-left of the component currently being placed. */
+  const [netPreview, setNetPreview] = useState<{ x: number; y: number } | null>(null);
   const [placementPreview, setPlacementPreview] = useState<{
     x: number;
     y: number;
@@ -804,6 +813,18 @@ export function SimCanvas() {
 
   const onPointerDownCapture = useCallback(
     (e: React.PointerEvent) => {
+      if (state.netLabelPlacement) {
+        if (e.button !== 0 && e.button !== 2) return;
+        e.preventDefault(); e.stopPropagation();
+        if (e.button === 2) { cancelPlacement(); setNetPreview(null); return; }
+        const world = getWorldPoint(e.clientX, e.clientY);
+        if (world) {
+          const snap = findPinSnap(world, components, PIN_HIT_RADIUS);
+          confirmNetLabelPlacement(snap?.position.x ?? world.x, snap?.position.y ?? world.y, snap?.pin);
+          setNetPreview(null);
+        }
+        return;
+      }
       if (e.button === 2) {
         e.preventDefault();
         beginPanInteraction(e, true);
@@ -824,6 +845,7 @@ export function SimCanvas() {
     },
     [
       placementType,
+      state.netLabelPlacement, components, cancelPlacement, confirmNetLabelPlacement,
       getWorldPoint,
       resolvePlacementTopLeft,
       confirmPlacement,
@@ -886,7 +908,8 @@ export function SimCanvas() {
   );
 
   const tryOpenContextMenu = useCallback(
-    (clientX: number, clientY: number, componentId?: string) => {
+    (clientX: number, clientY: number, componentId?: string, pinId?: string) => {
+      if (state.netLabelPlacement) { cancelPlacement(); setNetPreview(null); return; }
       if (suppressContextMenuRef.current) return;
       if (placementType) {
         cancelPlacement();
@@ -900,8 +923,11 @@ export function SimCanvas() {
         return;
       }
       openContextMenu(clientX, clientY, componentId);
+      const comp = components.find(c => c.id === componentId);
+      const targetPin = pinId ?? (comp?.type === 'wire_junction' ? getDefinition(comp.type).pins[0]?.id : undefined);
+      if (componentId && targetPin) setContextMenu(menu => menu && ({ ...menu, netPin: { componentId, pinId: targetPin } }));
     },
-    [openContextMenu, placementType, wireDraft, cancelWire, cancelPlacement],
+    [state.netLabelPlacement, openContextMenu, placementType, wireDraft, cancelWire, cancelPlacement, components],
   );
 
   const onContextMenu = useCallback(
@@ -1187,6 +1213,7 @@ export function SimCanvas() {
       }
 
       scheduleHoveredPinUpdate(world);
+      if (state.netLabelPlacement) setNetPreview(world);
 
       if (placementType) {
         setPlacementPreview(
@@ -1346,6 +1373,7 @@ export function SimCanvas() {
       }
     },
     [
+      state.netLabelPlacement,
       viewport,
       wireDraft,
       placementType,
@@ -1854,7 +1882,7 @@ export function SimCanvas() {
             onContextMenu={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              tryOpenContextMenu(e.clientX, e.clientY, comp.id);
+              tryOpenContextMenu(e.clientX, e.clientY, comp.id, pin.id);
             }}
             onPointerDown={(e) =>
               handleBreadboardHolePointerDown(e, {
@@ -1883,7 +1911,7 @@ export function SimCanvas() {
           onContextMenu={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            tryOpenContextMenu(e.clientX, e.clientY, comp.id);
+            tryOpenContextMenu(e.clientX, e.clientY, comp.id, pin.id);
           }}
           onPointerDown={(e) =>
             handlePinPointerDown(e, { componentId: comp.id, pinId: pin.id })
@@ -2090,7 +2118,7 @@ export function SimCanvas() {
     (contextMenu?.componentIds.length ?? 0) > 0 || selectedWireIds.length > 0;
   const canContextDelete = canContextCopy;
 
-  return (
+  const canvas = (
     <div
       ref={wrapRef}
       className={`canvas-wrap${isPanning ? ' is-panning' : ''}${
@@ -2105,6 +2133,14 @@ export function SimCanvas() {
       onContextMenu={onContextMenu}
       onPointerDownCapture={onPointerDownCapture}
       onPointerDown={onPointerDown}
+      onDoubleClick={e => {
+        if (!wireDraft) return;
+        e.preventDefault();
+        const endpoint = wireDraft.bends.at(-1);
+        if (!endpoint) return;
+        completeWireOnWire(null, endpoint);
+        setWireCursor(null);
+      }}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
@@ -2192,7 +2228,28 @@ export function SimCanvas() {
             return wire ? renderWire(wire, 'overlay') : null;
           })}
           {renderWireHandles()}
+          {components.flatMap(comp => Object.entries(comp.pinNetLabels ?? {}).map(([pinId, name]) => {
+            const p = getPinPosition({ componentId: comp.id, pinId }, components);
+            if (!p || !name) return null;
+            return <g key={comp.id + ':' + pinId} transform={`translate(${p.x}, ${p.y})`}
+              data-net-label={name} style={{ cursor: 'pointer' }}
+              onPointerDown={e => { if (comp.type === 'wire_junction') handleComponentBodyPointerDown(e, comp); else e.stopPropagation(); }}
+              onDoubleClick={e => { e.stopPropagation(); setNetEditor({ componentId: comp.id, pinId, x: e.clientX, y: e.clientY }); }}
+              onContextMenu={e => { e.preventDefault(); e.stopPropagation(); tryOpenContextMenu(e.clientX, e.clientY, comp.id, pinId); }}>
+              <title>{name + ' — double-click to edit; matching names connect'}</title>
+              <path d="M0 0 L12 -12 H22" fill="none" stroke="#70dce8" strokeWidth={1.5} />
+              <rect x={20} y={-23} width={Math.max(30, name.length * 7.5 + 12)} height={20} rx={3} fill="#15252c" stroke="#70dce8" />
+              <text x={26} y={-9} fill="#d9fbff" fontSize={12} fontFamily="monospace">{name}</text>
+            </g>;
+          }))}
 
+          {state.netLabelPlacement && netPreview && <g pointerEvents="none" opacity={0.7}
+            transform={`translate(${hoveredPinSnap?.position.x ?? netPreview.x}, ${hoveredPinSnap?.position.y ?? netPreview.y})`}>
+            <circle r={8} fill="none" stroke={hoveredPinSnap ? '#77ff9d' : '#70dce8'} strokeWidth={2} />
+            <path d="M0 0 L12 -12 H22" fill="none" stroke="#70dce8" />
+            <rect x={20} y={-23} width={Math.max(30, state.netLabelPlacement.length * 7.5 + 12)} height={20} rx={3} fill="#15252c" stroke="#70dce8" />
+            <text x={26} y={-9} fill="#d9fbff" fontSize={12} fontFamily="monospace">{state.netLabelPlacement}</text>
+          </g>}
           {ghost && placementDef && placementPivot && (
             <g
               transform={`translate(${ghost.x}, ${ghost.y}) rotate(${ghost.rotation} ${placementPivot.x} ${placementPivot.y})`}
@@ -2239,12 +2296,25 @@ export function SimCanvas() {
         )}
       </div>
 
+      {netEditor && <PartLabelEditor key={netEditor.componentId + ':' + netEditor.pinId} netName
+        x={netEditor.x} y={netEditor.y} footprintLabel="Net"
+        initialLabel={components.find(c => c.id === netEditor.componentId)?.pinNetLabels?.[netEditor.pinId] ?? ''}
+        onClose={() => setNetEditor(null)} onSave={name => {
+          const comp = components.find(c => c.id === netEditor.componentId);
+          if (!comp) return;
+          const pinNetLabels = { ...comp.pinNetLabels };
+          if (name.trim()) pinNetLabels[netEditor.pinId] = name.trim();
+          else delete pinNetLabels[netEditor.pinId];
+          updateComponent(comp.id, { pinNetLabels });
+        }} />}
       {contextMenu && (
         <ContextMenu
           x={contextMenu.x}
           y={contextMenu.y}
           onClose={closeContextMenu}
           items={[
+            { id: 'named-net', label: 'Name net…', disabled: !contextMenu.netPin,
+              onSelect: () => { if (contextMenu.netPin) setNetEditor({ ...contextMenu.netPin, x: contextMenu.x, y: contextMenu.y }); } },
             {
               id: 'copy',
               label: 'Copy',
@@ -2334,5 +2404,8 @@ export function SimCanvas() {
         )}
     </div>
   );
+
+  recordStutter('canvas-build', performance.now() - traceBuildStart);
+  return <Profiler id="canvas" onRender={recordCanvasCommit}>{canvas}</Profiler>;
 
 }

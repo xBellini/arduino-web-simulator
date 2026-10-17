@@ -11,8 +11,10 @@
 # 17-09-2026 | Cursor | Changelog creation
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Moved from `src/components/Toolbar.tsx` (tree reorganization)
+# 17-10-2026 | Codex  | Toolbar Net label tool names then previews a label before placement.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { PartLabelEditor } from './editors/PartLabelEditor';
 import { useSim } from '../store/SimContext';
 import {
   listUserProjects,
@@ -24,6 +26,8 @@ import {
 export function Toolbar() {
   const {
     state,
+    startNetLabelPlacement,
+    cancelPlacement,
     saveProject,
     loadProjectFromJson,
     undo,
@@ -33,6 +37,7 @@ export function Toolbar() {
     compileAndRun,
     stopSimulation,
   } = useSim();
+  const [labelEditor, setLabelEditor] = useState<{ x: number; y: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [userProjectsEnabled, setUserProjectsEnabled] = useState(false);
   const [projectFiles, setProjectFiles] = useState<string[]>([]);
@@ -119,6 +124,13 @@ export function Toolbar() {
       </div>
 
       <div className="toolbar-actions">
+        <button type="button" className="action-btn" aria-pressed={!!state.netLabelPlacement}
+          onClick={e => { if (state.netLabelPlacement) cancelPlacement(); else setLabelEditor({ x: e.clientX, y: e.clientY }); }}
+          title="Place a named electrical connection">Net label</button>
+        {labelEditor && <PartLabelEditor netName footprintLabel="Net" initialLabel=""
+          x={labelEditor.x} y={labelEditor.y} onClose={() => setLabelEditor(null)}
+          onSave={name => { if (name) startNetLabelPlacement(name); }} />}
+        {state.netLabelPlacement && <span className="wire-hint">Click to place · Snap to a pin or junction · Esc/right-click cancels</span>}
         <button
           type="button"
           className="action-btn action-btn-run"
@@ -212,7 +224,7 @@ export function Toolbar() {
             Drag segments or handles · Double-click to add joint · Shift+click to multi-select · Del to delete
           </span>
         )}
-        {!state.placementType && !state.wireDraft && state.selectedWireIds.length === 0 && (
+        {!state.netLabelPlacement && !state.placementType && !state.wireDraft && state.selectedWireIds.length === 0 && (
           <span className="wire-hint wire-hint-subtle">
             Marquee selects parts and wires · Shift adds to selection
           </span>

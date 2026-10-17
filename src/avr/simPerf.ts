@@ -197,3 +197,90 @@ export function finishAvrBatch(
   return snap;
 }
 
+
+// Temporary bounded timing capture. No UI subscriptions or console logging.
+type StutterEvent = { t: number; kind: string; a: number; b: number; c: number; detail?: string };
+const traceCapacity = 30000;
+const traceEvents: (StutterEvent | undefined)[] = new Array(traceCapacity);
+let traceWritten = 0;
+let traceEnabled = import.meta.env.DEV && typeof window !== 'undefined';
+export function recordStutter(kind: string, a = 0, b = 0, c = 0, detail?: string): void {
+  if (!traceEnabled) return;
+  traceEvents[traceWritten++ % traceCapacity] = { t: performance.now(), kind, a, b, c, detail };
+}
+export function recordCanvasCommit(_id: string, phase: string, actualDuration: number,
+  baseDuration: number, startTime: number, commitTime: number): void {
+  recordStutter('canvas-commit', actualDuration, commitTime - startTime, baseDuration, phase);
+}
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  const snapshot = () => ({
+    version: 1, timeOrigin: performance.timeOrigin, capturedAt: new Date().toISOString(),
+    userAgent: navigator.userAgent, capacity: traceCapacity, totalWritten: traceWritten,
+    overwritten: Math.max(0, traceWritten - traceCapacity),
+    schema: {
+      'avr-tick': ['batchWallMs', 'deliveryMs', 'cycles', 'cyclesBehind'],
+      'avr-handler': ['durationMs'], 'canvas-build': ['durationMs'],
+      'canvas-commit': ['renderDurationMs', 'renderStartToCommitMs (not commit duration)', 'baseDurationMs', 'phase'],
+      'frame-gap': ['gapMs'], 'timer-gap': ['lateMs'],
+      'long-task': ['durationMs', 'startTimeMs'],
+    },
+    events: Array.from({ length: Math.min(traceWritten, traceCapacity) }, (_, i) =>
+      traceEvents[(Math.max(0, traceWritten - traceCapacity) + i) % traceCapacity]),
+  });
+  const api = {
+    snapshot,
+    clear() { traceEvents.fill(undefined); traceWritten = 0; recordStutter('clear'); },
+    start() { traceEnabled = true; recordStutter('capture-start'); },
+    stop() { recordStutter('capture-stop'); traceEnabled = false; },
+    mark(label = 'noticed-stutter') { recordStutter('mark', 0, 0, 0, label.slice(0, 120)); },
+    save() {
+      // Freeze before serialization/download so export overhead is not evidence.
+      api.stop();
+      const url = URL.createObjectURL(new Blob([JSON.stringify(snapshot())], { type: 'application/json' }));
+      const a = document.createElement('a'); a.href = url;
+      a.download = 'sim-stutter-' + Date.now() + '.json'; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    },
+  };
+  Object.assign(window, { stutterTrace: api });
+  let frame = 0, previousFrame = performance.now();
+  const onFrame = (now: number) => {
+    if (document.visibilityState === 'visible' && now - previousFrame > 50)
+      recordStutter('frame-gap', now - previousFrame);
+    previousFrame = now; frame = requestAnimationFrame(onFrame);
+  };
+  frame = requestAnimationFrame(onFrame);
+  let previousTimer = performance.now();
+  const timer = setInterval(() => {
+    const now = performance.now();
+    if (now - previousTimer > 300) recordStutter('timer-gap', now - previousTimer - 250);
+    previousTimer = now;
+  }, 250);
+  const visibility = () => {
+    previousFrame = performance.now(); previousTimer = previousFrame;
+    recordStutter('visibility', 0, 0, 0, document.visibilityState);
+  };
+  const interaction = (event: Event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    recordStutter(event.type, 0, 0, 0, target?.closest('button')?.textContent?.trim().slice(0, 60)
+      ?? target?.tagName);
+  };
+  document.addEventListener('visibilitychange', visibility);
+  document.addEventListener('pointerdown', interaction, true);
+  document.addEventListener('pointerup', interaction, true);
+  let observer: PerformanceObserver | undefined;
+  if (PerformanceObserver.supportedEntryTypes.includes('longtask')) {
+    observer = new PerformanceObserver(list => {
+      for (const entry of list.getEntries()) recordStutter('long-task', entry.duration, entry.startTime);
+    });
+    observer.observe({ type: 'longtask' });
+  }
+  recordStutter('capture-start', 0, 0, 0, 'longtask=' + !!observer + ';visibility=' + document.visibilityState);
+  import.meta.hot?.dispose(() => {
+    traceEnabled = false; cancelAnimationFrame(frame); clearInterval(timer); observer?.disconnect();
+    document.removeEventListener('visibilitychange', visibility);
+    document.removeEventListener('pointerdown', interaction, true);
+    document.removeEventListener('pointerup', interaction, true);
+    delete (window as unknown as { stutterTrace?: unknown }).stutterTrace;
+  });
+}

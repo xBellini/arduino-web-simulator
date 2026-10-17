@@ -13,6 +13,7 @@
 #                     | Expanded What with practical how-to notes
 # 24-09-2026 | Cursor | Textarea so multi-line TO package markings (`partNumber\\ntype`) survive edits
 # 09-10-2026 | Cursor | Moved from `src/components/PartLabelEditor.tsx` (tree reorganization)
+# 17-10-2026 | Codex  | Reuse text editor for named nets with single-line names and removal by clearing.
  */
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -24,6 +25,7 @@ interface PartLabelEditorProps {
   /** Footprint name shown in the title, e.g. DIP8 */
   footprintLabel: string;
   initialLabel: string;
+  netName?: boolean;
   onSave: (partLabel: string) => void;
   onClose: () => void;
 }
@@ -33,6 +35,7 @@ export function PartLabelEditor({
   y,
   footprintLabel,
   initialLabel,
+  netName = false,
   onSave,
   onClose,
 }: PartLabelEditorProps) {
@@ -82,28 +85,29 @@ export function PartLabelEditor({
 
   return createPortal(
     <div
+      onPointerDown={e => { if (netName) e.stopPropagation(); }}
       ref={panelRef}
       className="resistor-value-editor part-label-editor"
       style={{ left: pos.x, top: pos.y }}
       role="dialog"
-      aria-label={`${footprintLabel} marking`}
+      aria-label={netName ? 'Named net' : `${footprintLabel} marking`}
     >
-      <div className="resistor-value-editor-title">{footprintLabel} marking</div>
+      <div className="resistor-value-editor-title">{netName ? 'Named net' : footprintLabel + ' marking'}</div>
       <div className="resistor-value-editor-form">
         <label className="resistor-value-editor-row">
-          <span className="resistor-value-editor-label">Chip name</span>
+          <span className="resistor-value-editor-label">{netName ? 'Net name' : 'Chip name'}</span>
           <textarea
             ref={inputRef}
             className="resistor-value-editor-input"
-            rows={3}
+            rows={netName ? 1 : 3}
+            maxLength={netName ? 64 : undefined}
             value={label}
-            placeholder={"e.g. NE555\nor 2N2222\\nNPN"}
-            onChange={(e) => setLabel(e.target.value)}
+            placeholder={netName ? "e.g. VCC or SDA" : "e.g. NE555"}
+            onChange={(e) => setLabel(netName ? e.target.value.replace(/[\r\n]/g, '') : e.target.value)}
           />
         </label>
         <p className="instrument-properties-hint">
-          Uses the shared {footprintLabel} artwork; this text is drawn on top.
-          Multi-line labels (Ctrl+Enter to save) keep part number and type on separate lines.
+          {netName ? 'Matching names connect across this circuit (case-sensitive). Clear the name to remove it. Ctrl+Enter saves.' : <>Uses the shared {footprintLabel} artwork; this text is drawn on top. Multi-line labels (Ctrl+Enter to save) keep part number and type on separate lines.</>}
         </p>
       </div>
       <div className="resistor-value-editor-actions">
