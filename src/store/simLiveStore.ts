@@ -1,6 +1,7 @@
 /**
  * What: Module-level live sim snapshot for React — outside the editor reducer.
  * Role: high-frequency pin states / flags / solver debug without undo pollution.
+ * Performance metrics have an independent snapshot and subscription to avoid canvas invalidation.
  * Also owns buffered serial display text with separate listeners so output never invalidates canvas subscribers.
  * Owns/exports: subscribe/getters, `applySimLivePinStates`, `resetSimLiveState`,
  * `setDcSolverBackend`, ngspice debug setters, version counter for hooks.
@@ -20,6 +21,7 @@
 # 15-10-2026 | Codex | Buffer serial display text for 16 ms on an independent subscription; preserve order, flush on stop and discard pending text on clear.
 #                     | Track short serial activity holds on independent listeners; clear lamps on stop without per-byte canvas updates.
 # 16-10-2026 | Codex | Isolate pressed-button appearance with per-part subscriptions; clear held visuals on stop.
+# 22-10-2026 | Codex | Keep performance metrics on a separate snapshot/subscription so 10 Hz readout updates do not invalidate the circuit canvas; clear metrics on reset.
  */
 
 import type { PinState } from '../types';
@@ -45,8 +47,6 @@ type SimLiveSnapshot = {
   simFlags: ComponentSimFlags;
   dcSolverBackend: DcSolverBackend;
   ngspiceDebug: NgspiceDcDebug | null;
-  /** Live Sim perf overlay metrics while Run is active. */
-  simPerf: SimPerfSnapshot | null;
   version: number;
 };
 
@@ -55,11 +55,19 @@ let snapshot: SimLiveSnapshot = {
   simFlags: createComponentSimFlags(),
   dcSolverBackend: null,
   ngspiceDebug: null,
-  simPerf: null,
   version: 0,
 };
 
 const listeners = new Set<() => void>();
+
+// Diagnostics must not invalidate circuit rendering at the metrics refresh rate.
+let simPerfSnapshot: SimPerfSnapshot | null = null;
+const simPerfListeners = new Set<() => void>();
+export const getSimPerfSnapshot = (): SimPerfSnapshot | null => simPerfSnapshot;
+export function subscribeSimPerf(listener: () => void): () => void {
+  simPerfListeners.add(listener);
+  return () => { simPerfListeners.delete(listener); };
+}
 
 // Button appearance has independent per-part subscribers, never canvas notifications.
 const pressedButtons = new Set<string>();
@@ -197,8 +205,6 @@ export function applySimLivePinStates(
     simFlags: structuredClone(simFlags),
     dcSolverBackend: nextBackend,
     ngspiceDebug: nextDebug,
-    // Preserve sim-perf overlay across high-frequency pin updates (was blinking off).
-    simPerf: snapshot.simPerf,
     version: snapshot.version + 1,
   };
   emit();
@@ -211,6 +217,8 @@ export function setDcSolverBackend(backend: DcSolverBackend): void {
 }
 
 export function resetSimLiveState(): void {
+  simPerfSnapshot = null;
+  for (const listener of simPerfListeners) listener();
   for (const id of [...pressedButtons]) setLiveButtonPressed(id, false);
   clearTimeout(activityTimer);
   activityTimer = undefined;
@@ -222,7 +230,6 @@ export function resetSimLiveState(): void {
     simFlags: createComponentSimFlags(),
     dcSolverBackend: null,
     ngspiceDebug: null,
-    simPerf: null,
     version: snapshot.version + 1,
   };
   emit();
@@ -230,12 +237,8 @@ export function resetSimLiveState(): void {
 
 /** Push Sim perf overlay metrics (throttled by `simPerf.ts`). */
 export function applySimPerfSnapshot(simPerf: SimPerfSnapshot): void {
-  snapshot = {
-    ...snapshot,
-    simPerf,
-    version: snapshot.version + 1,
-  };
-  emit();
+  simPerfSnapshot = simPerf;
+  for (const listener of simPerfListeners) listener();
 }
 
 export function pinStateForComponent(

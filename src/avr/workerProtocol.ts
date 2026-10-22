@@ -12,6 +12,9 @@
 # 15-10-2026 | Codex  | Carry MAX7219 targets, solved power validity and batched display snapshots.
 #                     | Update the renamed max7219Bridge import; protocol unchanged.
 #                     | Carry serial input bytes and actual USART receive-completion notifications.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 
 import type { Max7219Target, Max72xxSnapshot } from './max7219Bridge';
@@ -49,6 +52,7 @@ export type AvrWorkerInMessage =
       v: typeof AVR_WORKER_PROTOCOL;
       type: 'start';
       hex: string;
+      eeprom?: number[];
       /** LCD probe targets (EN-edge → bus sample posted to main). */
       lcdTargets: Array<{
         id: string;
@@ -70,10 +74,12 @@ export type AvrWorkerInMessage =
     }
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'max7219-power'; samples: Array<{ id: string; powered: boolean }> }
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'serial-input'; bytes: number[] }
+  | { v: typeof AVR_WORKER_PROTOCOL; type: 'eeprom-snapshot' }
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'stop' }
   | {
       v: typeof AVR_WORKER_PROTOCOL;
       type: 'set-inputs';
+
       /** pinId (d0..) → level */
       pins: Array<{ port: AvrPortName; bit: number; high: boolean }>;
     }
@@ -87,6 +93,7 @@ export type AvrWorkerInMessage =
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'sync-wall' };
 
 export type AvrWorkerOutMessage =
+  | { v: typeof AVR_WORKER_PROTOCOL; type: 'eeprom'; bytes: number[]; changed?: boolean }
   | { v: typeof AVR_WORKER_PROTOCOL; type: 'serial-received' }
   | {
       v: typeof AVR_WORKER_PROTOCOL;
@@ -96,7 +103,7 @@ export type AvrWorkerOutMessage =
   | {
       v: typeof AVR_WORKER_PROTOCOL;
       type: 'tick';
-      sentAt?: number;
+
       cycles: number;
       cyclesBehind: number;
       ports: AvrPortSnapshot[];

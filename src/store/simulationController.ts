@@ -33,6 +33,10 @@
 # 15-10-2026 | Codex  | Pass connected MAX7219 modules and initial solved power validity into each worker.
 #                     | Await the initial matrix supply solve before firmware setup can send its first SPI commands.
 #                     | Drive TX/RX indicators from USART transmit/receive events and forward monitor input to the active runner.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
+#                     | Finish active SPICE jobs and coalesce newer states; snapshot buttons and reject results from stopped runs.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 
 import type { PinState, PlacedComponent, Wire } from '../types';
@@ -47,7 +51,7 @@ import {
   type GpioBridge,
 } from '../avr/gpioBridge';
 import type { McuSourceMap, NetLevel } from '../circuit/netlist';
-import { getCachedNgspiceDcResult, hasStandaloneCircuit, invalidateNgspiceCache, commitNgspiceNodeIc, refreshDcOperatingPoint, solveDcCircuit, terminateNgspiceWorker, canUseNgspiceOp, takeNgspiceWaveform, abortNgspiceInFlight, lookupSpiceWaveCache, putSpiceWaveCache, circuitKeyFromSolveSig, spiceWaveKindFromSolveSig, prepareIcForSpiceWaveFill } from '../circuit/dcSolver';
+import { getCachedNgspiceDcResult, hasStandaloneCircuit, invalidateNgspiceCache, commitNgspiceNodeIc, refreshDcOperatingPoint, solveDcCircuit, terminateNgspiceWorker, canUseNgspiceOp, takeNgspiceWaveform, lookupSpiceWaveCache, putSpiceWaveCache, circuitKeyFromSolveSig, spiceWaveKindFromSolveSig, prepareIcForSpiceWaveFill } from '../circuit/dcSolver';
 import type { SpiceWaveform } from '../circuit/spice/client';
 import { prefetchSpiceWaveCache, syntheticDrivenMcuSources } from '../circuit/spice/wavePrefetch';
 import { circuitHasCapacitors, tickCapacitorChargeVisuals } from '../components/passives/capacitor';
@@ -137,6 +141,7 @@ function lerpDcSolveResult(
 }
 
 export interface SimulationCallbacks {
+  onEepromInitialized: (id: string, bytes: number[]) => void;
   onStatus: (status: SimRunStatus, message?: string) => void;
   onCompilerOutput: (text: string) => void;
   /** Append to the compiler panel (prefetch / status notes). */
@@ -145,6 +150,7 @@ export interface SimulationCallbacks {
 }
 
 export interface RunFirmwareOptions {
+  eepromScope?: string;
   sketch?: string;
   hex?: string;
   hexFilename?: string;
@@ -156,6 +162,12 @@ export class SimulationController {
   /** Invalidates pending compiles and scheduled callbacks on every stop/new run. */
   private runGeneration = 0;
   private runner: AvrWorkerHost | null = null;
+
+  private eepromStopped: Promise<void> = Promise.resolve();
+  async flushEeprom(): Promise<void> {
+    await this.eepromStopped;
+    await this.runner?.flushEeprom();
+  }
   private bridge: GpioBridge | null = null;
   /** Detach HD44780 GPIO EN-edge probe (set in startHex). */
   private detachLcdGpioProbe: (() => void) | null = null;
@@ -183,6 +195,7 @@ export class SimulationController {
   private ngspiceBusy = false;
   private ngspiceCoalesce: {
     requestSig: string;
+    buttonPressed?: Record<string, boolean>;
     components: PlacedComponent[];
     simTimeMs: number;
     resistorBlown: Record<string, boolean>;
@@ -234,12 +247,14 @@ export class SimulationController {
     const prev = this.buttonPressed[componentId];
     if (prev === pressed) return;
     this.buttonPressed[componentId] = pressed;
+
     if (this.isRunning()) {
       // Cache key includes press state — no need to wipe ngspice cache or in-flight solves.
       this.syncPortsFn?.();
       this.syncScheduled = false;
       this.flushPendingPinUi();
     }
+
   }
 
   setPotPosition(componentId: string, position: number): void {
@@ -253,6 +268,10 @@ export class SimulationController {
   async runFirmware(options: RunFirmwareOptions): Promise<void> {
     this.haltRunner();
     const generation = this.runGeneration;
+
+    await this.eepromStopped;
+
+    if (generation !== this.runGeneration) return;
     const { components, wires } = options;
     const mcus = components.filter((c) => isMcuBoard(c.type));
     if (mcus.length === 0) {
@@ -313,7 +332,7 @@ export class SimulationController {
       }
 
       this.callbacks.onCompilerOutput(compilerOutput);
-      await this.startHex(hex, mcu, components, wires);
+      await this.startHex(hex, mcu, components, wires, options.eepromScope);
     } catch (err) {
       if (generation !== this.runGeneration) return;
       const msg = err instanceof Error ? err.message : 'Run failed';
@@ -335,9 +354,12 @@ export class SimulationController {
     mcu: PlacedComponent,
     components: PlacedComponent[],
     wires: Wire[],
+    eepromScope?: string,
   ): Promise<void> {
     resetSimLiveState();
     if (isSimPerfEnabled()) resetSimPerfRun();
+    mcu.eeprom ??= Array(1024).fill(255);
+    this.callbacks.onEepromInitialized(mcu.id, mcu.eeprom);
     const host = new AvrWorkerHost();
     this.runner = host;
     const ports = {
@@ -443,6 +465,8 @@ export class SimulationController {
         this.getExecuteOptions,
         buildTwiWorkerTargets(components, wires),
         buildMax7219WorkerTargets(components, wires),
+        mcu.eeprom,
+        eepromScope ? 'arduino-eeprom-v1:' + JSON.stringify([eepromScope, mcu.id]) : '',
       );
     });
   }
@@ -640,25 +664,10 @@ export class SimulationController {
           ) {
             this.lastNgspiceRefreshMs = now;
             this.lastRefreshSig = solveSig;
-            void refreshDcOperatingPoint(
-              components,
-              this.bridge.netlist,
-              simTimeMs,
-              resistorBlown,
-              ledBlown,
-              this.buttonPressed,
-              mcuSources,
-              capacitorBlown,
-            )
-              .then(({ result, backend }) => {
-                if (!this.bridge) return;
-                if (!this.circuitOnly) return;
-                if (backend !== 'ngspice') return;
-                if (result) commitNgspiceNodeIc(result.netVoltages);
-                this.lastDc = result;
-                applyFrame(result, backend);
-              })
-              .catch(() => {});
+            this.enqueueNgspiceRefresh(
+              { requestSig: solveSig, components, simTimeMs, resistorBlown,
+                ledBlown, capacitorBlown, mcuSources }, mcu, applyFrame,
+            );
           }
         }
         if (isSimPerfEnabled()) finishSolvePerf();
@@ -724,7 +733,6 @@ export class SimulationController {
       this.lastSpiceSig = solveSig;
     }
     this.lastSolveSig = solveSig;
-
 
     if (interim && !waveFrameApplied) applyFrame(interim, interimBackend);
     else if (!waveFrameApplied && ngspiceCapable && hasCaps && this.bridge) {
@@ -796,12 +804,8 @@ export class SimulationController {
       const cKey = circuitKeyFromSolveSig(solveSig);
       const cached = kind ? lookupSpiceWaveCache(cKey, kind) : null;
       if (cached) {
-        if (this.ngspiceBusy) {
-          abortNgspiceInFlight();
-          this.ngspiceBusy = false;
-          this.ngspiceInFlightSig = '';
-          this.ngspiceCoalesce = null;
-        }
+        // Cached playback replaces pending work, but lets the active solve finish.
+        this.ngspiceCoalesce = null;
         this.lastNgspiceRefreshMs = now;
         this.lastRefreshSig = solveSig;
         this.startSpiceWavePlayback(cached, solveSig, applyFrame);
@@ -863,6 +867,7 @@ export class SimulationController {
   private enqueueNgspiceRefresh(
     req: {
       requestSig: string;
+    buttonPressed?: Record<string, boolean>;
       components: PlacedComponent[];
       simTimeMs: number;
       resistorBlown: Record<string, boolean>;
@@ -873,20 +878,12 @@ export class SimulationController {
     mcu: PlacedComponent | null,
     applyFrame: (result: DcSolveResult | null, backend: 'ngspice' | 'legacy') => void,
   ): void {
+    req.buttonPressed ??= { ...this.buttonPressed };
     if (this.ngspiceBusy) {
-      if (this.ngspiceInFlightSig && this.ngspiceInFlightSig !== req.requestSig) {
-        // GPIO flipped while SPICE still solving the previous half-cycle — kill it and
-        // start the current edge immediately (logs: perpetual dropped-stale / phase lag).
-        abortNgspiceInFlight();
-        this.ngspiceBusy = false;
-        this.ngspiceInFlightSig = '';
-        this.ngspiceCoalesce = null;
-        this.spiceWavePlay = null;
-        // fall through and start immediately
-      } else {
-        this.ngspiceCoalesce = req;
-        return;
-      }
+      // Cancelling the caller does not cancel WASM work. Keep one active solve
+      // and only the latest pending state, rather than queueing abandoned jobs.
+      this.ngspiceCoalesce = req;
+      return;
     }
     // GPIO edge: abort prior waveform so visuals track the blink, not a stale .tran.
     if (this.spiceWavePlay && this.spiceWavePlay.sig !== req.requestSig) {
@@ -917,22 +914,24 @@ export class SimulationController {
         bridge.netlist,
       );
     }
+
     void refreshDcOperatingPoint(
       req.components,
       bridge.netlist,
       req.simTimeMs,
       req.resistorBlown,
       req.ledBlown,
-      this.buttonPressed,
+      req.buttonPressed,
       req.mcuSources,
       req.capacitorBlown,
     )
       .then(({ result, backend }) => {
+
         if (!this.bridge) return;
         if (mcu && !this.runner) return;
         if (!mcu && !this.circuitOnly) return;
-        // Superseded by a newer GPIO-edge flight.
-        if (this.ngspiceInFlightSig !== req.requestSig) return;
+        // A stopped run must not apply results to a replacement bridge.
+        if (this.bridge !== bridge || this.ngspiceInFlightSig !== req.requestSig) return;
         if (backend === 'ngspice' && result) {
           const sigMatch = req.requestSig === this.lastSolveSig;
           if (!sigMatch) {
@@ -987,13 +986,14 @@ export class SimulationController {
       })
       .catch(() => {})
       .finally(() => {
-        // Ignore finally from an aborted/superseded flight.
-        if (this.ngspiceInFlightSig !== req.requestSig) return;
+        // A stopped run must not clear a replacement run's active job.
+        if (this.bridge !== bridge || this.ngspiceInFlightSig !== req.requestSig) return;
         this.ngspiceBusy = false;
         this.ngspiceInFlightSig = '';
         const next = this.ngspiceCoalesce;
         this.ngspiceCoalesce = null;
-        if (!next || !this.bridge) return;
+        if (!next || !this.bridge || next.requestSig !== this.lastSolveSig) return;
+        if (next.requestSig === this.lastSpiceSig && !circuitHasCapacitors(next.components)) return;
         const play = this.spiceWavePlay;
         const playing =
           !!play &&
@@ -1142,6 +1142,7 @@ export class SimulationController {
 
   /** Stop AVR + bridge without changing UI status (used before a new run). */
   private haltRunner(): void {
+
     this.runGeneration++;
     this.syncScheduled = false;
     this.frameSyncScheduled = false;
@@ -1178,13 +1179,14 @@ export class SimulationController {
       this.detachLcdGpioProbe = null;
     }
     if (this.runner) {
-      this.runner.stop();
+      this.eepromStopped = this.runner.stop();
       this.runner = null;
     }
     this.bridge = null;
     this.netLevels.clear();
     this.buttonPressed = {};
     clearLcdSimState();
+
   }
 
   sendSerial(text: string): void {

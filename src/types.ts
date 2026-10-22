@@ -31,6 +31,8 @@
 #                     | Declare onboard pin-driven indicator geometry independently of power LEDs.
 #                     | Add lightweight Uno TX/RX activity indicators with part-owned lamp geometry.
 # 17-10-2026 | Codex  | Store named electrical connections on pins, including wire junctions.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
  */
 export type PinState = 'low' | 'high' | 'floating';
 
@@ -138,6 +140,7 @@ export type ComponentRegistryEntry = Omit<
 
 export interface PlacedComponent {
   /** Case-sensitive circuit-wide net names, attached to existing pins. */
+  eeprom?: number[];
   pinNetLabels?: Record<string, string>;
   id: string;
   type: string;

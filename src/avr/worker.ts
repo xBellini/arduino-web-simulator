@@ -12,6 +12,9 @@
 # 15-10-2026 | Codex  | Run SimulIDE MAX7219 models in the AVR worker and batch display state.
 #                     | Update the renamed max7219Bridge import; behavior unchanged.
 #                     | Receive queued monitor bytes through USART character timing; report completed reception and clear queued bytes on stop.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 
 /// <reference lib="webworker" />
@@ -199,9 +202,26 @@ function stopRunner(): void {
   }
 }
 
-function startRunner(hex: string): void {
+function startRunner(hex: string, eeprom?: number[]): void {
   stopRunner();
   runner = new AvrRunner(hex);
+  if (eeprom?.length === 1024) runner.eepromMemory.memory.set(eeprom);
+  let eepromDirty = false;
+
+  const memory = runner.eepromMemory;
+  const write = memory.writeMemory.bind(memory), erase = memory.eraseMemory.bind(memory);
+  memory.writeMemory = (address, value) => {
+
+    const before = memory.memory[address]; write(address, value);
+
+    eepromDirty ||= before !== memory.memory[address];
+  };
+  memory.eraseMemory = address => {
+
+    const before = memory.memory[address]; erase(address);
+
+    eepromDirty ||= before !== memory.memory[address];
+  };
   runner.usart.onByteTransmit = (value) => {
     post({ v: AVR_WORKER_PROTOCOL, type: 'usart', byte: value });
   };
@@ -224,13 +244,20 @@ function startRunner(hex: string): void {
 
   runner.execute(() => {
     if (!runner) return;
+    if (eepromDirty) {
+      eepromDirty = false;
+
+      const bytes = Array.from(memory.memory);
+      post({ v: AVR_WORKER_PROTOCOL, type: 'eeprom', changed: true, bytes });
+
+    }
     const cycles = runner.cpu.cycles;
     for (const rtc of rtcCores) rtc.advanceToCycle(cycles);
     const meta = runner.lastBatchMeta;
     post({
       v: AVR_WORKER_PROTOCOL,
       type: 'tick',
-      sentAt: import.meta.env.DEV ? performance.timeOrigin + performance.now() : undefined,
+
       cycles: runner.cpu.cycles,
       cyclesBehind: runner.cyclesBehind(tabHidden),
       ports: [portSnapshot('B'), portSnapshot('C'), portSnapshot('D')],
@@ -266,12 +293,16 @@ self.onmessage = (ev: MessageEvent<AvrWorkerInMessage>) => {
       matrixTargets = msg.max7219Targets ?? [];
       lcdTargets = msg.lcdTargets;
       twiSlaves = msg.twiSlaves ?? [];
-      startRunner(msg.hex);
+      startRunner(msg.hex, msg.eeprom);
       break;
     case 'max7219-power':
       matrixBus?.setPower(msg.samples);
       break;
+    case 'eeprom-snapshot':
+      post({ v: AVR_WORKER_PROTOCOL, type: 'eeprom', bytes: runner ? Array.from(runner.eepromMemory.memory) : [] });
+      break;
     case 'stop':
+      post({ v: AVR_WORKER_PROTOCOL, type: 'eeprom', bytes: runner ? Array.from(runner.eepromMemory.memory) : [] });
       stopRunner();
       break;
     case 'serial-input':

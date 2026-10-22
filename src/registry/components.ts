@@ -59,6 +59,7 @@
 #                     | Declare the Uno green power indicator at its artwork ON LED.
 #                     | Map Uno L LED to live D13 state at the artwork LED location, in yellow.
 # 15-10-2026 | Codex | Add lightweight Uno TX/RX activity indicators with part-owned lamp geometry.
+# 22-10-2026 | Codex | Cache static design/scaled definitions and pin geometry by type to reduce allocation churn; callers treat shared definitions as read-only and module reload resets caches.
  */
 import type {
   ComponentDefinition,
@@ -557,7 +558,15 @@ export const PALETTE_ORDER = PALETTE_CATEGORIES.flatMap((category) => [
   ...category.types,
 ]);
 
+// Registry definitions and SVG footprints are static for a module lifetime. Share
+// derived geometry rather than allocating every pin again during each sim frame.
+// Consumers must treat these definitions as read-only; HMR rebuilds the caches.
+const designDefinitions = new Map<string, ComponentDefinition>();
+const scaledDefinitions = new Map<string, ComponentDefinition>();
+
 export function getDesignDefinition(type: string): ComponentDefinition {
+  const cached = designDefinitions.get(type);
+  if (cached) return cached;
   const entry = COMPONENT_REGISTRY[type];
   if (!entry) throw new Error(`Unknown component type: ${type}`);
   const footprintId = entry.package ?? type;
@@ -565,12 +574,14 @@ export function getDesignDefinition(type: string): ComponentDefinition {
     type === 'breadboard'
       ? { width: BB_WIDTH, height: BB_HEIGHT }
       : getPartFootprint(footprintId);
-  return {
+  const definition = {
     ...entry,
     width: size.width,
     height: size.height,
     artwork: entry.artwork ?? (entry.package ? art(entry.package) : undefined),
   };
+  designDefinitions.set(type, definition);
+  return definition;
 }
 
 /** Effective scale for placement / hit-testing. */
@@ -594,10 +605,11 @@ export function getDefinitionScale(type: string): number {
  * Artwork still renders in design space (see ComponentShape).
  */
 export function getDefinition(type: string): ComponentDefinition {
+  const cached = scaledDefinitions.get(type);
+  if (cached) return cached;
   const def = getDesignDefinition(type);
   const scale = getDefinitionScale(type);
-  if (scale === 1) return { ...def, scale };
-  return {
+  const definition = scale === 1 ? { ...def, scale } : {
     ...def,
     scale,
     width: def.width * scale,
@@ -608,4 +620,6 @@ export function getDefinition(type: string): ComponentDefinition {
       y: pin.y * scale,
     })),
   };
+  scaledDefinitions.set(type, definition);
+  return definition;
 }

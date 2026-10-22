@@ -12,6 +12,7 @@
 #                     | Expanded What with practical how-to notes
 # 09-10-2026 | Cursor | Moved from `src/components/Toolbar.tsx` (tree reorganization)
 # 17-10-2026 | Codex  | Toolbar Net label tool names then previews a label before placement.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { PartLabelEditor } from './editors/PartLabelEditor';
@@ -92,7 +93,7 @@ export function Toolbar() {
     if (!filename) return;
     try {
       const text = await loadUserProjectFile(filename);
-      loadProjectFromJson(text);
+      loadProjectFromJson(text, filename);
       setActiveProject(filename);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not load project';
@@ -107,7 +108,7 @@ export function Toolbar() {
 
     try {
       const text = await file.text();
-      loadProjectFromJson(text);
+      loadProjectFromJson(text, file.name);
       setActiveProject(file.name);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not load project file';

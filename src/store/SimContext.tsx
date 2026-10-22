@@ -31,6 +31,9 @@
 #                     | Finish drafts at free connectable endpoints with normal routing and undo history.
 
 #                     | Labels placed on wires split their existing route into electrically joined segments in one undo step.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 
 import {
@@ -773,7 +776,7 @@ interface SimContextValue {
   rotatePlacement: (degrees?: number) => void;
   saveProject: (filename?: string) => Promise<'folder' | 'download'>;
   loadProject: (file: ProjectFile) => void;
-  loadProjectFromJson: (text: string) => void;
+  loadProjectFromJson: (text: string, filename?: string) => void;
   recordUndoSnapshot: () => void;
   undo: () => void;
   redo: () => void;
@@ -817,10 +820,12 @@ export function SimProvider({ children }: { children: ReactNode }) {
 
   const canvasInteractingRef = useRef(false);
 
+  const eepromScopeRef = useRef('arduino-circuit.json');
   const simulationRef = useRef<SimulationController | null>(null);
   if (!simulationRef.current) {
     simulationRef.current = new SimulationController(
       {
+        onEepromInitialized: (id, eeprom) => dispatch({ type: 'UPDATE_COMPONENT', id, patch: { eeprom } }),
         onStatus: (status, message) => {
           if (status !== 'running') flushSerialOutput();
           dispatch({ type: 'SET_SIM_STATUS', status, message });
@@ -862,6 +867,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const compileAndRun = useCallback(async () => {
+
     const s = stateRef.current;
     resetSerialOutput();
     dispatch({ type: 'CLEAR_SERIAL' });
@@ -883,10 +889,12 @@ export function SimProvider({ children }: { children: ReactNode }) {
         sketch: s.loadedHex ? undefined : s.sketchSource,
         hex: s.loadedHex ?? undefined,
         hexFilename: s.loadedHexName ?? undefined,
+        eepromScope: eepromScopeRef.current,
         components: s.components,
         wires: s.wires,
       });
     } finally {
+
       window.clearTimeout(watchdog);
     }
   }, []);
@@ -945,16 +953,21 @@ export function SimProvider({ children }: { children: ReactNode }) {
   );
 
   const loadHexFirmware = useCallback((text: string, filename: string, hexPath?: string): string | null => {
+
     const parsed = parseHexFile(text, filename);
+
     if (!parsed.validation.ok) {
       return parsed.validation.message ?? 'Invalid HEX file.';
     }
+
     haltSimulation();
+
     dispatch({ type: 'SET_LOADED_HEX', hex: parsed.hex, filename: parsed.filename, hexPath: hexPath ?? null });
     dispatch({
       type: 'SET_COMPILER_OUTPUT',
       text: `Ready to run: ${parsed.filename}\nProgram data: ${parsed.validation.dataBytes ?? 0} bytes`,
     });
+
     return null;
   }, [haltSimulation]);
 
@@ -1226,6 +1239,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
 
   const saveProject = useCallback(
     async (filename?: string): Promise<'folder' | 'download'> => {
+      await simulationRef.current?.flushEeprom();
       const name = normalizeProjectFilename(filename ?? 'arduino-circuit');
       const project = createProjectFile({
         components: state.components,
@@ -1245,6 +1259,7 @@ export function SimProvider({ children }: { children: ReactNode }) {
         where = 'download';
       }
 
+      eepromScopeRef.current = name;
       return where;
     },
     [state.components, state.wires, state.viewport, state.sketchSource, state.sketchName, state.hexPath],
@@ -1274,8 +1289,10 @@ export function SimProvider({ children }: { children: ReactNode }) {
   );
 
   const loadProjectFromJson = useCallback(
-    (text: string) => {
-      loadProject(parseProjectJson(text));
+    (text: string, filename?: string) => {
+      const project = parseProjectJson(text);
+      eepromScopeRef.current = filename ?? crypto.randomUUID();
+      loadProject(project);
     },
     [loadProject],
   );

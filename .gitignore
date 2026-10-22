@@ -8,3 +8,7 @@ user_projects/*.json
 public/spice/models/
 public/spice/catalog.json
 scripts/check-wire-routing.mjs
+output
+STUTTER_INVESTIGATION.md
+scripts
+user_projects

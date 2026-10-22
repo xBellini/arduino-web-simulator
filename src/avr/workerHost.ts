@@ -18,6 +18,9 @@
 # 14-10-2026 | Codex | Ignore retired worker messages and detach callbacks on stop so old LCD writes and cycle counts cannot enter a new run.
 # 15-10-2026 | Codex  | Mirror matrix snapshots and send changed solved power states; clear displays on stop.
 #                     | Forward serial input and receive completion separately from output text.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
+# 20-10-2026 | Codex  | Automatically retain changed EEPROM locally per circuit and board across refreshes; circuit files remain explicit saves.
  */
 
 import { setMax7219Snapshots, clearMax7219Snapshots, max7219PowerSamples } from '../components/modules/max7219Matrix8x8';
@@ -31,7 +34,7 @@ import {
 } from './workerProtocol';
 import type { AvrPortName } from './pinMap';
 import { feedLcdParallelBus, setLcdGpioProbeActive } from '../components/output/lcdParallel';
-import { finishAvrBatch, isSimPerfEnabled, recordStutter } from './simPerf';
+import { finishAvrBatch, isSimPerfEnabled } from './simPerf';
 import type { AvrExecuteOptions } from './runner';
 
 type PortListener = (value: number, oldValue: number) => void;
@@ -101,7 +104,30 @@ export class AvrWorkerHost {
   readonly cpu = { cycles: 0 };
 
   private worker: Worker | null = null;
+
+  private eeprom: number[] = [];
+  private eepromStorageKey = '';
+  private persistedEeprom = '';
+  private persistEeprom(): void {
+    if (!this.eepromStorageKey || this.eeprom.length !== 1024) return;
+
+    const text = JSON.stringify(this.eeprom);
+
+    if (text === this.persistedEeprom) return;
+
+    try { localStorage.setItem(this.eepromStorageKey, text); this.persistedEeprom = text; }
+    catch { this.callbacks?.onError?.('EEPROM autosave failed: browser storage is unavailable or full. Save the circuit to preserve settings.'); }
+  }
+  private snapshotWaiters: Array<() => void> = [];
+  async flushEeprom(): Promise<void> {
+    if (!this.worker || !this.ready) return;
+    await new Promise<void>(resolve => {
+      this.snapshotWaiters.push(resolve);
+      this.post({ v: AVR_WORKER_PROTOCOL, type: 'eeprom-snapshot' });
+    });
+  }
   private ready = false;
+
   private matrixPowerKey = '';
   private pendingStart: AvrWorkerInMessage | null = null;
   private optionsProvider: (() => AvrExecuteOptions) | null = null;
@@ -129,7 +155,9 @@ export class AvrWorkerHost {
   }
 
   private postInput(port: AvrPortName, bit: number, high: boolean): void {
+
     this.post({
+
       v: AVR_WORKER_PROTOCOL,
       type: 'set-inputs',
       pins: [{ port, bit, high }],
@@ -145,6 +173,7 @@ export class AvrWorkerHost {
   private pushOptions(force = false): void {
     const samples = max7219PowerSamples();
     const key = JSON.stringify(samples);
+
     if (key !== this.matrixPowerKey) {
       this.matrixPowerKey = key;
       this.post({ v: AVR_WORKER_PROTOCOL, type: 'max7219-power', samples });
@@ -178,9 +207,25 @@ export class AvrWorkerHost {
     optionsProvider?: () => AvrExecuteOptions,
     twiSlaves: Extract<AvrWorkerInMessage, { type: 'start' }>['twiSlaves'] = [],
     max7219Targets: Extract<AvrWorkerInMessage, { type: 'start' }>['max7219Targets'] = [],
+    eeprom: number[] = Array(1024).fill(255),
+    eepromStorageKey = '',
   ): Promise<void> {
-    this.stop();
-    recordStutter('avr-start');
+    await this.stop();
+
+    this.eeprom = eeprom;
+    this.eepromStorageKey = eepromStorageKey;
+    this.persistedEeprom = '';
+    if (eepromStorageKey) {
+      try {
+        const text = localStorage.getItem(eepromStorageKey);
+        const saved: unknown = text ? JSON.parse(text) : null;
+        if (Array.isArray(saved) && saved.length === 1024 && saved.every(b => Number.isInteger(b) && b >= 0 && b <= 255)) {
+          eeprom.splice(0, 1024, ...saved);
+          this.persistedEeprom = JSON.stringify(saved);
+        }
+      } catch { /* Preserve the supplied circuit image if storage cannot be read. */ }
+    }
+
     this.callbacks = callbacks;
     this.optionsProvider = optionsProvider ?? null;
 
@@ -196,7 +241,14 @@ export class AvrWorkerHost {
       if (!msg || msg.v !== AVR_WORKER_PROTOCOL) return;
 
       switch (msg.type) {
+        case 'eeprom':
+
+          if (msg.bytes.length === 1024) this.eeprom.splice(0, 1024, ...msg.bytes);
+          this.persistEeprom();
+          if (!msg.changed) this.snapshotWaiters.shift()?.();
+          break;
         case 'ready':
+
           this.ready = true;
           this.backend = msg.backend;
           if (this.pendingStart) {
@@ -206,9 +258,7 @@ export class AvrWorkerHost {
           }
           break;
         case 'tick': {
-          const traceStart = performance.now();
-          if (msg.sentAt !== undefined) recordStutter('avr-tick', msg.perf?.batchWallMs ?? -1,
-            performance.timeOrigin + traceStart - msg.sentAt, msg.cycles, String(msg.cyclesBehind));
+
           setMax7219Snapshots(msg.matrices ?? []);
           this.cpu.cycles = msg.cycles;
           this.applyPorts(msg.ports);
@@ -225,7 +275,7 @@ export class AvrWorkerHost {
             );
           }
           this.callbacks?.onTick();
-          recordStutter('avr-handler', performance.now() - traceStart);
+
           break;
         }
         case 'serial-received':
@@ -253,6 +303,7 @@ export class AvrWorkerHost {
 
     this.worker.onerror = (err) => {
       if (this.worker !== worker) return;
+
       this.callbacks?.onError?.(String(err.message ?? err));
     };
 
@@ -262,6 +313,7 @@ export class AvrWorkerHost {
       v: AVR_WORKER_PROTOCOL,
       type: 'start',
       hex,
+      eeprom,
       lcdTargets,
       twiSlaves,
       max7219Targets,
@@ -274,7 +326,7 @@ export class AvrWorkerHost {
     }
   }
 
-  stop(): void {
+  async stop(): Promise<void> {
     clearMax7219Snapshots();
     this.matrixPowerKey = '';
     clearPcfBackpackSnapshots();
@@ -282,12 +334,28 @@ export class AvrWorkerHost {
     this.lastPostedSliceMs = null;
     setLcdGpioProbeActive(false);
     if (this.worker) {
-      recordStutter('avr-stop');
-      this.post({ v: AVR_WORKER_PROTOCOL, type: 'stop' });
-      this.worker.onmessage = null;
-      this.worker.onerror = null;
-      this.worker.terminate();
+
+      const worker = this.worker;
+
       this.worker = null;
+      await new Promise<void>(resolve => {
+        worker.onmessage = ev => {
+          if (ev.data?.type !== 'eeprom') return;
+
+          if (ev.data.bytes.length === 1024) this.eeprom.splice(0, 1024, ...ev.data.bytes);
+          this.persistEeprom();
+          if (ev.data.changed) return;
+          // Snapshot requests precede stop in the worker queue.
+          const pending = this.snapshotWaiters.shift();
+          if (pending) { pending(); return; }
+          worker.terminate();
+
+          resolve();
+        };
+        worker.onerror = () => { worker.terminate();
+           this.snapshotWaiters.splice(0).forEach(done => done()); resolve(); };
+        worker.postMessage({ v: AVR_WORKER_PROTOCOL, type: 'stop' });
+      });
     }
     this.ready = false;
     this.pendingStart = null;

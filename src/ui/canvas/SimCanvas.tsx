@@ -37,8 +37,9 @@
 #                     | Preview toolbar labels under the cursor, highlight pin snaps, and allow standalone labels to move.
 
 #                     | Double-click empty canvas to finish a wire with a connectable free end.
+# 22-10-2026 | Codex | Mount the independently subscribed performance readout without routing metric updates through full canvas rendering.
  */
-import { Profiler, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { getDefinition } from '../../registry/components';
 import { buildCircuitNetlist } from '../../circuit/netlist';
@@ -94,7 +95,7 @@ import { WireFlowOverlay } from './WireFlowOverlay';
 import { NgspiceDebugOverlay } from '../debug/NgspiceDebugOverlay';
 import { MeasurementTooltip } from './MeasurementTooltip';
 import { SimPerfOverlay } from '../debug/SimPerfOverlay';
-import { isSimPerfEnabled, recordStutter, recordCanvasCommit } from '../../avr/simPerf';
+import { isSimPerfEnabled } from '../../avr/simPerf';
 import { wireShowsCurrent } from '../../circuit/currents';
 
 const PIN_HIT_RADIUS = PIN_SNAP_RADIUS;
@@ -172,7 +173,7 @@ const PROPERTIES_DOUBLE_CLICK_MS = WIRE_DOUBLE_CLICK_MS;
 const PROPERTIES_DOUBLE_CLICK_PX = WIRE_DOUBLE_CLICK_PX;
 
 export function SimCanvas() {
-  const traceBuildStart = performance.now();
+
   const {
     state,
     setViewport,
@@ -329,10 +330,6 @@ export function SimCanvas() {
   const ngspiceDebug =
     simStatus === 'running' && liveSnap.dcSolverBackend === 'ngspice'
       ? liveSnap.ngspiceDebug
-      : null;
-  const simPerfOverlay =
-    simStatus === 'running' && isSimPerfEnabled() && liveSnap.simPerf
-      ? liveSnap.simPerf
       : null;
   void liveSnap.version;
   const selectedSet = new Set(selectedIds);
@@ -2152,7 +2149,7 @@ export function SimCanvas() {
       {ngspiceDebug && (
         <NgspiceDebugOverlay components={components} debug={ngspiceDebug} />
       )}
-      {simPerfOverlay && <SimPerfOverlay perf={simPerfOverlay} />}
+      {simStatus === 'running' && isSimPerfEnabled() && <SimPerfOverlay />}
       <svg
         ref={svgRef}
         className="sim-canvas"
@@ -2405,7 +2402,6 @@ export function SimCanvas() {
     </div>
   );
 
-  recordStutter('canvas-build', performance.now() - traceBuildStart);
-  return <Profiler id="canvas" onRender={recordCanvasCommit}>{canvas}</Profiler>;
+  return canvas;
 
 }

@@ -45,8 +45,9 @@
 # 15-10-2026 | Codex  | Add avr8js hardware SPI with cycle-scheduled MOSI/SCK and sampled MISO; release overrides on disable.
 #                     | Anchor edge deadlines to transfer start so multi-cycle instructions do not accumulate clock drift.
 #                     | Preserve USART read-only status and pending RX across control writes; flush unread reception only when RX is disabled, preventing full-duplex echo loss.
+# 19-10-2026 | Codex  | Connect avr8js EEPROM controller with 1 KiB erased storage per runner; standard EEPROM register access is now supported.
  */
-import { avrInstruction, AVRIOPort, AVRTimer, AVRTWI, AVRUSART, CPU, portBConfig, portCConfig, portDConfig, timer0Config, timer1Config, timer2Config, twiConfig, usart0Config } from 'avr8js';
+import { AVREEPROM, EEPROMMemoryBackend, avrInstruction, AVRIOPort, AVRTimer, AVRTWI, AVRUSART, CPU, portBConfig, portCConfig, portDConfig, timer0Config, timer1Config, timer2Config, twiConfig, usart0Config } from 'avr8js';
 import { loadHex } from './firmware';
 import { AVRSPI, spiConfig } from 'avr8js';
 import { PinOverrideMode } from 'avr8js/dist/esm/peripherals/gpio';
@@ -179,6 +180,8 @@ export class AvrRunner {
   readonly usart: AVRUSART;
   readonly twi: AVRTWI;
   readonly spi: AVRSPI;
+  readonly eepromMemory = new EEPROMMemoryBackend(1024);
+  readonly eeprom: AVREEPROM;
   readonly taskScheduler = new MicroTaskScheduler();
   private wallClockStartMs = 0;
   private cyclesAtWallClockStart = 0;
@@ -194,6 +197,7 @@ export class AvrRunner {
   constructor(hex: string) {
     loadHex(hex, new Uint8Array(this.program.buffer));
     this.cpu = new CPU(this.program);
+    this.eeprom = new AVREEPROM(this.cpu, this.eepromMemory);
     this.timer0 = new AVRTimer(this.cpu, timer0Config);
     this.timer1 = new AVRTimer(this.cpu, timer1Config);
     this.timer2 = new AVRTimer(this.cpu, timer2Config);

@@ -32,6 +32,8 @@
 #                     | Moved from `src/utils/projectFile.ts` (tree reorganization)
 # 16-10-2026 | Codex | Persist optional local HEX paths; older circuits remain compatible.
 # 17-10-2026 | Codex  | Validate and restore named pin nets; older circuit files remain supported.
+
+# 19-10-2026 | Codex  | Preserve per-board internal EEPROM across runs and circuit saves with worker snapshot synchronization.
  */
 
 import { getDefinition } from '../registry/components';
@@ -131,6 +133,12 @@ function parseComponent(value: unknown, index: number): PlacedComponent {
     pinStates,
   };
 
+  if (value.eeprom !== undefined) {
+    if (!Array.isArray(value.eeprom) || value.eeprom.length !== 1024 ||
+        !value.eeprom.every(b => Number.isInteger(b) && b >= 0 && b <= 255))
+      throw new Error('Invalid Arduino EEPROM image');
+    component.eeprom = [...value.eeprom];
+  }
   if (value.pinNetLabels !== undefined) {
     if (!isRecord(value.pinNetLabels)) throw new Error('Invalid pin net labels');
     const labels: Record<string, string> = {};
@@ -221,6 +229,7 @@ export function createProjectFile(snapshot: SimSnapshot): ProjectFile {
     components: snapshot.components.map((c) => ({
       ...c,
       pinStates: { ...c.pinStates },
+      ...(c.eeprom ? { eeprom: [...c.eeprom] } : {}),
     })),
     wires: snapshot.wires.map((w) => ({
       ...w,

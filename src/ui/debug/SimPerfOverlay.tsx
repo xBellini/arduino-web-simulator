@@ -1,6 +1,6 @@
 /**
  * What: Always-on Run overlay for AVR throughput, sim/wall drift, and solve cost.
- * Role: Read `simPerf` from `simLiveStore` while status is running.
+ * Role: Subscribe to the independent performance snapshot in `simLiveStore` while running.
  * Owns/exports: `SimPerfOverlay`.
  *
 # Changelog
@@ -8,8 +8,10 @@
 # 05-10-2026 | Cursor | Changelog creation
 #                     | Permanent overlay (no ?simPerf=1 gate); removed agent ingest notes
 # 09-10-2026 | Cursor | Moved from `src/components/SimPerfOverlay.tsx` (tree reorganization)
+# 22-10-2026 | Codex | Subscribe directly to performance metrics with useSyncExternalStore; preserve the readout while avoiding parent canvas renders.
  */
-import type { SimPerfSnapshot } from '../../store/simLiveStore';
+import { useSyncExternalStore } from 'react';
+import { getSimPerfSnapshot, subscribeSimPerf, type SimPerfSnapshot } from '../../store/simLiveStore';
 
 function fmtMs(ms: number): string {
   if (Math.abs(ms) >= 10_000) return `${(ms / 1000).toFixed(1)} s`;
@@ -24,7 +26,12 @@ type Props = {
   perf: SimPerfSnapshot;
 };
 
-export function SimPerfOverlay({ perf }: Props) {
+export function SimPerfOverlay() {
+  const perf = useSyncExternalStore(subscribeSimPerf, getSimPerfSnapshot, getSimPerfSnapshot);
+  return perf ? <SimPerfReadout perf={perf} /> : null;
+}
+
+function SimPerfReadout({ perf }: Props) {
   const driftWarn = Math.abs(perf.driftMs) > 500;
   const mhzWarn = perf.effectiveMhz > 0 && perf.effectiveMhz < 12;
   const catchupWarn = perf.catchupResyncCount > 0;
