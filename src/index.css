@@ -19,6 +19,7 @@
 #                     | Style a single text-only hover measurement panel without animated or blurred effects.
 # 15-10-2026 | Codex | Pause current dashes and HIGH breathing during canvas gestures; preserve labels and resume animation phase afterward.
 #                     | Move current glow from full base wires onto deduplicated overlay paths so shared stretches do not stack filters.
+# 22-10-2026 | Codex | Give the External HEX badge distinct green text, background and border with title-case lettering.
  */
 :root{
 --bg-app: #0f1419;
@@ -611,8 +612,10 @@ background:var(--accent-dim);
 flex-shrink:0
 }
 .ide-sketch-mode-hex{
-color:#81c784;
-background:#81c78426
+color:#a5d6a7;
+background:#2e7d3240;
+border:1px solid #66bb6a80;
+text-transform:none
 }
 .ide-workflow-hint{
 margin:0 .85rem .5rem;

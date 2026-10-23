@@ -20,15 +20,23 @@
 #                     | Import any local HEX via the existing button, watch its path automatically, and preserve firmware on cancel/error without auto-running rebuilds.
 # 16-10-2026 | Codex | Add optional auto-run after a validated watched HEX reload (off by default); remove the Use sketch button.
 #                     | Restore HEX watching from the circuit path without auto-running the initial restored firmware.
+# 22-10-2026 | Codex | Place the auto-run checkbox below the HEX filename for a clearer firmware banner.
+#                    | Reduce auto-run label size and allow unloading stopped HEX firmware and its watch path without deleting the file or EEPROM.
+#                    | Show the loaded HEX filename in the IDE title; restore the sketch filename when firmware is removed.
+#                    | Keep external firmware names only in the green banner without a HEX prefix; show only the badge in the title row.
+#                    | Show verified adjacent-ELF flash and static RAM sizes in Build; missing or mismatched metadata is explicitly unavailable.
+#                    | Use the circuit Arduino's bootloader-adjusted flash and SRAM limits for percentages, remaining RAM, and capacity warnings.
  */
 import { memo, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useSim } from '../../store/SimContext';
 import { getSerialOutput, subscribeSerialOutput, getSimLiveSnapshot, subscribeSimLive } from '../../store/simLiveStore';
 import { ARDUINO_IDE_HEX_HINT, normalizeHexText } from '../../avr/firmware';
+import { ARDUINO_MEMORY_LIMITS, isMcuBoard } from '../../avr/pinMap';
 import { SKETCH_TEMPLATES } from './templates';
 import { SketchEditor } from './SketchEditor';
 
 type IdeTab = 'code' | 'build';
+type HexMemoryUsage = { available: true; flashBytes: number; ramBytes: number } | { available: false; reason: string };
 
 const SerialMonitor = memo(function SerialMonitor() {
   const { state, sendSerial } = useSim();
@@ -61,6 +69,7 @@ export function IdePanel() {
     stopSimulation,
     clearSerialOutput,
     loadHexFirmware,
+    clearLoadedHex,
   } = useSim();
 
   const [tab, setTab] = useState<IdeTab>('code');
@@ -76,6 +85,7 @@ export function IdePanel() {
   const loadedHexRef = useRef(state.loadedHex);
   loadedHexRef.current = state.loadedHex;
   const [watchMessage, setWatchMessage] = useState('');
+  const [hexMemory, setHexMemory] = useState<{ hex: string; path: string; usage?: HexMemoryUsage } | null>(null);
   const [autoRunHex, setAutoRunHex] = useState(false);
   const autoRunHexRef = useRef(false);
   const pendingHexRun = useRef<string | null>(null);
@@ -123,9 +133,14 @@ export function IdePanel() {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ filename: watchedHexPath }), signal: abort.signal,
         });
-        const data = await response.json() as { hex?: string; filename?: string; error?: string };
+        const data = await response.json() as { hex?: string; filename?: string; error?: string; memoryUsage?: HexMemoryUsage };
         if (cancelled) return;
         if (typeof data.hex === 'string') data.hex = normalizeHexText(data.hex);
+        if (response.ok && typeof data.hex === 'string') {
+          const hex = data.hex;
+          setHexMemory(old => old?.hex === hex && old.path === watchedHexPath && JSON.stringify(old.usage) === JSON.stringify(data.memoryUsage)
+            ? old : { hex, path: watchedHexPath, usage: data.memoryUsage });
+        }
         if (!response.ok || typeof data.hex !== 'string' || !data.filename) {
           previous = null;
           setWatchMessage(data.error || 'HEX watch requires the local dev server.');
@@ -195,11 +210,12 @@ export function IdePanel() {
       const response = await fetch('/api/compile/hex-file', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pick: true }), signal: abort.signal,
       });
-      const data = await response.json() as { hex?: string; filename?: string; path?: string; cancelled?: boolean; error?: string };
+      const data = await response.json() as { hex?: string; filename?: string; path?: string; cancelled?: boolean; error?: string; memoryUsage?: HexMemoryUsage };
       if (data.cancelled) return;
       if (!response.ok || !data.hex || !data.filename || !data.path) throw new Error(data.error || 'Could not open local HEX picker.');
       const error = !/:00000001FF\s*$/i.test(data.hex) ? 'HEX file is incomplete.' : loadHexFirmware(data.hex, data.filename, data.path);
       if (error) throw new Error(error);
+      setHexMemory({ hex: normalizeHexText(data.hex), path: data.path, usage: data.memoryUsage });
 
       setFileError(null); setTab('build');
     } catch (error) {
@@ -340,9 +356,11 @@ export function IdePanel() {
       </div>
 
       <div className="ide-sketch-bar">
-        <span className="ide-sketch-name" title={sketchName}>
-          {sketchName}.ino
-        </span>
+        {!usingHex && (
+          <span className="ide-sketch-name" title={`${sketchName}.ino`}>
+            {sketchName}.ino
+          </span>
+        )}
         {usingHex ? (
           <span className="ide-sketch-mode ide-sketch-mode-hex">External HEX</span>
         ) : (
@@ -385,17 +403,26 @@ export function IdePanel() {
 
       {watchedHexPath && !usingHex && <p role="status" title={watchedHexPath}>{watchMessage || 'Loading saved HEX…'}</p>}
       {usingHex && loadedHexName && (
-        <div className="sim-firmware-banner">
+        <div className="sim-firmware-banner" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
           <span className="sim-firmware-label" title={watchedHexPath ? `${loadedHexName} — ${watchMessage}` : loadedHexName}>
-            HEX: {loadedHexName}
+            {loadedHexName}
           </span>
-          {watchedHexPath && <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          {watchedHexPath && <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: '.72rem' }}>
             <input type="checkbox" checked={autoRunHex} onChange={event => {
               autoRunHexRef.current = event.target.checked;
               setAutoRunHex(event.target.checked);
             }} />
             Auto-run on HEX reload
           </label>}
+          <button type="button" className="sim-firmware-clear" style={{ alignSelf: 'flex-start' }}
+            disabled={running || busy}
+            title="Unload the HEX and stop watching it; keep the file and saved EEPROM"
+            onClick={() => {
+              pendingHexRun.current = null;
+              clearLoadedHex();
+            }}>
+            Remove HEX
+          </button>
         </div>
       )}
 
@@ -522,7 +549,7 @@ export function IdePanel() {
                 <div className="ide-hex-overlay">
                   <p>
                     Running firmware from <strong>{loadedHexName}</strong>. Click{' '}
-                    <strong>Use sketch</strong> to edit in the IDE again.
+                    <strong>Remove HEX</strong> after stopping to edit in the IDE again.
                   </p>
                 </div>
               ) : null}
@@ -537,6 +564,20 @@ export function IdePanel() {
           )}
           {tab === 'build' && (
             <pre className="sim-log compiler-log">
+              {usingHex && (() => {
+                const usage = hexMemory?.hex === loadedHex && hexMemory.path === watchedHexPath ? hexMemory.usage : undefined;
+                if (!usage?.available) return `Flash usage: unavailable.\nRAM usage: unavailable.\n${usage && !usage.available ? usage.reason : 'Matching ELF unavailable.'}\n\n`;
+                const boards = state.components.filter(component => isMcuBoard(component.type));
+                const limits = boards.length === 1 ? ARDUINO_MEMORY_LIMITS[boards[0].type] : undefined;
+                if (!limits) return `Sketch uses ${usage.flashBytes} bytes of program storage space.\nGlobal variables use ${usage.ramBytes} bytes of static RAM.\nBoard limits unavailable: the circuit must contain exactly one supported Arduino board.\n\n`;
+                const remaining = limits.ram - usage.ramBytes;
+                return `Sketch uses ${usage.flashBytes} bytes (${Math.floor(usage.flashBytes * 100 / limits.flash)}%) of program storage space. Maximum is ${limits.flash} bytes.\n`
+                  + `Global variables use ${usage.ramBytes} bytes (${Math.floor(usage.ramBytes * 100 / limits.ram)}%) of dynamic memory, `
+                  + (remaining >= 0 ? `leaving ${remaining} bytes for stack and heap.` : `exceeding available RAM by ${-remaining} bytes.`)
+                  + ` Maximum is ${limits.ram} bytes.\n`
+                  + (usage.flashBytes > limits.flash ? `Warning: sketch exceeds available flash by ${usage.flashBytes - limits.flash} bytes.\n` : '')
+                  + `Source: matching ELF. Limits: circuit board ${limits.name}; ${limits.reserved} flash bytes reserved for bootloader. Remaining RAM excludes runtime stack/heap usage.\n\n`;
+              })()}
               {compilerOutput || '(build output appears here after Run)'}
             </pre>
           )}

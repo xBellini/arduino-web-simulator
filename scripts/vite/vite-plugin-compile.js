@@ -17,6 +17,7 @@
 #                     | Temporarily attach the picker input thread to the foreground thread when activating the file dialog.
 #                     | Use the foreground window as the HEX dialog's native owner instead of forcing focus with a timer.
 #                     | Close an abandoned picker normally so its owner is re-enabled after cancellation or timeout.
+# 22-10-2026 | Codex | Report flash/static RAM from an adjacent AVR ELF after matching its flash bytes to the imported HEX; unavailable metadata never prevents import.
  */
 import fs from 'node:fs';
 import os from 'node:os';
@@ -276,9 +277,71 @@ async function compileSketchBody(sketch) {
   }
 }
 
+/** Read the same AVR sections used by Arduino's size recipe, verifying load bytes first. */
+function readAvrMemoryUsage(elf, hex) {
+  const unavailable = reason => ({ available: false, reason });
+  if (elf.length < 52 || elf.readUInt32BE(0) !== 0x7f454c46 || elf[4] !== 1 || elf[5] !== 1 || elf.readUInt16LE(18) !== 83)
+    return unavailable('Unsupported ELF: expected a 32-bit little-endian AVR executable.');
+  if (elf.readUInt16LE(16) !== 2) return unavailable('ELF is not a linked executable.');
+  const flash = new Map();
+  let upper = 0, eof = false;
+  for (const raw of hex.replace(/^\uFEFF/, '').trim().split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (eof || !/^:[0-9a-f]+$/i.test(line) || line.length % 2 !== 1) return unavailable('HEX cannot be verified.');
+    const bytes = Buffer.from(line.slice(1), 'hex');
+    if (bytes.length !== bytes[0] + 5 || (bytes.reduce((a, b) => a + b, 0) & 255)) return unavailable('HEX checksum or length is invalid.');
+    const address = bytes.readUInt16BE(1), type = bytes[3], data = bytes.subarray(4, -1);
+    if (type === 0) for (let i = 0; i < data.length; i++) {
+      const a = upper + address + i;
+      if (flash.has(a) && flash.get(a) !== data[i]) return unavailable('HEX has conflicting records.');
+      flash.set(a, data[i]);
+    }
+    else if (type === 1) { if (data.length) return unavailable('Invalid HEX EOF.'); eof = true; }
+    else if (type === 2 || type === 4) {
+      if (data.length !== 2) return unavailable('Invalid HEX address record.');
+      upper = data.readUInt16BE(0) * (type === 2 ? 16 : 65536);
+    } else if (type !== 3 && type !== 5) return unavailable('Unsupported HEX record.');
+  }
+  if (!eof) return unavailable('HEX is incomplete.');
+  const phoff = elf.readUInt32LE(28), phsize = elf.readUInt16LE(42), phnum = elf.readUInt16LE(44);
+  const shoff = elf.readUInt32LE(32), shsize = elf.readUInt16LE(46), shnum = elf.readUInt16LE(48), namesIndex = elf.readUInt16LE(50);
+  if (phsize < 32 || shsize < 40 || !shnum || namesIndex >= shnum || phoff + phsize * phnum > elf.length || shoff + shsize * shnum > elf.length)
+    return unavailable('ELF headers are incomplete.');
+  let matched = 0;
+  for (let i = 0; i < phnum; i++) {
+    const p = phoff + i * phsize;
+    if (elf.readUInt32LE(p) !== 1) continue;
+    const offset = elf.readUInt32LE(p + 4), address = elf.readUInt32LE(p + 12), size = elf.readUInt32LE(p + 16);
+    if (offset + size > elf.length) return unavailable('ELF load segment is incomplete.');
+    if (address >= 0x800000) continue; // AVR RAM/EEPROM address spaces are not flash.
+    for (let j = 0; j < size; j++) {
+      if (flash.get(address + j) !== elf[offset + j]) return unavailable('ELF does not match the imported HEX.');
+      matched++;
+    }
+  }
+  if (!matched) return unavailable('ELF contains no verifiable flash image.');
+  const namesHeader = shoff + namesIndex * shsize;
+  const namesOffset = elf.readUInt32LE(namesHeader + 16), namesSize = elf.readUInt32LE(namesHeader + 20);
+  if (namesOffset + namesSize > elf.length) return unavailable('ELF section names are incomplete.');
+  const names = elf.subarray(namesOffset, namesOffset + namesSize);
+  let flashBytes = 0, ramBytes = 0, hasText = false;
+  for (let i = 0; i < shnum; i++) {
+    const p = shoff + i * shsize, nameIndex = elf.readUInt32LE(p), size = elf.readUInt32LE(p + 20);
+    const end = names.indexOf(0, nameIndex);
+    if (nameIndex >= names.length || end < 0) return unavailable('Invalid ELF section name.');
+    const name = names.toString('utf8', nameIndex, end);
+    if (name === '.text') hasText = true;
+    if (['.text', '.data', '.bootloader'].includes(name)) flashBytes += size;
+    if (['.data', '.bss', '.noinit'].includes(name)) ramBytes += size;
+  }
+  return hasText ? { available: true, flashBytes, ramBytes } : unavailable('ELF has no program section.');
+}
+
 /** Dev-only API: local arduino-cli sketch compile → Intel HEX. */
 export function compilePlugin() {
   let pickerOpen = false;
+  let usageCache = null;
   return {
     name: 'arduino-compile',
     configureServer(server) {
@@ -380,7 +443,24 @@ try {
               sendJson(res, 409, { error: 'HEX is being rebuilt; waiting for it to finish.' });
               return;
             }
-            sendJson(res, 200, { hex, filename: path.basename(filename), ...(pick ? { path: filename } : {}) });
+            let memoryUsage = { available: false, reason: 'Matching ELF unavailable.' };
+            const elfPath = filename.replace(/(?:\.with_bootloader)?\.hex$/i, '.elf');
+            try {
+              const stat = await fs.promises.stat(elfPath);
+              const key = JSON.stringify([filename, before.mtimeMs, before.ctimeMs, before.size, elfPath, stat.mtimeMs, stat.ctimeMs, stat.size]);
+              if (usageCache?.key === key) memoryUsage = usageCache.value;
+              else {
+                if (!stat.isFile() || stat.size > 16 * 1024 * 1024) throw new Error('ELF is not a supported file (maximum 16 MB).');
+                const elf = await fs.promises.readFile(elfPath);
+                const stable = await fs.promises.stat(elfPath);
+                if (stat.mtimeMs !== stable.mtimeMs || stat.ctimeMs !== stable.ctimeMs || stat.size !== stable.size) throw new Error('ELF is being rebuilt.');
+                memoryUsage = readAvrMemoryUsage(elf, hex);
+                usageCache = { key, value: memoryUsage };
+              }
+            } catch (error) {
+              if (error.code !== 'ENOENT') memoryUsage.reason = error.message || 'Cannot read matching ELF.';
+            }
+            sendJson(res, 200, { hex, memoryUsage, filename: path.basename(filename), ...(pick ? { path: filename } : {}) });
           } catch (error) {
             sendJson(res, 400, { error: error instanceof Error ? error.message : 'Cannot read the HEX file.' });
           }

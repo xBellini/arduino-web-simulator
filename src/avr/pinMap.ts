@@ -1,7 +1,8 @@
 /**
  * What: Static ATmega328P pin map — registry ids (d0–d13, a0–a5) → avr8js port + bit.
  *
- * Owns/exports: `AvrPortName`, `McuPinMapping`, `ARDUINO_DIGITAL_PIN_MAP`, `isMcuBoard`.
+ * Owns/exports: `AvrPortName`, `McuPinMapping`, `ARDUINO_DIGITAL_PIN_MAP`, `isMcuBoard`,
+ * and `ARDUINO_MEMORY_LIMITS` (official sketch upload/SRAM limits for Build reports).
  *
  * Conventions: Keys match component registry MCU pin ids, not silkscreen “D13” alone (use
  * `d13`). Only Uno/Nano types return true from `isMcuBoard`. No runtime mutation of the map.
@@ -21,9 +22,18 @@
 #                     | Expanded What with practical how-to notes
 # 05-10-2026 | Cursor | Uno header sda/scl alias a4/a5 (TWI)
 # 09-10-2026 | Cursor | Moved from `src/sim/pinMap.ts` (tree reorganization)
+# 22-10-2026 | Codex | Expose official Uno/Nano sketch flash and SRAM limits for board-specific Build reports, reserving bootloader space.
  */
 
 export type AvrPortName = 'B' | 'C' | 'D';
+
+// Arduino AVR core boards.txt upload.maximum_size/maximum_data_size.
+// Nano ATmega328P new and old bootloader profiles both reserve 2048 bytes.
+// These are sketch upload limits, not the MCU's full 32768-byte flash size.
+export const ARDUINO_MEMORY_LIMITS: Readonly<Record<string, { name: string; flash: number; ram: number; reserved: number }>> = {
+  arduino_uno: { name: 'Arduino Uno', flash: 32256, ram: 2048, reserved: 512 },
+  arduino_nano: { name: 'Arduino Nano (ATmega328P)', flash: 30720, ram: 2048, reserved: 2048 },
+};
 
 export interface McuPinMapping {
   port: AvrPortName;
