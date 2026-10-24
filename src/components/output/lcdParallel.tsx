@@ -19,9 +19,10 @@
 # 13-10-2026 | Codex | Forward variant palette metadata; register custom LCD editor preserving color preview.
 #                     | Show solved HIGH/LOW/FLOATING on directly connected data/control wires; representative source-backed nominal loads supply solved controller/backlight currents.
 # 15-10-2026 | Codex | Batch LCD pixels into two cached SVG paths; preserve pixel geometry, colors, cursor and custom glyph updates.
+# 23-10-2026 | Codex | Notify each LCD directly after bus updates, coalesced per animation frame; repaint independently of unchanged circuit pins and flags.
  */
 import { LcdPropertiesEditor } from '../../ui/editors/LcdPropertiesEditor';
-import { useRef, type ReactNode } from 'react';
+import { useCallback, useRef, useSyncExternalStore, type ReactNode } from 'react';
 import {
   createHd44780,
   createParallelLatch,
@@ -61,6 +62,36 @@ export interface ParallelLcdSpec {
 
 const icById = new Map<string, Hd44780>();
 const latchById = new Map<string, Hd44780ParallelLatch>();
+const displayListeners = new Map<string, Set<() => void>>();
+const displayVersions = new Map<string, number>();
+const dirtyDisplays = new Set<string>();
+let displayFrame: number | null = null;
+let displayVersion = 0;
+
+export function subscribeLcdDisplay(id: string, listener: () => void): () => void {
+  let listeners = displayListeners.get(id);
+  if (!listeners) displayListeners.set(id, listeners = new Set());
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+    if (!listeners.size) displayListeners.delete(id);
+  };
+}
+export const getLcdDisplayVersion = (id: string): number => displayVersions.get(id) ?? 0;
+
+function invalidateDisplay(id: string): void {
+  dirtyDisplays.add(id);
+  if (displayFrame !== null || typeof requestAnimationFrame === 'undefined') return;
+  displayFrame = requestAnimationFrame(() => {
+    displayFrame = null;
+    const ids = [...dirtyDisplays];
+    dirtyDisplays.clear();
+    for (const dirtyId of ids) {
+      displayVersions.set(dirtyId, ++displayVersion);
+      for (const listener of displayListeners.get(dirtyId) ?? []) listener();
+    }
+  });
+}
 
 /** True while `attachLcdGpioProbe` owns EN-edge sampling (AVR run). */
 let gpioProbeActive = false;
@@ -104,15 +135,18 @@ export function feedLcdParallelBus(
 ): void {
   const { ic, latch } = ensureInstance(componentId, cols, rows);
   latchParallelOnEnableFall(ic, latch, pins);
+  invalidateDisplay(componentId);
 }
 
 /** Drop IC state when sim stops (fresh begin() on next Run). */
 export function clearLcdSimState(componentId?: string): void {
   if (componentId) {
+    invalidateDisplay(componentId);
     icById.delete(componentId);
     latchById.delete(componentId);
     return;
   }
+  for (const id of icById.keys()) invalidateDisplay(id);
   icById.clear();
   latchById.clear();
 }
@@ -138,6 +172,11 @@ function LcdGlassOverlay({
   simRunning?: boolean;
   colors: ReturnType<typeof lcdColorsFromComponent>;
 }): ReactNode {
+  useSyncExternalStore(
+    useCallback(listener => subscribeLcdDisplay(componentId, listener), [componentId]),
+    useCallback(() => getLcdDisplayVersion(componentId), [componentId]),
+    () => 0,
+  );
   const cached = useRef<{ key: string; node: ReactNode } | null>(null);
   if (!simRunning) { cached.current = null; return null; }
   const ic = icById.get(componentId);
